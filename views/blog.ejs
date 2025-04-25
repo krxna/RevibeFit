@@ -1,0 +1,101 @@
+<!-- Blog Header -->
+<div class="bg-[#fffff0] py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Fitness Blog</h1>
+        <p class="text-xl text-gray-600">Stay informed with the latest fitness tips, nutrition advice, and success stories.</p>
+    </div>
+</div>
+
+<!-- Blog Posts -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <% if (posts && posts.length > 0) { %>
+            <% posts.forEach(function(post) { %>
+                <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="<%= post.image %>" alt="<%= post.title %>" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-[#ede8d0] text-gray-800 px-3 py-1 rounded-full text-sm">
+                                <%= post.category %>
+                            </span>
+                            <span class="text-gray-500 text-sm ml-4">
+                                <%= new Date(post.date).toLocaleDateString() %>
+                            </span>
+                        </div>
+                        <h2 class="text-xl font-semibold mb-2"><%= post.title %></h2>
+                        <p class="text-gray-600 mb-4"><%= post.excerpt %></p>
+                        <a href="/blog/<%= post.slug %>" class="text-blue-600 hover:underline">Read More →</a>
+                    </div>
+                </article>
+            <% }); %>
+        <% } else { %>
+            <!-- Sample Blog Posts (when no posts are available) -->
+            <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="/assets/workout-tips.jpg" alt="Workout Tips" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <span class="bg-[#ede8d0] text-gray-800 px-3 py-1 rounded-full text-sm">
+                            Fitness Tips
+                        </span>
+                        <span class="text-gray-500 text-sm ml-4">
+                            <%= new Date().toLocaleDateString() %>
+                        </span>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-2">10 Essential Workout Tips for Beginners</h2>
+                    <p class="text-gray-600 mb-4">Starting your fitness journey can be overwhelming. Here are 10 essential tips to help you get started on the right foot...</p>
+                    <a href="#" class="text-blue-600 hover:underline">Read More →</a>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="/assets/nutrition-guide.jpg" alt="Nutrition Guide" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <span class="bg-[#ede8d0] text-gray-800 px-3 py-1 rounded-full text-sm">
+                            Nutrition
+                        </span>
+                        <span class="text-gray-500 text-sm ml-4">
+                            <%= new Date().toLocaleDateString() %>
+                        </span>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-2">The Ultimate Guide to Meal Prep</h2>
+                    <p class="text-gray-600 mb-4">Learn how to effectively plan and prepare your meals for the week to support your fitness goals...</p>
+                    <a href="#" class="text-blue-600 hover:underline">Read More →</a>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="/assets/success-story.jpg" alt="Success Story" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <span class="bg-[#ede8d0] text-gray-800 px-3 py-1 rounded-full text-sm">
+                            Success Stories
+                        </span>
+                        <span class="text-gray-500 text-sm ml-4">
+                            <%= new Date().toLocaleDateString() %>
+                        </span>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-2">From Couch to Marathon: Sarah's Journey</h2>
+                    <p class="text-gray-600 mb-4">Read how Sarah transformed her life and achieved her dream of running a marathon with RevibeFit...</p>
+                    <a href="#" class="text-blue-600 hover:underline">Read More →</a>
+                </div>
+            </article>
+        <% } %>
+    </div>
+</div>
+
+<!-- Newsletter Section -->
+<div class="bg-[#fffff0] py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Stay Updated</h2>
+        <p class="text-xl mb-8">Subscribe to our newsletter for the latest fitness tips and updates.</p>
+        <form class="max-w-md mx-auto">
+            <div class="flex gap-4">
+                <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#ede8d0]">
+                <button type="submit" class="bg-gradient-to-r from-[#ede8d0] to-[#f7f7f7] text-gray-800 px-6 py-3 rounded-lg hover:opacity-90 transition-opacity">
+                    Subscribe
+                </button>
+            </div>
+        </form>
+    </div>
+</div> 

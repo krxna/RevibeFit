@@ -1,0 +1,232 @@
+<%- include('../layouts/main', { title: 'Lab Dashboard' }) %>
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <!-- Left Sidebar -->
+    <div class="md:col-span-1">
+        <!-- Lab Profile -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex items-center mb-4">
+                <img src="<%= lab.profile?.avatar || '/assets/Lab-Tech.jpg' %>" alt="Lab" class="w-16 h-16 rounded-full">
+                <div class="ml-4">
+                    <h2 class="text-xl font-semibold"><%= lab.name %></h2>
+                    <p class="text-gray-600">Partner ID: <%= lab.labData.partnerId %></p>
+                </div>
+            </div>
+            <div class="border-t pt-4">
+                <div class="mb-2">
+                    <span class="text-gray-600">Location:</span>
+                    <p class="mt-1"><%= lab.labData.location.address %></p>
+                </div>
+                <div class="mt-4">
+                    <span class="text-gray-600">Test Types:</span>
+                    <div class="flex flex-wrap gap-2 mt-1">
+                        <% lab.labData.testTypes.forEach(type => { %>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"><%= type %></span>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Lab Statistics</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Tests Today</span>
+                    <span class="font-semibold">12</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Pending Results</span>
+                    <span class="font-semibold">5</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Completed Tests</span>
+                    <span class="font-semibold">128</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="md:col-span-3">
+        <!-- Test Queue -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Today's Test Queue</h3>
+                <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Add Test</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Sample test entries -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <img src="/assets/default-avatar.png" alt="Patient" class="w-8 h-8 rounded-full">
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">John Doe</div>
+                                        <div class="text-sm text-gray-500">ID: 12345</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    Blood Work
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                09:30 AM
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Pending
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button class="text-green-600 hover:text-green-900">Process</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Recent Test Results</h3>
+                <div class="flex space-x-2">
+                    <input type="text" placeholder="Search results..." class="px-4 py-2 border rounded-lg">
+                    <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Upload Results</button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Sample result entries -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <img src="/assets/default-avatar.png" alt="Patient" class="w-8 h-8 rounded-full">
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Jane Smith</div>
+                                        <div class="text-sm text-gray-500">ID: 12346</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                                    Hormone Panel
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2024-01-15
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    Completed
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900">View</button>
+                                    <button class="text-green-600 hover:text-green-900">Send</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Analytics -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Lab Analytics</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Test Volume -->
+                <div>
+                    <canvas id="testVolumeChart"></canvas>
+                </div>
+                <!-- Test Types Distribution -->
+                <div>
+                    <canvas id="testTypesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Test Volume Chart
+    const testVolumeCtx = document.getElementById('testVolumeChart').getContext('2d');
+    new Chart(testVolumeCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Tests Conducted',
+                data: [120, 150, 180, 200, 220, 250],
+                borderColor: '#059669',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Monthly Test Volume'
+                }
+            }
+        }
+    });
+
+    // Test Types Distribution Chart
+    const testTypesCtx = document.getElementById('testTypesChart').getContext('2d');
+    new Chart(testTypesCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Blood Work', 'Hormone Panel', 'Fitness Assessment', 'Body Composition', 'Other'],
+            datasets: [{
+                data: [35, 25, 20, 15, 5],
+                backgroundColor: [
+                    '#059669',
+                    '#047857',
+                    '#065f46',
+                    '#064e3b',
+                    '#022c22'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Test Types Distribution'
+                }
+            }
+        }
+    });
+</script> 

@@ -1,0 +1,72 @@
+<!-- Trainers Header -->
+<div class="bg-[#fffff0] py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Our Expert Trainers</h1>
+        <p class="text-xl text-gray-600">Meet our certified fitness professionals who will guide you on your fitness journey.</p>
+    </div>
+</div>
+
+<!-- Trainers Grid -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <% if (trainers && trainers.length > 0) { %>
+            <% trainers.forEach(function(trainer) { %>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="aspect-w-16 aspect-h-9">
+                        <img src="<%= trainer.profile?.image || '/assets/default-trainer.jpg' %>" 
+                             alt="<%= trainer.name %>" 
+                             class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2"><%= trainer.name %></h3>
+                        
+                        <% if (trainer.trainerData?.specializations?.length > 0) { %>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <% trainer.trainerData.specializations.forEach(function(spec) { %>
+                                    <span class="bg-[#ede8d0] text-gray-800 px-3 py-1 rounded-full text-sm">
+                                        <%= spec %>
+                                    </span>
+                                <% }); %>
+                            </div>
+                        <% } %>
+
+                        <div class="flex items-center mb-4">
+                            <% for(let i = 0; i < 5; i++) { %>
+                                <svg class="w-5 h-5 <%= i < (trainer.trainerData?.rating || 0) ? 'text-yellow-400' : 'text-gray-300' %>" 
+                                     fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            <% } %>
+                            <span class="ml-2 text-gray-600">
+                                <%= trainer.trainerData?.rating?.toFixed(1) || 'New' %>
+                            </span>
+                        </div>
+
+                        <p class="text-gray-600 mb-4">
+                            <%= trainer.trainerData?.experience %> years of experience
+                        </p>
+
+                        <button class="w-full bg-gradient-to-r from-[#ede8d0] to-[#f7f7f7] text-gray-800 py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
+                            Book Session
+                        </button>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="col-span-full text-center py-12">
+                <p class="text-gray-600">No trainers available at the moment. Please check back later.</p>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<!-- Become a Trainer -->
+<div class="bg-[#fffff0] py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Are You a Fitness Professional?</h2>
+        <p class="text-xl mb-8">Join our platform and start training clients from around the world.</p>
+        <a href="/auth/register?role=trainer" class="inline-block bg-gradient-to-r from-[#ede8d0] to-[#f7f7f7] text-gray-800 py-3 px-8 rounded-lg hover:opacity-90 transition-opacity">
+            Become a Trainer
+        </a>
+    </div>
+</div> 

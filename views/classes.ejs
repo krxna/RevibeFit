@@ -1,0 +1,63 @@
+<!-- Classes Header -->
+<div class="bg-[#fffff0] py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Live Classes</h1>
+        <p class="text-xl text-gray-600">Join our expert-led live fitness classes from anywhere in the world.</p>
+    </div>
+</div>
+
+<!-- Class Schedule -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-6">
+            <h2 class="text-2xl font-semibold mb-6">Upcoming Classes</h2>
+            
+            <% if (classes && classes.length > 0) { %>
+                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <% classes.forEach(function(class_) { %>
+                        <div class="bg-[#f7f7f7] rounded-lg p-6">
+                            <h3 class="text-xl font-semibold mb-2"><%= class_.title %></h3>
+                            <p class="text-gray-600 mb-4"><%= class_.description %></p>
+                            <div class="flex items-center mb-4">
+                                <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-gray-600"><%= new Date(class_.startTime).toLocaleString() %></span>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span class="text-gray-600">Trainer: <%= class_.trainer.name %></span>
+                            </div>
+                            <button class="w-full bg-gradient-to-r from-[#ede8d0] to-[#f7f7f7] text-gray-800 py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
+                                Join Class
+                            </button>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <div class="text-center py-12">
+                    <p class="text-gray-600">No upcoming classes scheduled. Please check back later.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<!-- Class Categories -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h2 class="text-2xl font-semibold mb-6">Class Categories</h2>
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <% ['Strength', 'Cardio', 'Yoga', 'HIIT'].forEach(function(category) { %>
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2"><%= category %></h3>
+                    <a href="/classes?category=<%= category.toLowerCase() %>" class="text-blue-600 hover:underline">
+                        View Classes →
+                    </a>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div> 

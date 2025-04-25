@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | RevibeFit</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --navbar-color: #fffff0;
+            --section-bg: #f7f7f7;
+            --gradient-color: #ede8d0;
+            --theme-green: #3f8554;
+        }
+
+        .hover-green:hover {
+            background-color: var(--theme-green) !important;
+        }
+
+        .bg-theme-green {
+            background-color: var(--theme-green) !important;
+        }
+    </style>
+</head>
+<body class="bg-[#f7f7f7]">
+    <!-- Navigation -->
+    <nav class="bg-[#fffff0] text-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="/" class="flex items-center">
+                        <img src="/Assets/exercise_8407005.png" alt="RevibeFit Logo" class="h-8 w-8 mr-2">
+                        <span class="text-xl font-bold">RevibeFit</span>
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="/" class="px-3 py-2 rounded-md text-sm font-medium text-gray-800 hover-green hover:text-white transition-colors">Home</a>
+                        <a href="/classes" class="px-3 py-2 rounded-md text-sm font-medium text-gray-800 hover-green hover:text-white transition-colors">Classes</a>
+                        <a href="/trainers" class="px-3 py-2 rounded-md text-sm font-medium text-gray-800 hover-green hover:text-white transition-colors">Trainers</a>
+                        <a href="/nutrition" class="px-3 py-2 rounded-md text-sm font-medium text-gray-800 hover-green hover:text-white transition-colors">Nutrition</a>
+                        <a href="/blog" class="px-3 py-2 rounded-md text-sm font-medium text-gray-800 hover-green hover:text-white transition-colors">Blog</a>
+                    </div>
+                </div>
+
+                <!-- User Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <% if (user) { %>
+                            <a href="/dashboard/<%= user.role %>" class="px-3 py-2 rounded-md text-sm font-medium text-gray-800 hover-green hover:text-white transition-colors">Dashboard</a>
+                            <form action="/auth/logout" method="POST" class="inline">
+                                <button type="submit" class="px-3 py-2 rounded-md text-sm font-medium text-gray-800 hover-green hover:text-white transition-colors">Logout</button>
+                            </form>
+                        <% } else { %>
+                            <a href="/auth/login" class="px-3 py-2 rounded-md text-sm font-medium text-gray-800 hover-green hover:text-white transition-colors">Login</a>
+                            <a href="/auth/register" class="ml-3 px-3 py-2 rounded-md text-sm font-medium bg-theme-green text-white hover:opacity-90 transition-opacity">Sign Up</a>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover-green hover:text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="/" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover-green hover:text-white transition-colors">Home</a>
+                <a href="/classes" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover-green hover:text-white transition-colors">Classes</a>
+                <a href="/trainers" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover-green hover:text-white transition-colors">Trainers</a>
+                <a href="/nutrition" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover-green hover:text-white transition-colors">Nutrition</a>
+                <a href="/blog" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover-green hover:text-white transition-colors">Blog</a>
+                
+                <% if (user) { %>
+                    <a href="/dashboard/<%= user.role %>" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover-green hover:text-white transition-colors">Dashboard</a>
+                    <form action="/auth/logout" method="POST">
+                        <button type="submit" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-800 hover-green hover:text-white transition-colors">Logout</button>
+                    </form>
+                <% } else { %>
+                    <a href="/auth/login" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover-green hover:text-white transition-colors">Login</a>
+                    <a href="/auth/register" class="block px-3 py-2 rounded-md text-base font-medium bg-theme-green text-white hover:opacity-90 transition-opacity">Sign Up</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <%- body %>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">RevibeFit</h3>
+                    <p class="text-gray-300">Transform your life through fitness with personalized workout plans and expert guidance.</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/about" class="text-gray-300 hover:text-white">About Us</a></li>
+                        <li><a href="/contact" class="text-gray-300 hover:text-white">Contact</a></li>
+                        <li><a href="/pricing" class="text-gray-300 hover:text-white">Pricing</a></li>
+                        <li><a href="/privacy" class="text-gray-300 hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/classes" class="text-gray-300 hover:text-white">Live Classes</a></li>
+                        <li><a href="/trainers" class="text-gray-300 hover:text-white">Personal Training</a></li>
+                        <li><a href="/nutrition" class="text-gray-300 hover:text-white">Nutrition Plans</a></li>
+                        <li><a href="/labs" class="text-gray-300 hover:text-white">Lab Tests</a></li>
+                    </ul>
+                </div>
+
+                <!-- Connect -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            <span class="sr-only">Facebook</span>
+                            <img src="/assets/facebook.png" alt="Facebook" class="h-6 w-6">
+                        </a>
+                        <!-- Add other social media icons -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center">
+                <p class="text-gray-300">&copy; <%= new Date().getFullYear() %> RevibeFit. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+
+    <!-- Additional Scripts -->
+    <%- typeof scripts !== 'undefined' ? scripts : '' %>
+</body>
+</html> 
