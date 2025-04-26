@@ -81,7 +81,9 @@ io.on('connection', (socket) => {
 app.use('/', require('./routes/index'));
 app.use('/auth', require('./routes/auth'));
 app.use('/dashboard', require('./routes/dashboard'));
-app.use('/api', require('./routes/api'));
+
+// API routes should be last and prefixed with /api
+app.use('/api', express.json(), require('./routes/api'));
 
 // 404 handler
 app.use((req, res) => {

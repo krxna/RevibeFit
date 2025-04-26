@@ -4,153 +4,41 @@ const User = require('../models/User');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { isAuthenticated } = require('../middleware/auth');
+const crypto = require('crypto');
 
-// Register a new user
-router.post('/register', async (req, res) => {
-    try {
-        const {
-            name,
-            email,
-            password,
-            role,
-            fitnessLevel,
-            goals,
-            profile
-        } = req.body;
+// Generate CSRF token
+const generateCSRFToken = () => {
+    return crypto.randomBytes(32).toString('hex');
+};
 
-        // Check if user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ error: 'Email already registered' });
-        }
-
-        // Create new user
-        const user = new User({
-            name,
-            email,
-            password,
-            role: role || 'client',
-            fitnessLevel,
-            goals,
-            profile
-        });
-
-        await user.save();
-
-        // Generate JWT token
-        const token = jwt.sign(
-            { userId: user._id },
-            process.env.JWT_SECRET || 'your-jwt-secret',
-            { expiresIn: '24h' }
-        );
-
-        // Set cookie
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            maxAge: 24 * 60 * 60 * 1000 // 24 hours
-        });
-
-        res.status(201).json({
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role
-            },
-            token
-        });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-// Login user
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // Find user by email
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(401).json({ error: 'Invalid email or password' });
-        }
-
-        // Check password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ error: 'Invalid email or password' });
-        }
-
-        // Generate JWT token
-        const token = jwt.sign(
-            { userId: user._id },
-            process.env.JWT_SECRET || 'your-jwt-secret',
-            { expiresIn: '24h' }
-        );
-
-        // Set cookie
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            maxAge: 24 * 60 * 60 * 1000 // 24 hours
-        });
-
-        res.json({
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role
-            },
-            token
-        });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-// Logout user
-router.post('/logout', (req, res) => {
-    res.clearCookie('token');
-    res.json({ message: 'Logged out successfully' });
-});
-
-// Get current user
-router.get('/me', async (req, res) => {
-    try {
-        const token = req.cookies.token;
-        if (!token) {
-            return res.status(401).json({ error: 'Please authenticate' });
-        }
-
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-jwt-secret');
-        const user = await User.findOne({ _id: decoded.userId });
-
-        if (!user) {
-            return res.status(401).json({ error: 'Please authenticate' });
-        }
-
-        res.json({
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                fitnessLevel: user.fitnessLevel,
-                goals: user.goals,
-                profile: user.profile
-            }
-        });
-    } catch (error) {
-        res.status(401).json({ error: 'Please authenticate' });
-    }
+// Render registration page
+router.get('/register', (req, res) => {
+    // Generate a new CSRF token for each request
+    const csrfToken = crypto.randomBytes(32).toString('hex');
+    // Store the token in the session
+    req.session.csrfToken = csrfToken;
+    
+    res.render('auth/register', { 
+        title: 'Register - RevibeFit',
+        messages: { 
+            error: req.flash('error'),
+            success: req.flash('success')
+        },
+        csrfToken: csrfToken,
+        layout: false
+    });
 });
 
 // Handle registration
 router.post('/register', async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        // Validate CSRF token
+        if (!req.body._csrf || req.body._csrf !== req.session.csrfToken) {
+            req.flash('error', 'Invalid form submission');
+            return res.redirect('/auth/register');
+        }
+
+        const { name, email, password, role, fitnessLevel, fitnessGoals, specialization, certification, labName, services } = req.body;
 
         // Validate required fields
         if (!name || !email || !password) {
@@ -165,48 +53,55 @@ router.post('/register', async (req, res) => {
             return res.redirect('/auth/register');
         }
 
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
-        // Create user object based on role
+        // Create base user object
         const userData = {
             name,
             email,
-            password: hashedPassword,
-            role: role || 'client'
+            password,
+            role: role || 'client',
+            fitnessLevel: fitnessLevel || 'beginner'
         };
 
         // Add role-specific fields
-        if (role === 'client') {
-            userData.fitnessGoals = req.body.fitnessGoals;
+        if (role === 'client' || !role) {
+            userData.goals = fitnessGoals ? [fitnessGoals] : ['general_wellness'];
         } else if (role === 'trainer') {
-            userData.specialization = req.body.specialization;
-            userData.certification = req.body.certification;
+            if (!specialization || !certification) {
+                req.flash('error', 'Specialization and certification are required for trainers');
+                return res.redirect('/auth/register');
+            }
+            userData.trainerData = {
+                specializations: [specialization],
+                certifications: [certification]
+            };
         } else if (role === 'partner') {
-            userData.labName = req.body.labName;
-            userData.services = req.body.services;
+            if (!labName || !services) {
+                req.flash('error', 'Lab name and services are required for partners');
+                return res.redirect('/auth/register');
+            }
+            userData.partnerData = {
+                partnerId: labName,
+                businessName: labName,
+                testTypes: services.split(',').map(s => ({ name: s.trim() }))
+            };
         }
 
         // Save user
         user = await User.create(userData);
 
         // Set success message and redirect to login
-        req.flash('success', 'You have successfully registered. Please Sign In');
-        res.redirect('/auth/login');
+        req.flash('success', 'Registration successful! Please log in with your credentials. <a href="/auth/login" class="font-medium text-green-600 hover:text-green-500">Click here to login</a>');
+        res.redirect('/auth/register');
     } catch (error) {
         console.error('Registration error:', error);
-        req.flash('error', 'An error occurred during registration');
+        if (error.name === 'ValidationError') {
+            const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
+            req.flash('error', errorMessage);
+        } else {
+            req.flash('error', 'An error occurred during registration');
+        }
         res.redirect('/auth/register');
     }
-});
-
-// Success page route
-router.get('/success', (req, res) => {
-    res.render('auth/success', {
-        title: 'Registration Successful - RevibeFit',
-        layout: false // This will prevent using the main layout with navigation
-    });
 });
 
 // Render login page
@@ -217,15 +112,6 @@ router.get('/login', (req, res) => {
             error: req.flash('error'),
             success: req.flash('success')
         },
-        layout: false
-    });
-});
-
-// Render registration page
-router.get('/register', (req, res) => {
-    res.render('auth/register', { 
-        title: 'Register - RevibeFit',
-        messages: { error: req.flash('error') },
         layout: false
     });
 });
@@ -291,8 +177,23 @@ router.post('/logout', isAuthenticated, (req, res) => {
             console.error('Logout error:', err);
             return res.redirect('/');
         }
+        res.clearCookie('connect.sid'); // Clear the session cookie
         res.redirect('/');
     });
+});
+
+// Get current user
+router.get('/me', isAuthenticated, (req, res) => {
+    try {
+        if (!req.session.user) {
+            req.flash('error', 'Please log in to continue');
+            return res.redirect('/auth/login');
+        }
+        res.redirect('/dashboard/' + req.session.user.role);
+    } catch (error) {
+        req.flash('error', 'Please log in to continue');
+        res.redirect('/auth/login');
+    }
 });
 
 module.exports = router; 

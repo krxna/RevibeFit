@@ -7,21 +7,24 @@ const auth = async (req, res, next) => {
                      req.cookies.token;
         
         if (!token) {
-            throw new Error();
+            req.flash('error', 'Please log in to continue');
+            return res.redirect('/auth/login');
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-jwt-secret');
         const user = await User.findOne({ _id: decoded.userId });
 
         if (!user) {
-            throw new Error();
+            req.flash('error', 'Please log in to continue');
+            return res.redirect('/auth/login');
         }
 
         req.token = token;
         req.user = user;
         next();
     } catch (error) {
-        res.status(401).json({ error: 'Please authenticate.' });
+        req.flash('error', 'Please log in to continue');
+        res.redirect('/auth/login');
     }
 };
 

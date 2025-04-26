@@ -4,35 +4,34 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: [true, 'Name is required'],
         trim: true
     },
     email: {
         type: String,
-        required: true,
+        required: [true, 'Email is required'],
         unique: true,
         trim: true,
         lowercase: true
     },
     password: {
         type: String,
-        required: true
+        required: [true, 'Password is required']
     },
     role: {
         type: String,
-        enum: ['client', 'trainer', 'admin', 'lab'],
+        enum: ['client', 'trainer', 'partner', 'admin'],
         default: 'client'
     },
     fitnessLevel: {
         type: String,
         enum: ['beginner', 'intermediate', 'advanced'],
-        required: function() { return this.role === 'client'; }
+        default: 'beginner'
     },
-    goals: [{
-        type: String,
-        enum: ['weight_loss', 'muscle_gain', 'general_wellness'],
-        required: function() { return this.role === 'client'; }
-    }],
+    goals: {
+        type: [String],
+        default: ['general_wellness']
+    },
     profile: {
         height: Number,
         weight: Number,
@@ -91,18 +90,84 @@ const userSchema = new mongoose.Schema({
                 endTime: String,
                 isBooked: Boolean
             }]
+        }],
+        clients: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
         }]
     },
-    labData: {
+    partnerData: {
         partnerId: String,
-        testTypes: [String],
-        location: {
-            address: String,
-            coordinates: {
-                lat: Number,
-                lng: Number
-            }
-        }
+        businessName: {
+            type: String,
+            required: function() { return this.role === 'partner'; }
+        },
+        businessAddress: {
+            street: String,
+            city: String,
+            state: String,
+            zipCode: String,
+            country: String
+        },
+        testTypes: [{
+            name: String,
+            description: String,
+            price: Number,
+            duration: Number // in minutes
+        }],
+        operatingHours: [{
+            day: String,
+            open: String,
+            close: String,
+            isClosed: Boolean
+        }],
+        contactInfo: {
+            phone: String,
+            alternateEmail: String,
+            website: String
+        },
+        services: [{
+            name: String,
+            description: String,
+            price: Number
+        }],
+        clients: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }],
+        ratings: {
+            average: {
+                type: Number,
+                default: 0
+            },
+            reviews: [{
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User'
+                },
+                rating: Number,
+                comment: String,
+                date: {
+                    type: Date,
+                    default: Date.now
+                }
+            }]
+        },
+        verificationStatus: {
+            type: String,
+            enum: ['pending', 'verified', 'rejected'],
+            default: 'pending'
+        },
+        documents: [{
+            type: String,
+            name: String,
+            url: String,
+            uploadDate: Date
+        }]
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 }, {
     timestamps: true
@@ -123,7 +188,11 @@ userSchema.pre('save', async function(next) {
 
 // Method to compare password
 userSchema.methods.comparePassword = async function(candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password);
+    try {
+        return await bcrypt.compare(candidatePassword, this.password);
+    } catch (error) {
+        throw error;
+    }
 };
 
 // Method to calculate BMR
