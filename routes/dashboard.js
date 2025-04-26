@@ -1,114 +1,94 @@
 const express = require('express');
 const router = express.Router();
-const { auth, authorize } = require('../middleware/auth');
+const { isAuthenticated, authorize } = require('../middleware/auth');
 const User = require('../models/User');
 const WorkoutPlan = require('../models/WorkoutPlan');
 const LiveClass = require('../models/LiveClass');
 
 // Middleware to protect all dashboard routes
-router.use(auth);
+router.use(isAuthenticated);
 
 // Client Dashboard
 router.get('/client', authorize('client'), async (req, res) => {
     try {
-        const user = await User.findById(req.user._id)
-            .populate('clientData.currentPlan')
-            .populate('clientData.upcomingClasses');
-
-        const workoutPlans = await WorkoutPlan.find({ user: req.user._id })
-            .sort({ createdAt: -1 })
-            .limit(5);
-
-        const upcomingClasses = await LiveClass.find({
-            'participants.user': req.user._id,
-            startTime: { $gt: new Date() }
-        })
-        .populate('trainer', 'name')
-        .sort({ startTime: 1 })
-        .limit(3);
+        // Fetch user data from MongoDB
+        const userData = await User.findById(req.session.user.id);
+        
+        if (!userData) {
+            return res.redirect('/auth/login');
+        }
 
         res.render('dashboard/client', {
             title: 'Client Dashboard',
-            user,
-            workoutPlans,
-            upcomingClasses
+            user: req.session.user,
+            userData: userData // Pass the MongoDB data to the view
         });
     } catch (error) {
-        res.status(500).render('error', { error: error.message });
+        console.error('Client dashboard error:', error);
+        res.redirect('/auth/login');
     }
 });
 
 // Trainer Dashboard
 router.get('/trainer', authorize('trainer'), async (req, res) => {
     try {
-        const trainer = await User.findById(req.user._id)
-            .populate('trainerData.reviews.user');
-
-        const upcomingClasses = await LiveClass.find({
-            trainer: req.user._id,
-            startTime: { $gt: new Date() }
-        }).sort({ startTime: 1 });
-
-        const clients = await User.find({
-            'clientData.currentPlan': { $in: await WorkoutPlan.find({ trainer: req.user._id }) }
-        }).select('name email profile');
+        // Fetch user data from MongoDB
+        const userData = await User.findById(req.session.user.id);
+        
+        if (!userData) {
+            return res.redirect('/auth/login');
+        }
 
         res.render('dashboard/trainer', {
             title: 'Trainer Dashboard',
-            trainer,
-            upcomingClasses,
-            clients
+            user: req.session.user,
+            userData: userData // Pass the MongoDB data to the view
         });
     } catch (error) {
-        res.status(500).render('error', { error: error.message });
+        console.error('Trainer dashboard error:', error);
+        res.redirect('/auth/login');
+    }
+});
+
+// Partner Dashboard
+router.get('/partner', authorize('partner'), async (req, res) => {
+    try {
+        // Fetch user data from MongoDB
+        const userData = await User.findById(req.session.user.id);
+        
+        if (!userData) {
+            return res.redirect('/auth/login');
+        }
+
+        res.render('dashboard/partner', {
+            title: 'Partner Dashboard',
+            user: req.session.user,
+            userData: userData // Pass the MongoDB data to the view
+        });
+    } catch (error) {
+        console.error('Partner dashboard error:', error);
+        res.redirect('/auth/login');
     }
 });
 
 // Admin Dashboard
 router.get('/admin', authorize('admin'), async (req, res) => {
     try {
-        const stats = {
-            totalUsers: await User.countDocuments(),
-            totalClients: await User.countDocuments({ role: 'client' }),
-            totalTrainers: await User.countDocuments({ role: 'trainer' }),
-            totalClasses: await LiveClass.countDocuments()
-        };
-
-        const recentUsers = await User.find()
-            .sort({ createdAt: -1 })
-            .limit(10);
-
-        const upcomingClasses = await LiveClass.find({
-            startTime: { $gt: new Date() }
-        })
-        .populate('trainer')
-        .sort({ startTime: 1 })
-        .limit(5);
+        // Fetch user data from MongoDB
+        const userData = await User.findById(req.session.user.id);
+        
+        if (!userData) {
+            return res.redirect('/auth/login');
+        }
 
         res.render('dashboard/admin', {
             title: 'Admin Dashboard',
-            stats,
-            recentUsers,
-            upcomingClasses
+            user: req.session.user,
+            userData: userData // Pass the MongoDB data to the view
         });
     } catch (error) {
-        res.status(500).render('error', { error: error.message });
-    }
-});
-
-// Lab Dashboard
-router.get('/lab', authorize('lab'), async (req, res) => {
-    try {
-        const lab = await User.findById(req.user._id);
-        
-        // Add lab-specific functionality here
-        
-        res.render('dashboard/lab', {
-            title: 'Lab Dashboard',
-            lab
-        });
-    } catch (error) {
-        res.status(500).render('error', { error: error.message });
+        console.error('Admin dashboard error:', error);
+        res.redirect('/auth/login');
     }
 });
 

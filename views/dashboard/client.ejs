@@ -1,170 +1,143 @@
-<%- include('../layouts/main', { title: 'Client Dashboard' }) %>
-
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <!-- Left Sidebar -->
-    <div class="md:col-span-1">
-        <!-- Profile Card -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div class="flex items-center mb-4">
-                <img src="<%= user.profile.avatar || '/assets/default-avatar.png' %>" alt="Profile" class="w-16 h-16 rounded-full">
-                <div class="ml-4">
-                    <h2 class="text-xl font-semibold"><%= user.name %></h2>
-                    <p class="text-gray-600">Member since <%= new Date(user.createdAt).toLocaleDateString() %></p>
-                </div>
-            </div>
-            <div class="border-t pt-4">
-                <div class="flex justify-between mb-2">
-                    <span class="text-gray-600">Fitness Level:</span>
-                    <span class="font-semibold"><%= user.fitnessLevel %></span>
-                </div>
-                <div class="flex justify-between mb-2">
-                    <span class="text-gray-600">Goals:</span>
-                    <span class="font-semibold"><%= user.goals.join(', ') %></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-semibold mb-4">Quick Stats</h3>
-            <div class="space-y-4">
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Workouts Completed</span>
-                    <span class="font-semibold">24</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Classes Attended</span>
-                    <span class="font-semibold">12</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Active Streak</span>
-                    <span class="font-semibold">5 days</span>
-                </div>
-            </div>
-        </div>
+<%- contentFor('body') %>
+<div class="container mx-auto px-4 py-8">
+    <!-- Welcome Section -->
+    <div class="bg-gradient-to-r from-[#ede8d0] to-[#fffff0] rounded-lg shadow-lg p-6 mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome back, <%= user.name %>!</h1>
+        <p class="text-gray-600">Track your fitness journey and stay on top of your goals.</p>
     </div>
-
-    <!-- Main Content -->
-    <div class="md:col-span-2">
-        <!-- Today's Workout -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold">Today's Workout</h3>
-                <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Start Workout</button>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Quick Actions</h2>
+            <div class="space-y-3">
+                <a href="/classes" class="block px-4 py-2 bg-theme-green text-white rounded-md hover:opacity-90 transition-opacity">
+                    Join a Class
+                </a>
+                <a href="/trainers" class="block px-4 py-2 bg-theme-green text-white rounded-md hover:opacity-90 transition-opacity">
+                    Book a Trainer
+                </a>
+                <a href="/nutrition" class="block px-4 py-2 bg-theme-green text-white rounded-md hover:opacity-90 transition-opacity">
+                    View Nutrition Plans
+                </a>
             </div>
-            <% if (user.clientData.currentPlan) { %>
-                <div class="space-y-4">
-                    <% user.clientData.currentPlan.schedule.find(s => s.day.toLowerCase() === new Date().toLocaleDateString('en-US', { weekday: 'monday' }).toLowerCase())?.workouts.forEach(workout => { %>
-                        <div class="border rounded-lg p-4">
-                            <h4 class="font-semibold mb-2"><%= workout.name %></h4>
-                            <p class="text-gray-600 mb-2">Duration: <%= workout.duration %> minutes</p>
-                            <div class="grid grid-cols-2 gap-4">
-                                <% workout.exercises.forEach(exercise => { %>
-                                    <div class="text-sm">
-                                        <span class="font-medium"><%= exercise.name %></span>
-                                        <span class="text-gray-600">: <%= exercise.sets %> x <%= exercise.reps %></span>
-                                    </div>
-                                <% }) %>
-                            </div>
-                        </div>
-                    <% }) %>
-                </div>
-            <% } else { %>
-                <p class="text-gray-600">No workout planned for today. <a href="/workout-plans" class="text-green-600">Create a plan</a></p>
-            <% } %>
         </div>
 
-        <!-- Progress Tracking -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h3 class="text-lg font-semibold mb-4">Progress Tracking</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Weight Progress -->
-                <div>
-                    <canvas id="weightChart"></canvas>
+        <!-- Your Profile -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Your Profile</h2>
+            <div class="space-y-3">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Name:</span>
+                    <span class="font-medium"><%= userData.name %></span>
                 </div>
-                <!-- Body Measurements -->
-                <div>
-                    <canvas id="measurementsChart"></canvas>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Email:</span>
+                    <span class="font-medium"><%= userData.email %></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Fitness Level:</span>
+                    <span class="font-medium"><%= userData.fitnessLevel %></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Goals:</span>
+                    <span class="font-medium"><%= userData.goals.join(', ') %></span>
                 </div>
             </div>
         </div>
 
         <!-- Upcoming Classes -->
         <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold">Upcoming Classes</h3>
-                <a href="/classes" class="text-green-600 hover:text-green-700">View All</a>
-            </div>
-            <% if (upcomingClasses && upcomingClasses.length > 0) { %>
-                <div class="space-y-4">
-                    <% upcomingClasses.forEach(class => { %>
-                        <div class="flex justify-between items-center border-b pb-4">
-                            <div>
-                                <h4 class="font-medium"><%= class.title %></h4>
-                                <p class="text-sm text-gray-600">
-                                    with <%= class.trainer.name %> • 
-                                    <%= new Date(class.startTime).toLocaleString() %>
-                                </p>
-                            </div>
-                            <a href="/classes/<%= class._id %>" class="px-4 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200">Join</a>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Upcoming Classes</h2>
+            <% if (userData.clientData && userData.clientData.upcomingClasses && userData.clientData.upcomingClasses.length > 0) { %>
+                <div class="space-y-3">
+                    <% userData.clientData.upcomingClasses.forEach(function(classItem) { %>
+                        <div class="border-b border-gray-200 pb-3">
+                            <h3 class="font-medium text-gray-800"><%= classItem.name %></h3>
+                            <p class="text-sm text-gray-600"><%= new Date(classItem.date).toLocaleString() %></p>
                         </div>
-                    <% }) %>
+                    <% }); %>
                 </div>
             <% } else { %>
-                <p class="text-gray-600">No upcoming classes. <a href="/classes" class="text-green-600">Browse classes</a></p>
+                <p class="text-gray-600">No upcoming classes scheduled.</p>
+                <a href="/classes" class="mt-4 block px-4 py-2 bg-theme-green text-white rounded-md hover:opacity-90 transition-opacity">
+                    Browse Classes
+                </a>
             <% } %>
         </div>
+
+        <!-- Current Plan -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Current Plan</h2>
+            <% if (userData.clientData && userData.clientData.currentPlan) { %>
+                <div class="space-y-3">
+                    <h3 class="font-medium text-gray-800"><%= userData.clientData.currentPlan.name %></h3>
+                    <p class="text-gray-600"><%= userData.clientData.currentPlan.description %></p>
+                    <div class="mt-4">
+                        <a href="/plans/<%= userData.clientData.currentPlan._id %>" class="px-4 py-2 bg-theme-green text-white rounded-md hover:opacity-90 transition-opacity">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            <% } else { %>
+                <p class="text-gray-600">No active plan.</p>
+                <a href="/plans" class="mt-4 block px-4 py-2 bg-theme-green text-white rounded-md hover:opacity-90 transition-opacity">
+                    Browse Plans
+                </a>
+            <% } %>
+        </div>
+
+        <!-- Progress Tracking -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Progress Tracking</h2>
+            <% if (userData.profile) { %>
+                <div class="space-y-3">
+                    <% if (userData.profile.height) { %>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Height:</span>
+                            <span class="font-medium"><%= userData.profile.height %> cm</span>
+                        </div>
+                    <% } %>
+                    <% if (userData.profile.weight) { %>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Weight:</span>
+                            <span class="font-medium"><%= userData.profile.weight %> kg</span>
+                        </div>
+                    <% } %>
+                    <% if (userData.profile.age) { %>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Age:</span>
+                            <span class="font-medium"><%= userData.profile.age %></span>
+                        </div>
+                    <% } %>
+                </div>
+                <a href="/profile/edit" class="mt-4 block px-4 py-2 bg-theme-green text-white rounded-md hover:opacity-90 transition-opacity">
+                    Update Progress
+                </a>
+            <% } else { %>
+                <p class="text-gray-600">No progress data available.</p>
+                <a href="/profile/edit" class="mt-4 block px-4 py-2 bg-theme-green text-white rounded-md hover:opacity-90 transition-opacity">
+                    Add Progress Data
+                </a>
+            <% } %>
+        </div>
+
+        <!-- Health Information -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Health Information</h2>
+            <% if (userData.profile && userData.profile.medicalConditions && userData.profile.medicalConditions.length > 0) { %>
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Medical Conditions:</span>
+                        <span class="font-medium"><%= userData.profile.medicalConditions.join(', ') %></span>
+                    </div>
+                </div>
+            <% } else { %>
+                <p class="text-gray-600">No medical conditions recorded.</p>
+            <% } %>
+            <a href="/profile/health" class="mt-4 block px-4 py-2 bg-theme-green text-white rounded-md hover:opacity-90 transition-opacity">
+                Update Health Info
+            </a>
+        </div>
     </div>
-</div>
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Weight Progress Chart
-    const weightCtx = document.getElementById('weightChart').getContext('2d');
-    new Chart(weightCtx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [{
-                label: 'Weight (lbs)',
-                data: [180, 178, 175, 172, 170, 168],
-                borderColor: '#059669',
-                tension: 0.1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Weight Progress'
-                }
-            }
-        }
-    });
-
-    // Body Measurements Chart
-    const measurementsCtx = document.getElementById('measurementsChart').getContext('2d');
-    new Chart(measurementsCtx, {
-        type: 'radar',
-        data: {
-            labels: ['Chest', 'Waist', 'Hips', 'Arms', 'Legs'],
-            datasets: [{
-                label: 'Current',
-                data: [42, 32, 38, 14, 22],
-                borderColor: '#059669',
-                backgroundColor: 'rgba(5, 150, 105, 0.2)'
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Body Measurements (inches)'
-                }
-            }
-        }
-    });
-</script> 
+</div> 

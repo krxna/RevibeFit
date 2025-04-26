@@ -23,20 +23,17 @@ app.use('/Assets', express.static('Assets'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
-app.set('layout extractScripts', true);
-app.set('layout extractStyles', true);
-app.set('layout', './layouts/main');
+app.set('layout', 'layouts/main');
+app.set("layout extractScripts", true);
+app.set("layout extractStyles", true);
 
 // Session configuration
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    secret: 'revibefit-secret-key',
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/revibefit'
-    }),
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 // 24 hours
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }));
 
@@ -48,8 +45,7 @@ app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     res.locals.messages = {
         error: req.flash('error'),
-        success: req.flash('success'),
-        info: req.flash('info')
+        success: req.flash('success')
     };
     next();
 });

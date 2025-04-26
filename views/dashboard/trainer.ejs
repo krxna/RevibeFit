@@ -1,162 +1,167 @@
 <%- include('../layouts/main', { title: 'Trainer Dashboard' }) %>
 
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-    <!-- Left Sidebar -->
-    <div class="md:col-span-1">
-        <!-- Profile Card -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div class="flex items-center mb-4">
-                <img src="<%= trainer.profile.avatar || '/assets/default-avatar.png' %>" alt="Profile" class="w-16 h-16 rounded-full">
-                <div class="ml-4">
-                    <h2 class="text-xl font-semibold"><%= trainer.name %></h2>
-                    <div class="flex items-center">
-                        <span class="text-yellow-400">★</span>
-                        <span class="ml-1 text-gray-600"><%= trainer.trainerData.rating.toFixed(1) %></span>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t pt-4">
-                <div class="mb-2">
-                    <span class="text-gray-600">Specializations:</span>
-                    <div class="flex flex-wrap gap-2 mt-1">
-                        <% trainer.trainerData.specializations.forEach(spec => { %>
-                            <span class="px-2 py-1 bg-green-100 text-green-600 rounded-full text-sm"><%= spec %></span>
-                        <% }) %>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <span class="text-gray-600">Certifications:</span>
-                    <div class="flex flex-wrap gap-2 mt-1">
-                        <% trainer.trainerData.certifications.forEach(cert => { %>
-                            <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"><%= cert %></span>
-                        <% }) %>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container mx-auto px-4 py-8">
+    <!-- Flash Messages -->
+    <%- include('../partials/flash-messages') %>
 
-        <!-- Quick Stats -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-semibold mb-4">Quick Stats</h3>
-            <div class="space-y-4">
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Active Clients</span>
-                    <span class="font-semibold"><%= clients.length %></span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Classes This Week</span>
-                    <span class="font-semibold"><%= upcomingClasses.filter(c => {
-                        const classDate = new Date(c.startTime);
-                        const today = new Date();
-                        const weekFromNow = new Date();
-                        weekFromNow.setDate(today.getDate() + 7);
-                        return classDate >= today && classDate <= weekFromNow;
-                    }).length %></span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Total Earnings</span>
-                    <span class="font-semibold">$<%= trainer.trainerData.earnings.toFixed(2) %></span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="md:col-span-3">
-        <!-- Today's Schedule -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold">Today's Schedule</h3>
-                <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Create Class</button>
-            </div>
-            <div class="space-y-4">
-                <% const today = new Date();
-                const todayClasses = upcomingClasses.filter(c => {
-                    const classDate = new Date(c.startTime);
-                    return classDate.toDateString() === today.toDateString();
-                });
-                if (todayClasses.length > 0) { %>
-                    <% todayClasses.forEach(class => { %>
-                        <div class="border rounded-lg p-4">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <h4 class="font-semibold"><%= class.title %></h4>
-                                    <p class="text-gray-600">
-                                        <%= new Date(class.startTime).toLocaleTimeString() %> • 
-                                        <%= class.duration %> minutes • 
-                                        <%= class.participants.length %>/<%= class.maxParticipants %> participants
-                                    </p>
-                                </div>
-                                <a href="/classes/<%= class._id %>/host" class="px-4 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200">Host Class</a>
-                            </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- Left Sidebar -->
+        <div class="md:col-span-1">
+            <!-- Profile Card -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex items-center mb-4">
+                    <img src="<%= trainer.profile.avatar || '/assets/default-avatar.png' %>" alt="Profile" class="w-16 h-16 rounded-full">
+                    <div class="ml-4">
+                        <h2 class="text-xl font-semibold"><%= trainer.name %></h2>
+                        <div class="flex items-center">
+                            <span class="text-yellow-400">★</span>
+                            <span class="ml-1 text-gray-600"><%= trainer.trainerData.rating.toFixed(1) %></span>
                         </div>
-                    <% }) %>
-                <% } else { %>
-                    <p class="text-gray-600">No classes scheduled for today.</p>
-                <% } %>
+                    </div>
+                </div>
+                <div class="border-t pt-4">
+                    <div class="mb-2">
+                        <span class="text-gray-600">Specializations:</span>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            <% trainer.trainerData.specializations.forEach(spec => { %>
+                                <span class="px-2 py-1 bg-green-100 text-green-600 rounded-full text-sm"><%= spec %></span>
+                            <% }) %>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-gray-600">Certifications:</span>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            <% trainer.trainerData.certifications.forEach(cert => { %>
+                                <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"><%= cert %></span>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4">Quick Stats</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Active Clients</span>
+                        <span class="font-semibold"><%= clients.length %></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Classes This Week</span>
+                        <span class="font-semibold"><%= upcomingClasses.filter(c => {
+                            const classDate = new Date(c.startTime);
+                            const today = new Date();
+                            const weekFromNow = new Date();
+                            weekFromNow.setDate(today.getDate() + 7);
+                            return classDate >= today && classDate <= weekFromNow;
+                        }).length %></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Total Earnings</span>
+                        <span class="font-semibold">$<%= trainer.trainerData.earnings.toFixed(2) %></span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Client Management -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold">Client Management</h3>
-                <div class="flex space-x-2">
-                    <input type="text" placeholder="Search clients..." class="px-4 py-2 border rounded-lg">
-                    <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Add Client</button>
+        <!-- Main Content -->
+        <div class="md:col-span-3">
+            <!-- Today's Schedule -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">Today's Schedule</h3>
+                    <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Create Class</button>
                 </div>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full">
-                    <thead>
-                        <tr class="bg-gray-50">
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progress</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Session</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <% clients.forEach(client => { %>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <img src="<%= client.profile.avatar || '/assets/default-avatar.png' %>" alt="Client" class="w-8 h-8 rounded-full">
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900"><%= client.name %></div>
-                                            <div class="text-sm text-gray-500"><%= client.email %></div>
-                                        </div>
+                <div class="space-y-4">
+                    <% const today = new Date();
+                    const todayClasses = upcomingClasses.filter(c => {
+                        const classDate = new Date(c.startTime);
+                        return classDate.toDateString() === today.toDateString();
+                    });
+                    if (todayClasses.length > 0) { %>
+                        <% todayClasses.forEach(class => { %>
+                            <div class="border rounded-lg p-4">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h4 class="font-semibold"><%= class.title %></h4>
+                                        <p class="text-gray-600">
+                                            <%= new Date(class.startTime).toLocaleTimeString() %> • 
+                                            <%= class.duration %> minutes • 
+                                            <%= class.participants.length %>/<%= class.maxParticipants %> participants
+                                        </p>
                                     </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-green-600 h-2 rounded-full" style="width: 75%"></div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <%= new Date().toLocaleDateString() %>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                    <a href="/clients/<%= client._id %>" class="text-green-600 hover:text-green-700">View Details</a>
-                                </td>
-                            </tr>
+                                    <a href="/classes/<%= class._id %>/host" class="px-4 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200">Host Class</a>
+                                </div>
+                            </div>
                         <% }) %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Performance Analytics -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-semibold mb-4">Performance Analytics</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Client Satisfaction -->
-                <div>
-                    <canvas id="satisfactionChart"></canvas>
+                    <% } else { %>
+                        <p class="text-gray-600">No classes scheduled for today.</p>
+                    <% } %>
                 </div>
-                <!-- Class Attendance -->
-                <div>
-                    <canvas id="attendanceChart"></canvas>
+            </div>
+
+            <!-- Client Management -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">Client Management</h3>
+                    <div class="flex space-x-2">
+                        <input type="text" placeholder="Search clients..." class="px-4 py-2 border rounded-lg">
+                        <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Add Client</button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progress</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Session</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <% clients.forEach(client => { %>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="<%= client.profile.avatar || '/assets/default-avatar.png' %>" alt="Client" class="w-8 h-8 rounded-full">
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900"><%= client.name %></div>
+                                                <div class="text-sm text-gray-500"><%= client.email %></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="w-full bg-gray-200 rounded-full h-2">
+                                            <div class="bg-green-600 h-2 rounded-full" style="width: 75%"></div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <%= new Date().toLocaleDateString() %>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="/clients/<%= client._id %>" class="text-green-600 hover:text-green-700">View Details</a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Performance Analytics -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4">Performance Analytics</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Client Satisfaction -->
+                    <div>
+                        <canvas id="satisfactionChart"></canvas>
+                    </div>
+                    <!-- Class Attendance -->
+                    <div>
+                        <canvas id="attendanceChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>

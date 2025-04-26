@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { auth, authorize } = require('../middleware/auth');
+const { isAuthenticated, authorize } = require('../middleware/auth');
 const User = require('../models/User');
 const WorkoutPlan = require('../models/WorkoutPlan');
 const LiveClass = require('../models/LiveClass');
 
 // Middleware to protect all API routes
-router.use(auth);
+router.use(isAuthenticated);
 
 // Get user profile
 router.get('/profile', async (req, res) => {
     try {
-        const user = await User.findById(req.user._id)
+        const user = await User.findById(req.session.user.id)
             .select('-password');
         res.json(user);
     } catch (error) {
@@ -30,7 +30,7 @@ router.put('/profile', async (req, res) => {
             return res.status(400).json({ error: 'Invalid updates' });
         }
 
-        const user = await User.findById(req.user._id);
+        const user = await User.findById(req.session.user.id);
         updates.forEach(update => user[update] = req.body[update]);
         await user.save();
 
@@ -44,7 +44,7 @@ router.put('/profile', async (req, res) => {
 router.get('/workout-plans', async (req, res) => {
     try {
         const workoutPlans = await WorkoutPlan.find({
-            user: req.user._id
+            user: req.session.user.id
         }).sort({ createdAt: -1 });
         res.json(workoutPlans);
     } catch (error) {
@@ -56,7 +56,7 @@ router.post('/workout-plans', authorize('trainer'), async (req, res) => {
     try {
         const workoutPlan = new WorkoutPlan({
             ...req.body,
-            trainer: req.user._id
+            trainer: req.session.user.id
         });
         await workoutPlan.save();
         res.status(201).json(workoutPlan);
@@ -68,7 +68,7 @@ router.post('/workout-plans', authorize('trainer'), async (req, res) => {
 router.put('/workout-plans/:id', authorize('trainer'), async (req, res) => {
     try {
         const workoutPlan = await WorkoutPlan.findOneAndUpdate(
-            { _id: req.params.id, trainer: req.user._id },
+            { _id: req.params.id, trainer: req.session.user.id },
             req.body,
             { new: true, runValidators: true }
         );
@@ -109,7 +109,7 @@ router.post('/live-classes/:id/join', authorize('client'), async (req, res) => {
             return res.status(400).json({ error: 'Class is full' });
         }
 
-        liveClass.addParticipant(req.user._id);
+        liveClass.addParticipant(req.session.user.id);
         await liveClass.save();
 
         res.json(liveClass);
@@ -121,7 +121,7 @@ router.post('/live-classes/:id/join', authorize('client'), async (req, res) => {
 // Progress Tracking API
 router.get('/progress', authorize('client'), async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
+        const user = await User.findById(req.session.user.id);
         res.json(user.clientData.progress);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -130,7 +130,7 @@ router.get('/progress', authorize('client'), async (req, res) => {
 
 router.post('/progress', authorize('client'), async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
+        const user = await User.findById(req.session.user.id);
         user.clientData.progress.push(req.body);
         await user.save();
         res.status(201).json(user.clientData.progress);
@@ -149,7 +149,7 @@ router.post('/trainers/:id/reviews', authorize('client'), async (req, res) => {
         }
 
         trainer.trainerData.reviews.push({
-            user: req.user._id,
+            user: req.session.user.id,
             rating: req.body.rating,
             comment: req.body.comment,
             date: new Date()

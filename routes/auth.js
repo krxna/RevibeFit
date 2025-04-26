@@ -3,12 +3,29 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const { isAuthenticated } = require('../middleware/auth');
+const { isAuthenticated, authorize } = require('../middleware/auth');
 const crypto = require('crypto');
+const rateLimit = require('express-rate-limit');
+
+// Configure rate limiting
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 requests per windowMs
+    message: 'Too many login attempts, please try again after 15 minutes'
+});
 
 // Generate CSRF token
 const generateCSRFToken = () => {
     return crypto.randomBytes(32).toString('hex');
+};
+
+// Middleware to validate CSRF token
+const validateCSRFToken = (req, res, next) => {
+    if (!req.body._csrf || req.body._csrf !== req.session.csrfToken) {
+        req.flash('error', 'Invalid form submission');
+        return res.redirect(req.get('Referrer') || '/auth/login');
+    }
+    next();
 };
 
 // Render registration page
@@ -47,16 +64,26 @@ router.post('/register', async (req, res) => {
         }
 
         // Check if user already exists
-        let user = await User.findOne({ email });
-        if (user) {
-            req.flash('error', 'Email already registered');
+        const existingUser = await User.findOne({
+            $or: [
+                { email: email.toLowerCase() },
+                { name: name.trim() }
+            ]
+        });
+
+        if (existingUser) {
+            if (existingUser.email === email.toLowerCase()) {
+                req.flash('error', 'Email already registered');
+            } else {
+                req.flash('error', 'Username already taken');
+            }
             return res.redirect('/auth/register');
         }
 
         // Create base user object
         const userData = {
-            name,
-            email,
+            name: name.trim(),
+            email: email.toLowerCase(),
             password,
             role: role || 'client',
             fitnessLevel: fitnessLevel || 'beginner'
@@ -87,31 +114,43 @@ router.post('/register', async (req, res) => {
         }
 
         // Save user
-        user = await User.create(userData);
+        const user = await User.create(userData);
 
-        // Set success message and redirect to login
-        req.flash('success', 'Registration successful! Please log in with your credentials. <a href="/auth/login" class="font-medium text-green-600 hover:text-green-500">Click here to login</a>');
-        res.redirect('/auth/register');
+        if (user) {
+            req.flash('success', 'Registration successful! Please log in with your credentials.');
+            return res.redirect('/auth/login');
+        } else {
+            req.flash('error', 'Failed to create user account');
+            return res.redirect('/auth/register');
+        }
     } catch (error) {
         console.error('Registration error:', error);
+        
+        // Handle validation errors
         if (error.name === 'ValidationError') {
-            const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
+            // Extract the first validation error message
+            const errorMessage = Object.values(error.errors)[0].message;
             req.flash('error', errorMessage);
         } else {
-            req.flash('error', 'An error occurred during registration');
+            req.flash('error', 'An error occurred during registration. Please try again.');
         }
-        res.redirect('/auth/register');
+        
+        return res.redirect('/auth/register');
     }
 });
 
 // Render login page
 router.get('/login', (req, res) => {
+    const csrfToken = generateCSRFToken();
+    req.session.csrfToken = csrfToken;
+    
     res.render('auth/login', { 
         title: 'Login - RevibeFit',
         messages: { 
             error: req.flash('error'),
             success: req.flash('success')
         },
+        csrfToken: csrfToken,
         layout: false
     });
 });
@@ -121,21 +160,16 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Validate required fields
-        if (!email || !password) {
-            req.flash('error', 'Email and password are required');
-            return res.redirect('/auth/login');
-        }
-
         // Find user by email
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: email.toLowerCase() });
+        
         if (!user) {
             req.flash('error', 'Invalid email or password');
             return res.redirect('/auth/login');
         }
 
         // Check password
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             req.flash('error', 'Invalid email or password');
             return res.redirect('/auth/login');
@@ -150,19 +184,8 @@ router.post('/login', async (req, res) => {
         };
 
         // Redirect based on role
-        switch (user.role) {
-            case 'admin':
-                res.redirect('/dashboard/admin');
-                break;
-            case 'trainer':
-                res.redirect('/dashboard/trainer');
-                break;
-            case 'partner':
-                res.redirect('/dashboard/partner');
-                break;
-            default:
-                res.redirect('/dashboard/client');
-        }
+        const redirectPath = `/dashboard/${user.role}`;
+        res.redirect(redirectPath);
     } catch (error) {
         console.error('Login error:', error);
         req.flash('error', 'An error occurred during login');

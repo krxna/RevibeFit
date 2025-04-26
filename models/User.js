@@ -16,7 +16,19 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, 'Password is required']
+        required: [true, 'Password is required'],
+        validate: {
+            validator: function(password) {
+                // At least 8 characters long
+                // Contains at least one uppercase letter
+                // Contains at least one lowercase letter
+                // Contains at least one number
+                // Contains at least one special character
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                return passwordRegex.test(password);
+            },
+            message: 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+        }
     },
     role: {
         type: String,
@@ -175,11 +187,29 @@ const userSchema = new mongoose.Schema({
 
 // Password hashing middleware
 userSchema.pre('save', async function(next) {
+    // Only hash the password if it has been modified (or is new)
     if (!this.isModified('password')) return next();
     
     try {
-        const salt = await bcrypt.genSalt(10);
+        // Generate a salt with a cost factor of 12
+        const salt = await bcrypt.genSalt(12);
+        // Hash the password using the generated salt
         this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Add pre-update middleware to handle password hashing on updates
+userSchema.pre(['updateOne', 'findOneAndUpdate'], async function(next) {
+    const update = this.getUpdate();
+    // Only hash the password if it's being updated
+    if (!update.password) return next();
+    
+    try {
+        const salt = await bcrypt.genSalt(12);
+        update.password = await bcrypt.hash(update.password, salt);
         next();
     } catch (error) {
         next(error);
