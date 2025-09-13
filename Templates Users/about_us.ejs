@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>About RevibeFit | Your Fitness Journey Partner</title>
+    <link rel="stylesheet" href="/CSS/footer.css" />
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        padding-top: 75px;
+      }
+
+      .about-hero {
+        position: relative;
+        height: 400px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        padding: 0 5%;
+        background-color: #f7f7f7;
+      }
+
+      .about-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to right, 
+            rgba(217, 217, 182, 0.92) 0%,
+            rgba(217, 217, 182, 0.92) 40%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        z-index: 1;
+      }
+
+      .about-hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+
+      .about-hero-content {
+        max-width: 800px;
+        color: rgb(19, 13, 13);
+        z-index: 2;
+        position: relative;
+      }
+
+      .about-hero h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+      }
+
+      .about-hero p {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        color: #367348;
+      }
+
+      section {
+        padding: 4rem 5%;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .section-title h2 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+
+      .section-title p {
+        font-size: 1.2rem;
+        color: #666;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .mission-values {
+        background-color: #fff;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 2rem;
+      }
+
+      .mission, .values {
+        flex: 1;
+        min-width: 300px;
+      }
+
+      .mission h3, .values h3 {
+        font-size: 1.8rem;
+        color: #367348;
+        margin-bottom: 1rem;
+      }
+
+      .values ul {
+        padding-left: 1.5rem;
+      }
+
+      .values li {
+        margin-bottom: 0.8rem;
+        line-height: 1.6;
+      }
+
+      .platform-features {
+        background-color: #f7f7f7;
+      }
+
+      .features-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .feature-card {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-icon {
+        width: 64px;
+        height: 64px;
+        background-color: #367348;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .feature-icon svg {
+        width: 100%;
+        height: 100%;
+        fill: white;
+      }
+
+      .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #333;
+      }
+
+      .cta-section {
+        background-color: #367348;
+        color: white;
+        text-align: center;
+        padding: 5rem 2rem;
+      }
+
+      .cta-section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .cta-section p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .button {
+        padding: 1rem 2rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .button.white {
+        background-color: white;
+        color: #367348;
+      }
+
+      .button.white:hover {
+        background-color: #f0f0f0;
+      }
+
+      .button.outline {
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+      }
+
+      .button.outline:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .button svg {
+        margin-left: 8px;
+        width: 20px;
+        height: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .about-hero h1 {
+          font-size: 2.5rem;
+        }
+        
+        .mission-values {
+          flex-direction: column;
+        }
+        
+        .cta-section h2 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('nav_bar') %>
+
+    <section class="about-hero">
+      <img
+        src="/Fitness.jpeg"
+        alt="Gym workout scene"
+        class="about-hero-background"
+      />
+      <div class="about-hero-content">
+        <h1>About RevibeFit</h1>
+        <p>
+          Your journey to a healthier lifestyle starts here. Learn how our platform can transform your fitness experience.
+        </p>
+      </div>
+    </section>
+
+    <section class="platform-features">
+      <div class="section-title">
+        <h2>Our Platform</h2>
+        <p>RevibeFit is a comprehensive fitness platform designed to help you achieve your health and fitness goals</p>
+      </div>
+      <div class="features-container">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
+            </svg>
+          </div>
+          <h3>Expert Trainers</h3>
+          <p>Work with certified fitness professionals who specialize in different training methodologies. Our trainers provide personalized guidance to help you reach your goals efficiently and safely.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5zm2 4h10v2H7v-2zm0 4h7v2H7v-2z"/>
+            </svg>
+          </div>
+          <h3>Workouts Plan</h3>
+          <p>Diverse workout plans tailored to your fitness goals and preferences. Choose from strength training, cardio, yoga, and more.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+            </svg>
+          </div>
+          <h3>Video Classes</h3>
+          <p>Stream on-demand workout videos led by professional trainers. Choose from various fitness styles including HIIT, yoga, strength training, and cardio workouts for all fitness levels.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mission-values">
+      <div class="mission">
+        <h3>Our Mission</h3>
+        <p>At RevibeFit, our mission is to make fitness accessible, enjoyable, and effective for everyone. We believe in creating a supportive community where individuals can transform their lives through sustainable fitness practices and expert guidance.</p>
+        <p>We strive to provide the most comprehensive fitness platform that integrates workouts and health monitoring in one place, making it easier for you to achieve your wellness goals.</p>
+      </div>
+      <div class="values">
+        <h3>Our Values</h3>
+        <ul>
+          <li><strong>Accessibility:</strong> Making fitness available to everyone regardless of experience level</li>
+          <li><strong>Expertise:</strong> Providing certified professionals and evidence-based programs</li>
+          <li><strong>Community:</strong> Building a supportive environment for motivation and accountability</li>
+          <li><strong>Innovation:</strong> Continually improving our platform with cutting-edge fitness technology</li>
+          <li><strong>Personalization:</strong> Tailoring fitness journeys to individual needs and goals</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <h2>Ready to Transform Your Fitness Journey?</h2>
+      <p>Join thousands of members who have already achieved their fitness goals with RevibeFit</p>
+      <div class="cta-buttons">
+        <a href="trainer_signup.html" class="button white">
+          Sign Up Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a href="/class" class="button outline">
+          Explore Our Classes
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <div id="footer"></div>
+    </footer>
+    <script>
+      fetch("footer.html")
+        .then((response) => response.text())
+        .then((data) => (document.getElementById("footer").innerHTML = data));
+    </script>
+  </body>
+</html> 

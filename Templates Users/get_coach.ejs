@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find Your Coach - RevibeFit</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/CSS/footer.css" />
+    <link rel="stylesheet" href="/CSS/get_coach.css" />
+  </head>
+  <body>
+    <!-- <nav>
+      <div id="nav-placeholder"></div>
+    </nav> -->
+    <%- include('nav_bar') %>
+
+    <section class="hero-section">
+      <div class="container">
+        <p class="hero-subtitle">
+          3000+ lives transformed by RevibeFit Coaches
+        </p>
+        <h1 class="hero-title">Your Perfect Coach is Just a Few Steps Away</h1>
+        <p class="hero-description">
+          Find the ideal coach for your goals & interests
+        </p>
+      </div>
+    </section>
+
+    <section class="coaching-options-section">
+      <div class="container">
+        <div class="coaching-options">
+          <div class="coaching-card">
+            <img
+              src="/personal-trainer-3-youtube.jpg"
+              alt="Personal Training"
+              class="card-image"
+            />
+            <h3>Personal Training</h3>
+            <p>Live 1-on-1 sessions for personalized attention</p>
+            <a href="http://localhost:3001/viewcoach" class="view-coaches-btn"
+              >View Coaches</a
+            >
+          </div>
+
+          <div class="coaching-card">
+            <img
+              src="/yog.jpg"
+              alt="Specialized Training"
+              class="card-image"
+            />
+            <h3>Injury Rehabilitation</h3>
+            <p>Expert guidance for pain and <br />recovery from injuries</p>
+            <a href="http://localhost:3001/viewcoach" class="view-coaches-btn"
+              >View Coaches</a
+            >
+          </div>
+          <div class="coaching-card">
+            <img
+              src="/kids.jpg"
+              alt="Group Training"
+              class="card-image"
+            />
+            <h3>RevibeFit Kids</h3>
+            <p>Gift your Kids a Healthier and Happier <br />future</p>
+            <a href="http://localhost:3001/viewcoach" class="view-coaches-btn"
+              >View Coaches</a
+            >
+          </div>
+
+          <div class="coaching-card">
+            <img
+              src="/diabetes.jpg"
+              alt="Online Coaching"
+              class="card-image"
+            />
+            <h3>Diabetes Management</h3>
+            <p>
+              Manage diabetes & explore reversal under qualified & experienced
+              coaches
+            </p>
+            <a href="http://localhost:3001/viewcoach" class="view-coaches-btn">Know More</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="help-section">
+      <div class="container">
+        <h2 class="help-title">Not sure where to start?</h2>
+        <a href="contact_us.html" class="help-cta"
+          >Get in touch with a RevibeFit expert</a
+        >
+      </div>
+    </section>
+
+    <section class="benefits-section">
+      <div class="container">
+        <div class="benefits-grid">
+          <div class="benefit-item">
+            <div class="benefit-icon"></div>
+            <h3>Internationally Certified Coaches</h3>
+            <p>
+              Get expert help and guidance and achieve the results you desire
+            </p>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon"></div>
+            <h3>Customised plans for your goals</h3>
+            <p>
+              Forget the one-size-fits-all approach! Personalised diet and
+              workout plans that work for YOU!
+            </p>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon"></div>
+            <h3>30-day money-back guarantee</h3>
+            <p>
+              Try RevibeFit risk-free, with our 'no questions asked' refund
+              policy
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div id="footer"></div>
+    </footer>
+
+    <script>
+      $(function () {
+        $("#nav-placeholder").load("Nav_bar.html");
+      });
+
+      fetch("footer.html")
+        .then((response) => response.text())
+        .then((data) => (document.getElementById("footer").innerHTML = data));
+    </script>
+  </body>
+</html>

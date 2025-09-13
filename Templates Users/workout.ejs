@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitHealth</title>
+    <link rel="stylesheet" href="/CSS/footer.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      /* Reset and Base Styles */
+
+      .gradient-bar {
+        height: 4px;
+        background: linear-gradient(180deg, #ede8d0, #ede8d0);
+        position: fixed;
+        top: 71px;
+        left: 0;
+        right: 0;
+        z-index: 999;
+      }
+
+      .nav-group {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      /* Enhanced Card Styles */
+      .workout-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease forwards;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      .workout-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      .workout-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 16px 16px 0 0;
+        transition: all 0.3s ease;
+      }
+
+      .workout-card:hover img {
+        filter: brightness(1.05);
+      }
+
+      /* Enhanced Grid Layout */
+      .workout-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 2.5rem;
+        padding: 2rem 0;
+      }
+      .workout-card.hidden {
+        display: none !important;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      /* Featured Workout Section */
+      .featured-workout {
+        grid-column: 1 / -1;
+        margin-bottom: 2rem;
+      }
+
+      .featured-workout .workout-card {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 2rem;
+        padding: 1.5rem;
+      }
+
+      .featured-workout img {
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+
+      /* Enhanced Button Styles */
+      .category-button {
+        background: white;
+        color: #4a5568;
+        padding: 0.8rem 1.8rem;
+        border-radius: 25px;
+        border: 2px solid transparent;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .category-button:hover {
+        background: #3b845c;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .category-button.active {
+        background: #3b845c;
+        color: white;
+        box-shadow: 0 4px 12px rgba(59, 132, 92, 0.3);
+      }
+
+      /* Section Styles */
+      .section {
+        padding: 3rem 5%;
+        margin-bottom: 2rem;
+      }
+
+      .section-title {
+        font-size: 2.2rem;
+        color: #2d3748;
+        margin-bottom: 2rem;
+        position: relative;
+        padding-bottom: 1rem;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: #3b845c;
+        border-radius: 2px;
+      }
+
+      /* Button Groups */
+      .button-group {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+      }
+
+      /* Difficulty Badges */
+      .difficulty {
+        padding: 0.4rem 1rem;
+        font-weight: 500;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        border-radius: 20px;
+        display: inline-block;
+      }
+
+      .beginner {
+        background-color: #47b347;
+        color: black;
+      }
+
+      .intermediate {
+        background-color: #eec16d;
+        color: black;
+      }
+
+      .advanced {
+        background-color: #d35757;
+        color: black;
+      }
+
+      /* Card Content */
+      .card-content {
+        padding: 1.5rem;
+      }
+
+      .workout-title {
+        font-size: 1.3rem;
+        margin: 0.8rem 0;
+        color: #2d3748;
+      }
+
+      .instructor {
+        color: #718096;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+      }
+
+      /* Show More Button */
+      .show-more-btn {
+        background: #3b845c;
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 30px;
+        border: none;
+        font-weight: 500;
+        margin: 2rem auto;
+        display: block;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .show-more-btn:hover {
+        background: #2d6847;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 132, 92, 0.3);
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Utility Classes */
+      .hidden {
+        display: none !important;
+      }
+
+      /* Gradient Bar */
+      .gradient-bar {
+        height: 4px;
+        background: linear-gradient(180deg, #ede8d0, #ede8d0);
+        position: fixed;
+        top: 71px;
+        left: 0;
+        right: 0;
+        z-index: 999;
+      }
+
+      /* Sign In Button */
+      .sign-in {
+        background-color: #3f8554;
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+        margin-left: 2rem;
+      }
+
+      .sign-in:hover {
+        background-color: #12642b;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .workout-cards {
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 1.5rem;
+        }
+
+        .section {
+          padding: 2rem 3%;
+        }
+
+        .featured-workout .workout-card {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Add this to your existing style section */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fff;
+        margin: 5% auto;
+        padding: 2rem;
+        width: 90%;
+        max-width: 800px;
+        border-radius: 16px;
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .close-modal {
+        position: absolute;
+        right: 1.5rem;
+        top: 1rem;
+        font-size: 2rem;
+        cursor: pointer;
+      }
+
+      .workout-meta {
+        display: flex;
+        gap: 2rem;
+        margin: 1rem 0;
+      }
+
+      #modal-exercises {
+        margin-top: 2rem;
+      }
+
+      .exercise-item {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .exercise-item:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <nav>
+      <div id="nav-placeholder"></div>
+    </nav> -->
+    <%- include('nav_bar') %>
+    <div class="gradient-bar"></div>
+
+  
+    <!-- Yoga Section -->
+    <section class="section">
+      <h2 class="section-title">Yoga</h2>
+      <div class="button-group">
+        <button class="category-button" data-filter="all">All</button>
+        <button class="category-button" data-filter="meditation">
+          Daily Meditation
+        </button>
+        <button class="category-button" data-filter="body-parts">
+          Body Parts Focused
+        </button>
+        <button class="category-button" data-filter="mindfulness">
+          Mindfulness
+        </button>
+        <button class="category-button" data-filter="flexibility">
+          Flexibility
+        </button>
+      </div>
+
+      <div class="workout-cards">
+        <!-- Meditation Workouts -->
+        <div class="workout-card" data-category="meditation">
+          <img
+            src="/yogapics/Morning Meditation.webp"
+            alt="Meditation"
+          />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Morning Meditation</h3>
+            <div class="instructor">
+              Sarah Lee • <span class="workout-type">Meditation</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="meditation">
+          <img
+            src="/yogapics/Evening Relaxation.webp"
+            alt="Meditation"
+          />
+          <div class="card-content">
+            <span class="difficulty beginner">Beginner</span>
+            <h3 class="workout-title">Evening Relaxation</h3>
+            <div class="instructor">
+              Kristen McGee • <span class="workout-type">Meditation</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="meditation">
+          <img src="/yogapics/Deep Breathing.jpg" alt="Meditation" />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Deep Breathing</h3>
+            <div class="instructor">
+              Sarah Lee • <span class="workout-type">Meditation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Body Parts Focused Workouts -->
+        <div class="workout-card" data-category="body-parts">
+          <img
+            src="/yogapics/Hip Opening Flow.webp"
+            alt="Body Parts Focused"
+          />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Hip Opening Flow</h3>
+            <div class="instructor">
+              Kristen McGee • <span class="workout-type">Body Parts</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="body-parts">
+          <img
+            src="/yogapics/Shoulder Stretch.jpg"
+            alt="Body Parts Focused"
+          />
+          <div class="card-content">
+            <span class="difficulty beginner">Beginner</span>
+            <h3 class="workout-title">Shoulder Stretch</h3>
+            <div class="instructor">
+              Sarah Lee • <span class="workout-type">Body Parts</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="body-parts">
+          <img
+            src="/yogapics/Back Strengthening.jpg"
+            alt="Body Parts Focused"
+          />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Back Strengthening</h3>
+            <div class="instructor">
+              Kristen McGee • <span class="workout-type">Body Parts</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mindfulness Workouts -->
+        <div class="workout-card" data-category="mindfulness">
+          <img src="/yogapics/Mindful Breathing.jpg" alt="Mindfulness" />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Mindful Breathing</h3>
+            <div class="instructor">
+              Sarah Lee • <span class="workout-type">Mindfulness</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="mindfulness">
+          <img src="/yogapics/Guided Relaxation.jpg" alt="Mindfulness" />
+          <div class="card-content">
+            <span class="difficulty beginner">Beginner</span>
+            <h3 class="workout-title">Guided Relaxation</h3>
+            <div class="instructor">
+              Kristen McGee • <span class="workout-type">Mindfulness</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="mindfulness">
+          <img src="/yogapics/Stress Relief.jpg" alt="Mindfulness" />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Stress Relief</h3>
+            <div class="instructor">
+              Sarah Lee • <span class="workout-type">Mindfulness</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flexibility Workouts -->
+        <div class="workout-card" data-category="flexibility">
+          <img src="/yogapics/Flexibility Flow.jpg" alt="Flexibility" />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Flexibility Flow</h3>
+            <div class="instructor">
+              Kristen McGee • <span class="workout-type">Flexibility</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="flexibility">
+          <img
+            src="/yogapics/Beginner Stretching.webp"
+            alt="Flexibility"
+          />
+          <div class="card-content">
+            <span class="difficulty beginner">Beginner</span>
+            <h3 class="workout-title">Beginner Stretching</h3>
+            <div class="instructor">
+              Sarah Lee • <span class="workout-type">Flexibility</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="flexibility">
+          <img
+            src="/yogapics/Advanced Flexibility.jpg"
+            alt="Flexibility"
+          />
+          <div class="card-content">
+            <span class="difficulty advanced">Advanced</span>
+            <h3 class="workout-title">Advanced Flexibility</h3>
+            <div class="instructor">
+              Kristen McGee • <span class="workout-type">Flexibility</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Home Workouts Section -->
+    <section class="section">
+      <h2 class="section-title">Home Workouts</h2>
+      <div class="button-group">
+        <button class="category-button" data-filter="all">All</button>
+        <button class="category-button" data-filter="no-equipment">
+          No Equipment
+        </button>
+        <button class="category-button" data-filter="minimal-equipment">
+          Minimal Equipment
+        </button>
+        <button class="category-button" data-filter="hiit">HIIT</button>
+        <button class="category-button" data-filter="cardio">Cardio</button>
+        <button class="category-button" data-filter="strength">
+          Strength Training
+        </button>
+      </div>
+
+      <div class="workout-cards">
+        <!-- No Equipment Workouts -->
+        <div class="workout-card" data-category="no-equipment">
+          <img
+            src="/homepics/Bodyweight Workout.jpg"
+            alt="No Equipment Workout"
+          />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Bodyweight Workout</h3>
+            <div class="instructor">
+              Adrian Williams • <span class="workout-type">No Equipment</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="no-equipment">
+          <img
+            src="/homepics/Beginner Bodyweight.jpg"
+            alt="No Equipment Workout"
+          />
+          <div class="card-content">
+            <span class="difficulty beginner">Beginner</span>
+            <h3 class="workout-title">Beginner Bodyweight</h3>
+            <div class="instructor">
+              John Smith • <span class="workout-type">No Equipment</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="no-equipment">
+          <img
+            src="/homepics/Advanced Bodyweight.webp"
+            alt="No Equipment Workout"
+          />
+          <div class="card-content">
+            <span class="difficulty advanced">Advanced</span>
+            <h3 class="workout-title">Advanced Bodyweight</h3>
+            <div class="instructor">
+              Mike Johnson • <span class="workout-type">No Equipment</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Minimal Equipment Workouts -->
+        <div class="workout-card" data-category="minimal-equipment">
+          <img
+            src="/homepics/Dumbbell Routine.jpg"
+            alt="Minimal Equipment Workout"
+          />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Dumbbell Routine</h3>
+            <div class="instructor">
+              Adrian Williams •
+              <span class="workout-type">Minimal Equipment</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="minimal-equipment">
+          <img
+            src="/homepics/Resistance Band Workout.jpg"
+            alt="Minimal Equipment Workout"
+          />
+          <div class="card-content">
+            <span class="difficulty beginner">Beginner</span>
+            <h3 class="workout-title">Resistance Band Workout</h3>
+            <div class="instructor">
+              John Smith • <span class="workout-type">Minimal Equipment</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="minimal-equipment">
+          <img
+            src="/homepics/Kettlebell Flow.avif"
+            alt="Minimal Equipment Workout"
+          />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Kettlebell Flow</h3>
+            <div class="instructor">
+              Mike Johnson • <span class="workout-type">Minimal Equipment</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- HIIT Workouts -->
+        <div class="workout-card" data-category="hiit">
+          <img
+            src="/homepics/30 min HIIT Cardio.jpg"
+            alt="HIIT Workout"
+          />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">30 min HIIT Cardio</h3>
+            <div class="instructor">
+              Adrian Williams • <span class="workout-type">HIIT</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="hiit">
+          <img src="/homepics/Beginner HIIT.webp" alt="HIIT Workout" />
+          <div class="card-content">
+            <span class="difficulty beginner">Beginner</span>
+            <h3 class="workout-title">Beginner HIIT</h3>
+            <div class="instructor">
+              John Smith • <span class="workout-type">HIIT</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="hiit">
+          <img src="/homepics/Advanced HIIT.jpg" alt="HIIT Workout" />
+          <div class="card-content">
+            <span class="difficulty advanced">Advanced</span>
+            <h3 class="workout-title">Advanced HIIT</h3>
+            <div class="instructor">
+              Mike Johnson • <span class="workout-type">HIIT</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cardio Workouts -->
+        <div class="workout-card" data-category="cardio">
+          <img src="/homepics/Cardio Blast.webp" alt="Cardio Workout" />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Cardio Blast</h3>
+            <div class="instructor">
+              Adrian Williams • <span class="workout-type">Cardio</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="cardio">
+          <img
+            src="/homepics/Beginner Cardio.avif"
+            alt="Cardio Workout"
+          />
+          <div class="card-content">
+            <span class="difficulty beginner">Beginner</span>
+            <h3 class="workout-title">Beginner Cardio</h3>
+            <div class="instructor">
+              John Smith • <span class="workout-type">Cardio</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="cardio">
+          <img
+            src="/homepics/Advanced Cardio.webp"
+            alt="Cardio Workout"
+          />
+          <div class="card-content">
+            <span class="difficulty advanced">Advanced</span>
+            <h3 class="workout-title">Advanced Cardio</h3>
+            <div class="instructor">
+              Mike Johnson • <span class="workout-type">Cardio</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strength Training Workouts -->
+        <div class="workout-card" data-category="strength">
+          <img
+            src="/homepics/Full Body Strength.jpg"
+            alt="Strength Training"
+          />
+          <div class="card-content">
+            <span class="difficulty intermediate">Intermediate</span>
+            <h3 class="workout-title">Full Body Strength</h3>
+            <div class="instructor">
+              Adrian Williams • <span class="workout-type">Strength</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="strength">
+          <img
+            src="/homepics/Beginner Strength.avif"
+            alt="Strength Training"
+          />
+          <div class="card-content">
+            <span class="difficulty beginner">Beginner</span>
+            <h3 class="workout-title">Beginner Strength</h3>
+            <div class="instructor">
+              John Smith • <span class="workout-type">Strength</span>
+            </div>
+          </div>
+        </div>
+        <div class="workout-card" data-category="strength">
+          <img
+            src="/homepics/Advanced Strength.webp"
+            alt="Strength Training"
+          />
+          <div class="card-content">
+            <span class="difficulty advanced">Advanced</span>
+            <h3 class="workout-title">Advanced Strength</h3>
+            <div class="instructor">
+              Mike Johnson • <span class="workout-type">Strength</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div id="footer"></div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get all workout cards and category buttons
+        const workoutCards = document.querySelectorAll(".workout-card");
+        const categoryButtons = document.querySelectorAll(".category-button");
+
+        // Debug: Log all category buttons
+        console.log("All category buttons:");
+        categoryButtons.forEach((button) => {
+          console.log(
+            `Button: ${button.textContent}, Filter: ${button.getAttribute(
+              "data-filter"
+            )}`
+          );
+        });
+
+        // Initialize sections
+        const sections = document.querySelectorAll(".section");
+        sections.forEach((section, sectionIndex) => {
+          const buttons = section.querySelectorAll(".category-button");
+          const cards = section.querySelectorAll(".workout-card");
+
+          // Debug: Log section info
+          console.log(
+            `Section ${sectionIndex + 1}: ${
+              section.querySelector(".section-title").textContent
+            }`
+          );
+          console.log(`Total cards: ${cards.length}`);
+
+          // Debug: Log card categories in this section
+          const categories = {};
+          cards.forEach((card) => {
+            const category = card.getAttribute("data-category");
+            categories[category] = (categories[category] || 0) + 1;
+          });
+          console.log("Card categories in this section:", categories);
+
+          // Add active class to "All" button by default
+          const allButton = section.querySelector(
+            '.category-button[data-filter="all"]'
+          );
+          if (allButton) allButton.classList.add("active");
+
+          // Add click event to category buttons
+          buttons.forEach((button) => {
+            button.addEventListener("click", function () {
+              const filter = this.getAttribute("data-filter");
+
+              // Debug: Log filter click
+              console.log(
+                `Clicked filter: ${filter} in section: ${
+                  section.querySelector(".section-title").textContent
+                }`
+              );
+
+              // Remove active class from all buttons in this section
+              buttons.forEach((btn) => btn.classList.remove("active"));
+              // Add active class to clicked button
+              this.classList.add("active");
+
+              // Filter cards with smooth transition
+              filterCards(cards, filter, section);
+            });
+          });
+
+          // Create Show More/Less buttons for each section
+          const cardsContainer = section.querySelector(".workout-cards");
+
+          // Create only if there are enough cards to show/hide
+          if (cards.length > 6) {
+            // Initially hide cards beyond the first 6
+            for (let i = 6; i < cards.length; i++) {
+              cards[i].classList.add("hidden");
+            }
+
+            // Create Show More button
+            const showMoreBtn = document.createElement("button");
+            showMoreBtn.className = "show-more-btn";
+            showMoreBtn.textContent = "Show More";
+            section.appendChild(showMoreBtn);
+
+            // Event listener for Show More/Less
+            showMoreBtn.addEventListener("click", function () {
+              const hiddenCards = section.querySelectorAll(
+                ".workout-card.hidden"
+              );
+              const sectionRect = section.getBoundingClientRect();
+              const scrollPosition = window.scrollY + sectionRect.top - 100; // Store section position
+
+              // Debug: Log show more/less action
+              console.log(
+                `Show More/Less clicked in section: ${
+                  section.querySelector(".section-title").textContent
+                }`
+              );
+              console.log(`Hidden cards: ${hiddenCards.length}`);
+
+              if (hiddenCards.length > 0) {
+                // Show more cards
+                hiddenCards.forEach((card, index) => {
+                  // Only show cards that are currently displayed (not filtered out)
+                  if (card.style.display !== "none") {
+                    card.classList.remove("hidden");
+                    // Add animation with staggered delay
+                    card.style.opacity = "0";
+                    card.style.transform = "translateY(20px)";
+
+                    // Force reflow
+                    void card.offsetWidth;
+
+                    // Show with animation and staggered delay
+                    setTimeout(() => {
+                      card.style.opacity = "1";
+                      card.style.transform = "translateY(0)";
+                    }, index * 50); // Staggered animation
+                  }
+                });
+                this.textContent = "Show Less";
+              } else {
+                // Get the current active filter
+                const activeFilter = section
+                  .querySelector(".category-button.active")
+                  .getAttribute("data-filter");
+                const allCards = section.querySelectorAll(".workout-card");
+                let visibleCards = [];
+
+                // Collect cards that match the current filter
+                allCards.forEach((card) => {
+                  const category = card.getAttribute("data-category");
+                  if (activeFilter === "all" || category === activeFilter) {
+                    visibleCards.push(card);
+                  }
+                });
+
+                // Hide cards beyond the first 6
+                visibleCards.forEach((card, index) => {
+                  if (index >= 6) {
+                    card.style.opacity = "0";
+                    card.style.transform = "translateY(20px)";
+
+                    // Hide after transition completes
+                    setTimeout(() => {
+                      card.classList.add("hidden");
+                    }, 300);
+                  }
+                });
+
+                this.textContent = "Show More";
+
+                // Scroll back to the section position
+                window.scrollTo({
+                  top: scrollPosition,
+                  behavior: "smooth",
+                });
+              }
+            });
+          }
+        });
+
+        function filterCards(cards, filter, section) {
+          // Get the current active filter
+          const activeFilter = filter;
+
+          // Get the show more button for this section
+          const showMoreBtn = section.querySelector(".show-more-btn");
+
+          // Reset show more button text if it exists
+          if (showMoreBtn) {
+            showMoreBtn.textContent = "Show More";
+          }
+
+          // Debug: Log the filter being applied
+          console.log(
+            `Applying filter: ${filter} in section: ${
+              section.querySelector(".section-title").textContent
+            }`
+          );
+
+          // First pass: count and collect visible cards
+          let visibleCards = [];
+          cards.forEach((card) => {
+            const category = card.getAttribute("data-category");
+            // Debug: Log each card's category
+            console.log(
+              `Card category: "${category}", Filter: "${filter}", Match: ${
+                filter === "all" || category === filter
+              }`
+            );
+
+            if (filter === "all" || category === filter) {
+              visibleCards.push(card);
+            }
+          });
+
+          const visibleCount = visibleCards.length;
+          console.log(`Total visible cards: ${visibleCount}`);
+
+          // Reset all cards first
+          cards.forEach((card) => {
+            card.style.display = "none";
+            card.classList.add("hidden");
+          });
+
+          // Now show the visible cards with animation
+          visibleCards.forEach((card, index) => {
+            // Always make the card visible first
+            card.style.display = "block";
+
+            // Determine if it should be hidden based on index
+            if (showMoreBtn && index >= 6) {
+              card.classList.add("hidden");
+            } else {
+              card.classList.remove("hidden");
+              // Apply animation
+              card.style.opacity = "0";
+              card.style.transform = "translateY(20px)";
+
+              // Force reflow
+              void card.offsetWidth;
+
+              // Show with animation and staggered delay
+              setTimeout(() => {
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+              }, index * 50);
+            }
+          });
+
+          // Update show more button visibility
+          if (showMoreBtn) {
+            showMoreBtn.style.display = visibleCount > 6 ? "block" : "none";
+          }
+        }
+      });
+      $(function () {
+        $("#nav-placeholder").load("Nav_bar.html");
+      });
+
+      fetch("footer.html")
+        .then((response) => response.text())
+        .then((data) => (document.getElementById("footer").innerHTML = data));
+      
+      // Add this to your existing script section
+      document.addEventListener("DOMContentLoaded", function () {
+        // Your existing code...
+
+        // Get the modal elements
+        const modal = document.getElementById('workout-modal');
+        const closeModal = document.querySelector('.close-modal');
+        
+        // Load workout data
+        let workoutData;
+        fetch('/workout.json')
+          .then(response => response.json())
+          .then(data => {
+            workoutData = data;
+            setupCardClickHandlers();
+          });
+
+        function setupCardClickHandlers() {
+          document.querySelectorAll('.workout-card').forEach(card => {
+            card.addEventListener('click', function() {
+              const category = this.getAttribute('data-category');
+              const title = this.querySelector('.workout-title').textContent;
+              
+              // Find the workout in our JSON data
+              let workout;
+              for (const section in workoutData) {
+                for (const subsection in workoutData[section]) {
+                  if (workoutData[section][subsection][title]) {
+                    workout = workoutData[section][subsection][title];
+                    break;
+                  }
+                }
+              }
+
+              if (workout) {
+                // Populate modal with workout data
+                document.getElementById('modal-title').textContent = title;
+                document.getElementById('modal-difficulty').textContent = workout.difficulty;
+                document.getElementById('modal-duration').textContent = workout.duration;
+                document.getElementById('modal-trainer').textContent = `Trainer: ${workout.trainer}`;
+                document.getElementById('modal-description').textContent = workout.description;
+
+                // Populate exercises
+                const exercisesHtml = workout.exercises.map(exercise => `
+                  <div class="exercise-item">
+                    <h4>${exercise.name}</h4>
+                    <p>${exercise.duration}</p>
+                    <p>${exercise.description}</p>
+                  </div>
+                `).join('');
+                
+                document.getElementById('modal-exercises').innerHTML = exercisesHtml;
+
+                // Show modal
+                modal.style.display = 'block';
+              }
+            });
+          });
+        }
+
+        // Close modal when clicking X or outside
+        closeModal.addEventListener('click', () => {
+          modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            modal.style.display = 'none';
+          }
+        });
+      });
+    </script>
+    <div id="workout-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="workout-details">
+          <h2 id="modal-title"></h2>
+          <div class="workout-meta">
+            <span id="modal-difficulty"></span>
+            <span id="modal-duration"></span>
+            <span id="modal-trainer"></span>
+          </div>
+          <p id="modal-description"></p>
+          <div id="modal-exercises"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e8e8da;
+            padding: 1rem;
+        }
+
+        .container {
+            display: flex;
+            width: 800px;
+            height: auto;
+            min-height: 650px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-section {
+            width: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .signup-section {
+            width: 50%;
+            padding: 2rem;
+            background-color: white;
+            overflow-y: visible;
+        }
+
+        .signup-container {
+            height: 100%;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        p a {
+            color: #3f8554;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .toggle-btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+            background: #f5f5f5;
+            font-size: 14px;
+        }
+
+        .active {
+            background: #3f8554;
+            color: white;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .input-group input, 
+        .input-group textarea, 
+        .input-group select {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group textarea {
+            height: 60px;
+            resize: none;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
+            border-color: #3f8554;
+        }
+
+        .error {
+            color: red;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .signup-btn {
+            width: 100%;
+            background: #3f8554;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .signup-btn:hover {
+            background: #324b3b;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+                max-width: 400px;
+            }
+
+            .image-section,
+            .signup-section {
+                width: 100%;
+            }
+
+            .image-section {
+                height: 200px;
+            }
+
+            .signup-section {
+                padding: 1.5rem;
+            }
+        }
+        /* Add to your existing CSS */
+        .lab-field textarea {
+            height: 80px;
+            resize: none;
+        }
+
+        .lab-field input:focus,
+        .lab-field textarea:focus {
+            border-color: #3f8554;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-section">
+            <img src="/Treadmil.avif" alt="Escape Your Limits">
+        </div>
+        <div class="signup-section">
+            <div class="signup-container">
+                <h2>Create your account</h2>
+                <p>Already have an account? <a href="Sign_in.html">Sign in</a></p>
+                
+                <div class="toggle-group">
+                    <button class="toggle-btn active" id="fitnessBtn">Fitness Enthusiast</button>
+                    <button class="toggle-btn" id="trainerBtn">Trainer</button>
+                    <button class="toggle-btn" id="labBtn">Lab Partner</button>
+                </div>
+                
+                <div id="responseMessage" class="message"></div>
+
+                <form id="signupForm">
+                    <div class="input-group">
+                        <label for="fullname">Name</label>
+                        <input type="text" id="fullname" placeholder="Enter your name">
+                        <div class="error" id="fullnameError"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" placeholder="Enter your email">
+                        <div class="error" id="emailError"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" id="phone" placeholder="Enter your Phone number">
+                        <div class="error" id="phoneError"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Create a password">
+                        <div class="error" id="passwordError"></div>
+                    </div>
+
+                    <div class="input-group trainer-field" style="display: none;">
+                        <label for="specialization">Specialization</label>
+                        <input type="text" id="specialization" placeholder="e.g., Strength Training, Yoga, HIIT">
+                    </div>
+
+                    <div class="input-group trainer-field" style="display: none;">
+                        <label for="certifications">Certifications</label>
+                        <textarea id="certifications" placeholder="List your certifications"></textarea>
+                    </div>
+
+                    <div class="input-group fitness-field">
+                        <label for="goals">Fitness Goals</label>
+                        <textarea id="goals" placeholder="What are your fitness goals?"></textarea>
+                    </div>
+
+                    <div class="input-group fitness-field">
+                        <label for="level">Current Fitness Level</label>
+                        <select id="level">
+                            <option>Beginner</option>
+                            <option>Intermediate</option>
+                            <option>Advanced</option>
+                        </select>
+                    </div>
+                   
+                    <div class="input-group lab-field" style="display: none;">
+                        <label for="labName">Laboratory Name</label>
+                        <input type="text" id="labName" placeholder="Enter your laboratory name">
+                        <div class="error" id="labNameError"></div>
+                    </div>
+
+                    <div class="input-group lab-field" style="display: none;">
+                        <label for="labAddress">Laboratory Address</label>
+                        <textarea id="labAddress" placeholder="Enter complete laboratory address"></textarea>
+                        <div class="error" id="labAddressError"></div>
+                    </div>
+
+                    <div class="input-group lab-field" style="display: none;">
+                        <label for="licenseNumber">License Number</label>
+                        <input type="text" id="licenseNumber" placeholder="Enter laboratory license number">
+                        <div class="error" id="licenseError"></div>
+                    </div>
+
+                    <button type="submit" class="signup-btn">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API configuration
+        const API_URL = 'http://localhost:3001'; // Change this to match your server URL
+        
+        // Form validation patterns
+        const phonePattern = /^[0-9]{10}$/;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        // User type tracking - using the exact values expected by the backend
+        let userType = 'fitness'; // Default user type
+
+        // Update toggle handlers
+        document.getElementById('fitnessBtn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('trainerBtn').classList.remove('active');
+            document.getElementById('labBtn').classList.remove('active');
+            document.querySelectorAll('.trainer-field').forEach(field => field.style.display = 'none');
+            document.querySelectorAll('.lab-field').forEach(field => field.style.display = 'none');
+            document.querySelectorAll('.fitness-field').forEach(field => field.style.display = 'block');
+            userType = 'fitness';
+        });
+
+        document.getElementById('trainerBtn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('fitnessBtn').classList.remove('active');
+            document.getElementById('labBtn').classList.remove('active');
+            document.querySelectorAll('.trainer-field').forEach(field => field.style.display = 'block');
+            document.querySelectorAll('.lab-field').forEach(field => field.style.display = 'none');
+            document.querySelectorAll('.fitness-field').forEach(field => field.style.display = 'none');
+            userType = 'trainer';
+        });
+        
+        document.getElementById('labBtn').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('fitnessBtn').classList.remove('active');
+            document.getElementById('trainerBtn').classList.remove('active');
+            document.querySelectorAll('.trainer-field').forEach(field => field.style.display = 'none');
+            document.querySelectorAll('.fitness-field').forEach(field => field.style.display = 'none');
+            document.querySelectorAll('.lab-field').forEach(field => field.style.display = 'block');
+            userType = 'labpartner';
+        });
+
+        // Display response message
+        function showMessage(message, isError = false) {
+            const messageElement = document.getElementById('responseMessage');
+            messageElement.textContent = message;
+            messageElement.className = isError ? 'message error-message' : 'message success';
+            messageElement.style.display = 'block';
+            
+            // Auto-hide message after 5 seconds
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+                messageElement.className = 'message';
+            }, 5000);
+        }
+
+        // Form submission handling
+        document.getElementById('signupForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            // Clear previous error messages
+            document.getElementById('fullnameError').textContent = "";
+            document.getElementById('emailError').textContent = "";
+            document.getElementById('phoneError').textContent = "";
+            document.getElementById('passwordError').textContent = "";
+            
+            if (userType === 'labpartner') {
+                document.getElementById('labNameError').textContent = "";
+                document.getElementById('labAddressError').textContent = "";
+                document.getElementById('licenseError').textContent = "";
+            }
+            
+            // Form validation
+            let valid = true;
+            const fullname = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (fullname === '') {
+                document.getElementById('fullnameError').textContent = "Full name is required.";
+                valid = false;
+            }
+
+            if (!emailPattern.test(email)) {
+                document.getElementById('emailError').textContent = "Enter a valid email address.";
+                valid = false;
+            }
+
+            if (!phonePattern.test(phone)) {
+                document.getElementById('phoneError').textContent = "Enter a valid 10-digit phone number.";
+                valid = false;
+            }
+
+            if (password.length < 6) {
+                document.getElementById('passwordError').textContent = "Password must be at least 6 characters long.";
+                valid = false;
+            }
+            
+            // Lab partner specific validation
+            if (userType === 'labpartner') {
+                const labName = document.getElementById('labName').value.trim();
+                const labAddress = document.getElementById('labAddress').value.trim();
+                const licenseNumber = document.getElementById('licenseNumber').value.trim();
+                
+                if (labName === '') {
+                    document.getElementById('labNameError').textContent = "Laboratory name is required.";
+                    valid = false;
+                }
+                
+                if (labAddress === '') {
+                    document.getElementById('labAddressError').textContent = "Laboratory address is required.";
+                    valid = false;
+                }
+                
+                if (licenseNumber === '') {
+                    document.getElementById('licenseError').textContent = "License number is required.";
+                    valid = false;
+                } else if (licenseNumber.length < 5) {
+                    document.getElementById('licenseError').textContent = "License number is too short.";
+                    valid = false;
+                }
+            }
+
+            if (!valid) return;
+
+            try {
+                // Handle API request based on user type
+                let endpoint, requestData;
+                
+                if (userType === 'fitness') {
+                    endpoint = `${API_URL}/signup/user`;
+                    requestData = {
+                        fullname,
+                        email,
+                        phone,
+                        password,
+                        goals: document.getElementById('goals').value,
+                        level: document.getElementById('level').value
+                    };
+                } else if (userType === 'trainer') {
+                    endpoint = `${API_URL}/signup/trainer`;
+                    requestData = {
+                        fullname,
+                        email,
+                        phone,
+                        password,
+                        specialization: document.getElementById('specialization').value,
+                        certifications: document.getElementById('certifications').value
+                    };
+                }
+                    else{
+                        endpoint = `${API_URL}/signup/lab`;
+                        requestData = {
+                            fullname,
+                            email,
+                            phone,
+                            password,
+                            labName: document.getElementById('labName').value,
+                            labAddress: document.getElementById('labAddress').value,
+                            licenseNumber: document.getElementById('licenseNumber').value
+                        };
+                    }
+                
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Registration failed');
+                }
+
+                // Show success message
+                showMessage(userType === 'fitness' 
+                    ? 'You have been successfully registered as a Fitness Enthusiast' 
+                    : userType === 'trainer'
+                    ? 'You have been successfully registered as a Trainer'
+                    : 'You have been successfully registered as a Lab Partner');
+
+                // Store user data in in-memory database
+                if (window.UserDatabase) {
+                    window.UserDatabase.addUser({
+                        email,
+                        password,
+                        role: userType
+                    });
+                }
+
+                // Reset form
+                document.getElementById('signupForm').reset();
+                
+                // Redirect to sign in page after short delay
+                setTimeout(() => {
+                    window.location.href = 'Sign_in.html';
+                }, 2000);
+
+            } catch (error) {
+                showMessage(error.message, true);
+                console.error('Registration error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

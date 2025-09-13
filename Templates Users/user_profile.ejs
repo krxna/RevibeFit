@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Profile - RevibeFit</title>
+    <link rel="stylesheet" href="/CSS/footer.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      .profile-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+      }
+      
+      .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eaeaea;
+      }
+      
+      .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background-color: #3f8554;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        margin-right: 2rem;
+      }
+      
+      .profile-info h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+      
+      .profile-info p {
+        color: #666;
+        font-size: 1.1rem;
+      }
+      
+      .profile-tabs {
+        display: flex;
+        border-bottom: 1px solid #eaeaea;
+        margin-bottom: 2rem;
+      }
+      
+      .tab {
+        padding: 1rem 2rem;
+        cursor: pointer;
+        font-weight: 500;
+        color: #666;
+        position: relative;
+      }
+      
+      .tab.active {
+        color: #3f8554;
+      }
+      
+      .tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #3f8554;
+      }
+      
+      .tab-content {
+        display: none;
+      }
+      
+      .tab-content.active {
+        display: block;
+      }
+      
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      
+      .card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+      
+      .card-header {
+        padding: 1.5rem;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #eaeaea;
+      }
+      
+      .card-header h3 {
+        margin: 0;
+        color: #333;
+      }
+      
+      .card-body {
+        padding: 1.5rem;
+      }
+      
+      .stat-card {
+        padding: 1.5rem;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+      
+      .stat-card h3 {
+        margin-top: 0;
+        color: #333;
+      }
+      
+      .stat-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #3f8554;
+        margin: 0.5rem 0;
+      }
+      
+      .progress-bar {
+        height: 8px;
+        background-color: #e9ecef;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+      }
+      
+      .progress-bar-fill {
+        height: 100%;
+        background-color: #3f8554;
+        border-radius: 4px;
+      }
+      
+      .badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      
+      .badge {
+        background-color: #e9ecef;
+        color: #495057;
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+      }
+      
+      .activity-list {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .activity-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #eaeaea;
+      }
+      
+      .activity-item:last-child {
+        border-bottom: none;
+      }
+      
+      .activity-icon {
+        width: 40px;
+        height: 40px;
+        background-color: #e9ecef;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+      }
+      
+      .activity-details {
+        flex-grow: 1;
+      }
+      
+      .activity-title {
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+      }
+      
+      .activity-date {
+        font-size: 0.85rem;
+        color: #6c757d;
+      }
+      
+      .settings-form {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+      
+      .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+      
+      .form-control:focus {
+        border-color: #3f8554;
+        outline: none;
+      }
+      
+      .btn {
+        background-color: #3f8554;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+      }
+      
+      .btn:hover {
+        background-color: #12642b;
+      }
+    </style>
+    <style>
+      /* only the My Classes card styles */
+      .card-grid { 
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .card-grid .card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .card-grid .card-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .card-grid .card-body {
+        padding: 1rem;
+        flex: 1;
+      }
+      .card-grid .card-body p {
+        margin: 0.5rem 0;
+        font-size: 0.95rem;
+      }
+      .card-grid .card-body strong {
+        color: #333;
+      }
+      
+      /* Lab Report Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+      }
+      
+      .modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 2rem;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 600px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        position: relative;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      
+      .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #666;
+      }
+      
+      .close-modal:hover {
+        color: #333;
+      }
+      
+      .report-detail {
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eaeaea;
+      }
+      
+      .report-detail:last-child {
+        border-bottom: none;
+      }
+      
+      .report-detail h4 {
+        margin-bottom: 0.2rem;
+        color: #333;
+      }
+      
+      .report-detail p {
+        margin-top: 0.2rem;
+        color: #666;
+      }
+      
+      .download-btn {
+        background-color: #3f8554;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+        margin-top: 1rem;
+        display: inline-block;
+        text-decoration: none;
+      }
+      
+      .download-btn:hover {
+        background-color: #12642b;
+      }
+      
+      .report-btn {
+        background-color: #3f8554;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+        margin-top: 1rem;
+      }
+      
+      .report-btn:hover {
+        background-color: #12642b;
+      }
+      
+      .approved-labs-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 1rem;
+      }
+    </style>
+    
+  </head>
+  <body>
+    <%- include('nav_bar') %>
+
+    <div class="profile-container">
+      <div class="profile-header">
+        <div class="profile-avatar">👤</div>
+        <div class="profile-info">
+          <h1><%= user.name %></h1>
+          <p><%= user.email %></p>
+          <p>Member since <%= new Date(user.createdAt).toLocaleDateString() %></p>
+        </div>
+      </div>
+
+      <div class="profile-tabs">
+        <div class="tab active" data-tab="dashboard">Dashboard</div>
+        <div class="tab" data-tab="classes">My Classes</div>
+        <div class="tab" data-tab="approved-labs">Approved Labs</div>
+        <div class="tab" data-tab="settings">Settings</div>
+      </div>
+
+      <div class="tab-content active" id="dashboard">
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>Fitness Goals</h3>
+            </div>
+            <div class="card-body">
+              <p><strong>Current Goal:</strong> <%= user.fitnessProfile?.goals || 'Not set' %></p>
+              <p><strong>Fitness Level:</strong> <%= user.fitnessProfile?.fitness_level || 'Not set' %></p>
+           
+              
+             
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Upcoming Classes</h3>
+            </div>
+            <div class="card-body">
+              <div class="activity-list" id="upcoming-classes-list">
+                <!-- Classes will be loaded here dynamically -->
+                <div class="loading-indicator">Loading upcoming classes...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== My Classes ===== -->
+<div class="tab-content" id="classes">
+  <h2>My Classes</h2>
+  <div class="card-grid" id="myClassesGrid">
+    <!-- cards injected here -->
+  </div>
+</div>
+     
+<!-- ===== Approved Labs with Reports ===== -->
+<div class="tab-content" id="approved-labs">
+  <h2>Approved Labs</h2>
+  <div class="approved-labs-list">
+    <!-- cards will be injected here -->
+  </div>
+</div>
+
+<!-- Lab Report Modal -->
+<div id="reportModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2>Lab Report</h2>
+    <div id="reportContent">
+      <!-- Report details will be inserted here -->
+    </div>
+  </div>
+</div>
+
+      <div class="tab-content" id="settings">
+        <h2>Account Settings</h2>
+        <div class="settings-form">
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" class="form-control" value="<%= user.name %>">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" value="<%= user.email %>">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" class="form-control" value="<%= user.phone %>">
+          </div>
+          <div class="form-group">
+            <label for="goals">Fitness Goals</label>
+            <select id="goals" class="form-control">
+              <option value="weight_loss" <%= user.fitnessProfile?.goals === 'weight_loss' ? 'selected' : '' %>>Weight Loss</option>
+              <option value="muscle_gain" <%= user.fitnessProfile?.goals === 'muscle_gain' ? 'selected' : '' %>>Muscle Gain</option>
+              <option value="endurance" <%= user.fitnessProfile?.goals === 'endurance' ? 'selected' : '' %>>Endurance</option>
+              <option value="flexibility" <%= user.fitnessProfile?.goals === 'flexibility' ? 'selected' : '' %>>Flexibility</option>
+              <option value="general_fitness" <%= user.fitnessProfile?.goals === 'general_fitness' ? 'selected' : '' %>>General Fitness</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fitness_level">Fitness Level</label>
+            <select id="fitness_level" class="form-control">
+              <option value="beginner" <%= user.fitnessProfile?.fitness_level === 'beginner' ? 'selected' : '' %>>Beginner</option>
+              <option value="intermediate" <%= user.fitnessProfile?.fitness_level === 'intermediate' ? 'selected' : '' %>>Intermediate</option>
+              <option value="advanced" <%= user.fitnessProfile?.fitness_level === 'advanced' ? 'selected' : '' %>>Advanced</option>
+            </select>
+          </div>
+          <button type="button" class="btn">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div id="footer"></div>
+    </footer>
+
+    <script>
+      // Tab functionality
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Remove active class from all tabs and content
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          
+          // Add active class to clicked tab
+          tab.classList.add('active');
+          
+          // Show corresponding content
+          const tabId = tab.getAttribute('data-tab');
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+      
+      // Load footer
+      fetch("footer.html")
+        .then((response) => response.text())
+        .then((data) => (document.getElementById("footer").innerHTML = data));
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', loadMyClasses);
+    
+      async function loadMyClasses() {
+        const container = document.getElementById('myClassesGrid');
+        try {
+          const res = await fetch('http://localhost:3001/api/classes/enrolled', {
+            credentials: 'include'
+          });
+          if (!res.ok) throw '';
+          const classes = await res.json();
+          container.innerHTML = '';
+          if (!classes.length) {
+            container.innerHTML = '<p>You have no enrolled classes.</p>';
+            return;
+          }
+          classes.forEach(c => {
+            // format date
+            const dt = new Date(c.scheduledAt);
+            const dateStr = dt.toLocaleDateString('en-US', {
+              weekday:'long', year:'numeric', month:'short', day:'numeric'
+            });
+    
+            // build card
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+              <div class="card-body">
+                <h3>${c.classType}</h3>
+                <p><strong>Instructor:</strong> ${c.createdBy.name}</p>
+                <p><strong>Date:</strong> ${dateStr}</p>
+                <p><strong>Duration:</strong> ${c.duration}</p>
+                <p><strong>Description:</strong> ${c.description}</p>
+              </div>`;
+            container.appendChild(card);
+          });
+        } catch (err) {
+          console.error(err);
+          container.innerHTML = '<p>Error loading your classes.</p>';
+        }
+      }
+    </script>
+    <script>
+      // Modal functionality
+      const modal = document.getElementById('reportModal');
+      const closeModal = document.querySelector('.close-modal');
+      
+      closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+      
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+      
+      async function showReport(labId) {
+        try {
+          const response = await fetch(`http://localhost:3001/patient`, {
+            credentials: 'include'
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          
+          const reports = await response.json();
+          const report = reports.find(r => r.labPartner.toString() === labId);
+          const reportContent = document.getElementById('reportContent');
+          
+          if (report) {
+            // Format date
+            const testDate = new Date(report.testDate).toLocaleDateString('en-US', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+            
+            // Create report details HTML
+            reportContent.innerHTML = `
+              <div class="report-detail">
+                <h4>Test Type</h4>
+                <p>${report.testType}</p>
+              </div>
+              <div class="report-detail">
+                <h4>Test Date</h4>
+                <p>${testDate}</p>
+              </div>
+              <div class="report-detail">
+                <h4>Patient Email</h4>
+                <p>${report.patientEmail}</p>
+              </div>
+<a href="http://localhost:3001/${report.reportPath}" 
+   class="download-btn" 
+   target="_blank" 
+   rel="noopener noreferrer">
+   View Report
+</a>
+            `;
+          } else {
+            reportContent.innerHTML = '<p>No report available for this lab yet.</p>';
+          }
+          
+          modal.style.display = 'block';
+        } catch (error) {
+          console.error('Error fetching report:', error);
+          document.getElementById('reportContent').innerHTML = 
+            '<p>Error loading lab report. Please try again later.</p>';
+          modal.style.display = 'block';
+        }
+      }
+    </script>
+    <script>
+      (async () => {
+        try {
+          const res = await fetch('http://localhost:3001/my-labs', {
+            credentials: 'include'
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const labs = await res.json();
+          const container = document.querySelector('#approved-labs .approved-labs-list');
+          if (labs.length === 0) {
+            container.textContent = 'No approved labs yet.';
+            return;
+          }
+          labs.forEach(lab => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+              <div class="card-header">
+                <h3>${lab.labProfile?.lab_name || lab.name}</h3>
+              </div>
+              <div class="card-body">
+                <p><strong>Partner Name:</strong> ${lab.name}</p>
+                <p><strong>Email:</strong> ${lab.email}</p>
+                <p><strong>Phone:</strong> ${lab.phone}</p>
+                <button class="report-btn" onclick="showReport('${lab._id}')">View Report</button>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } catch (err) {
+          console.error('Failed to load approved labs:', err);
+          document.querySelector('#approved-labs .approved-labs-list').textContent =
+            'Error loading approved labs.';
+        }
+      })();
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', loadUpcomingClasses);
+
+      async function loadUpcomingClasses() {
+        const container = document.getElementById('upcoming-classes-list');
+        try {
+          // Fetch enrolled classes
+          const res = await fetch('http://localhost:3001/api/classes/enrolled', {
+            credentials: 'include'
+          });
+          
+          if (!res.ok) throw new Error('Failed to fetch classes');
+          const classes = await res.json();
+          
+          // Filter and sort upcoming classes
+          const now = new Date();
+          const upcomingClasses = classes
+            .filter(cls => new Date(cls.scheduledAt) > now)  // Only get future classes
+            .sort((a, b) => new Date(a.scheduledAt) - new Date(b.scheduledAt))  // Sort by date ascending
+            .slice(0, 5);  // Show only next 5 upcoming classes
+          
+          // Update UI
+          container.innerHTML = '';
+          
+          if (upcomingClasses.length === 0) {
+            container.innerHTML = '<p class="no-classes">No upcoming classes scheduled</p>';
+            return;
+          }
+          
+          upcomingClasses.forEach(cls => {
+            const date = new Date(cls.scheduledAt);
+            const timeStr = date.toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            const dateStr = date.toLocaleDateString('en-US', {
+              weekday: 'long',
+              month: 'short',
+              day: 'numeric'
+            });
+            
+            // Calculate how soon the class is
+            const daysUntilClass = Math.ceil((date - now) / (1000 * 60 * 60 * 24));
+            let timeUntil;
+            if (daysUntilClass === 0) {
+              timeUntil = 'Today';
+            } else if (daysUntilClass === 1) {
+              timeUntil = 'Tomorrow';
+            } else {
+              timeUntil = `In ${daysUntilClass} days`;
+            }
+            
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
+            activityItem.innerHTML = `
+              <div class="activity-icon ${daysUntilClass <= 1 ? 'upcoming' : ''}">
+                ${getClassIcon(cls.classType)}
+              </div>
+              <div class="activity-details">
+                <div class="activity-title">${cls.classType}</div>
+                <div class="activity-date">${dateStr}, ${timeStr}</div>
+                <div class="activity-trainer">with ${cls.createdBy.name}</div>
+                <div class="time-until">${timeUntil}</div>
+              </div>
+            `;
+            container.appendChild(activityItem);
+          });
+          
+        } catch (err) {
+          console.error('Error loading upcoming classes:', err);
+          container.innerHTML = '<p class="error-message">Failed to load upcoming classes</p>';
+        }
+      }
+
+      // Helper function to get appropriate emoji for class type
+      function getClassIcon(classType) {
+        const icons = {
+          'HIIT': '🏋️',
+          'Yoga': '🧘',
+          'Strength': '💪',
+          'Cardio': '🏃',
+          'Meditation': '🧘‍♂️',
+          'Pilates': '🤸',
+          'Boxing': '🥊',
+          'Cycling': '🚴'
+        };
+        return icons[classType] || '📅';
+      }
+    </script>
+  </body>
+</html>

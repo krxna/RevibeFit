@@ -1,0 +1,376 @@
+{
+    
+    "yoga": {
+        "meditation": {
+            "Morning Meditation": {
+                "difficulty": "Intermediate",
+                "duration": "15 min",
+                "trainer": "Sarah Lee",
+                "description": "A peaceful morning meditation to start your day with clarity and focus.",
+                "exercises": [
+                    { "name": "Breath Awareness", "duration": "5 min", "description": "Focus on natural breathing pattern" },
+                    { "name": "Body Scan", "duration": "5 min", "description": "Systematically relax each body part" },
+                    { "name": "Mindful Sitting", "duration": "5 min", "description": "Maintain awareness of present moment" },
+                    { "name": "Gratitude Practice", "duration": "5 min", "description": "Reflect on things you're grateful for" }
+                ],
+                "image": "./assets/yogapics/Morning Meditation.webp"
+            },
+            "Evening Relaxation": {
+                "difficulty": "Beginner",
+                "duration": "12 min",
+                "trainer": "Kristen McGee",
+                "description": "A calming meditation to unwind and relax before bed.",
+                "exercises": [
+                    { "name": "Progressive Relaxation", "duration": "4 min", "description": "Tense and relax each muscle group" },
+                    { "name": "Guided Visualization", "duration": "4 min", "description": "Imagine peaceful scene" },
+                    { "name": "Deep Breathing", "duration": "4 min", "description": "Slow, deep breaths" },
+                    { "name": "Body Awareness", "duration": "4 min", "description": "Notice sensations without judgment" }
+                ],
+                "image": "./assets/yogapics/Evening Relaxation.webp"
+            },
+            "Deep Breathing": {
+                "difficulty": "Intermediate",
+                "duration": "10 min",
+                "trainer": "Sarah Lee",
+                "description": "Focus on breath control and mindfulness.",
+                "exercises": [
+                    { "name": "Box Breathing", "duration": "3 min", "description": "Inhale 4s, hold 4s, exhale 4s, hold 4s" },
+                    { "name": "Alternate Nostril", "duration": "3 min", "description": "Alternate breathing through each nostril" },
+                    { "name": "Diaphragmatic Breathing", "duration": "4 min", "description": "Focus on belly breathing" },
+                    { "name": "Ocean Breath", "duration": "3 min", "description": "Ujjayi breath with slight constriction in throat" }
+                ],
+                "image": "./assets/yogapics/Deep Breathing.jpg"
+            }
+        },
+        "body-parts": {
+            "Hip Opening Flow": {
+                "difficulty": "Intermediate",
+                "duration": "15 min",
+                "trainer": "Kristen McGee",
+                "description": "A sequence of poses to increase hip flexibility and mobility.",
+                "exercises": [
+                    { "name": "Pigeon Pose", "duration": "2 min each side", "description": "Deep hip stretch" },
+                    { "name": "Butterfly Pose", "duration": "2 min", "description": "Sit with soles together" },
+                    { "name": "Lizard Pose", "duration": "2 min each side", "description": "Deep lunge with hip stretch" },
+                    { "name": "Frog Pose", "duration": "2 min", "description": "Deep groin and hip opener" }
+                ],
+                "image": "./assets/yogapics/Hip Opening Flow.webp"
+            },
+            "Shoulder Stretch": {
+                "difficulty": "Beginner",
+                "duration": "12 min",
+                "trainer": "Sarah Lee",
+                "description": "Gentle stretches to improve shoulder mobility.",
+                "exercises": [
+                    { "name": "Thread the Needle", "duration": "2 min each side", "description": "Arm under body stretch" },
+                    { "name": "Eagle Arms", "duration": "2 min", "description": "Wrap arms in front" },
+                    { "name": "Cow Face Arms", "duration": "2 min each side", "description": "One arm up, one down" },
+                    { "name": "Reverse Prayer Pose", "duration": "2 min", "description": "Hands behind back in prayer position" }
+                ],
+                "image": "./assets/yogapics/Shoulder Stretch.jpg"
+            },
+            "Back Strengthening": {
+                "difficulty": "Intermediate",
+                "duration": "15 min",
+                "trainer": "Kristen McGee",
+                "description": "Poses to strengthen and support the back.",
+                "exercises": [
+                    { "name": "Locust Pose", "duration": "2 min", "description": "Lie on belly, lift chest and legs" },
+                    { "name": "Bridge Pose", "duration": "2 min", "description": "Lift hips off ground" },
+                    { "name": "Cat-Cow", "duration": "3 min", "description": "Alternate arching and rounding back" },
+                    { "name": "Bow Pose", "duration": "2 min", "description": "Lie on belly, grab ankles and lift" }
+                ],
+                "image": "./assets/yogapics/Back Strengthening.jpg"
+            }
+        },
+        "mindfulness": {
+            "Mindful Breathing": {
+                "difficulty": "Intermediate",
+                "duration": "12 min",
+                "trainer": "Sarah Lee",
+                "description": "Focus on breath and present moment awareness.",
+                "exercises": [
+                    { "name": "Counting Breaths", "duration": "4 min", "description": "Count each inhale and exhale" },
+                    { "name": "Body Awareness", "duration": "4 min", "description": "Notice sensations in body" },
+                    { "name": "Thought Observation", "duration": "4 min", "description": "Observe thoughts without judgment" },
+                    { "name": "Loving-kindness Meditation", "duration": "4 min", "description": "Send positive wishes to self and others" }
+                ],
+                "image": "./assets/yogapics/Mindful Breathing.jpg"
+            },
+            "Guided Relaxation": {
+                "difficulty": "Beginner",
+                "duration": "10 min",
+                "trainer": "Kristen McGee",
+                "description": "A guided journey to deep relaxation.",
+                "exercises": [
+                    { "name": "Body Scan", "duration": "3 min", "description": "Systematically relax each body part" },
+                    { "name": "Visualization", "duration": "4 min", "description": "Imagine peaceful scene" },
+                    { "name": "Affirmations", "duration": "3 min", "description": "Repeat positive statements" },
+                    { "name": "Progressive Muscle Relaxation", "duration": "4 min", "description": "Tense and release each muscle group" }
+                ],
+                "image": "./assets/yogapics/Guided Relaxation.jpg"
+            },
+            "Stress Relief": {
+                "difficulty": "Intermediate",
+                "duration": "15 min",
+                "trainer": "Sarah Lee",
+                "description": "Techniques to reduce stress and anxiety.",
+                "exercises": [
+                    { "name": "Progressive Relaxation", "duration": "5 min", "description": "Tense and relax muscle groups" },
+                    { "name": "Mindful Walking", "duration": "5 min", "description": "Focus on each step" },
+                    { "name": "Gratitude Practice", "duration": "5 min", "description": "Focus on things to be grateful for" },
+                    { "name": "4-7-8 Breathing", "duration": "5 min", "description": "Inhale 4s, hold 7s, exhale 8s" }
+                ],
+                "image": "./assets/yogapics/Stress Relief.jpg"
+            }
+        },
+        "flexibility": {
+            "Flexibility Flow": {
+                "difficulty": "Intermediate",
+                "duration": "15 min",
+                "trainer": "Kristen McGee",
+                "description": "A sequence to improve overall flexibility.",
+                "exercises": [
+                    { "name": "Sun Salutations", "duration": "5 min", "description": "Flow through basic poses" },
+                    { "name": "Forward Folds", "duration": "3 min", "description": "Stretch hamstrings" },
+                    { "name": "Twists", "duration": "4 min", "description": "Rotate spine" },
+                    { "name": "Downward Dog", "duration": "3 min", "description": "Inverted V pose stretching hamstrings and shoulders" }
+                ],
+                "image": "./assets/yogapics/Flexibility Flow.jpg"
+            },
+            "Beginner Stretching": {
+                "difficulty": "Beginner",
+                "duration": "12 min",
+                "trainer": "Sarah Lee",
+                "description": "Gentle stretches for beginners.",
+                "exercises": [
+                    { "name": "Neck Rolls", "duration": "2 min", "description": "Gently roll head" },
+                    { "name": "Shoulder Rolls", "duration": "2 min", "description": "Roll shoulders" },
+                    { "name": "Seated Forward Fold", "duration": "3 min", "description": "Stretch hamstrings" },
+                    { "name": "Child's Pose", "duration": "3 min", "description": "Kneel with arms extended forward" }
+                ],
+                "image": "./assets/yogapics/Beginner Stretching.webp"
+            },
+            "Advanced Flexibility": {
+                "difficulty": "Advanced",
+                "duration": "20 min",
+                "trainer": "Kristen McGee",
+                "description": "Advanced poses to increase flexibility.",
+                "exercises": [
+                    { "name": "Splits Prep", "duration": "5 min", "description": "Prepare for splits" },
+                    { "name": "Backbends", "duration": "5 min", "description": "Arch back" },
+                    { "name": "Inversions", "duration": "5 min", "description": "Practice headstand or handstand" },
+                    { "name": "King Pigeon Pose", "duration": "5 min", "description": "Deep backbend with one leg extended back" }
+                ],
+                "image": "./assets/yogapics/Advanced Flexibility.jpg"
+            }
+        }
+    },
+    "home_workouts": {
+        "no-equipment": {
+            "Bodyweight Workout": {
+                "difficulty": "Intermediate",
+                "duration": "20 min",
+                "trainer": "Adrian Williams",
+                "description": "A full-body workout using only your body weight.",
+                "exercises": [
+                    { "name": "Push-ups", "duration": "3 sets x 15 reps", "description": "Start in plank, lower body to ground" },
+                    { "name": "Squats", "duration": "3 sets x 20 reps", "description": "Lower body until thighs parallel to ground" },
+                    { "name": "Plank", "duration": "3 sets x 30-60 seconds", "description": "Hold push-up position on forearms" },
+                    { "name": "Burpees", "duration": "3 sets x 10 reps", "description": "Full body explosive movement" }
+                ],
+                "image": "./assets/homepics/Bodyweight Workout.jpg"
+            },
+            "Beginner Bodyweight": {
+                "difficulty": "Beginner",
+                "duration": "15 min",
+                "trainer": "John Smith",
+                "description": "A gentle introduction to bodyweight exercises.",
+                "exercises": [
+                    { "name": "Wall Push-ups", "duration": "3 sets x 10 reps", "description": "Stand facing wall, perform push-ups" },
+                    { "name": "Chair Squats", "duration": "3 sets x 12 reps", "description": "Sit and stand from chair" },
+                    { "name": "Knee Plank", "duration": "2 sets x 20 seconds", "description": "Hold plank on knees" },
+                    { "name": "Standing Crunches", "duration": "2 sets x 12 reps", "description": "Lift knees while crunching" }
+                ],
+                "image": "./assets/homepics/Beginner Bodyweight.jpg"
+            },
+            "Advanced Bodyweight": {
+                "difficulty": "Advanced",
+                "duration": "25 min",
+                "trainer": "Mike Johnson",
+                "description": "Challenging bodyweight exercises for advanced fitness.",
+                "exercises": [
+                    { "name": "Pistol Squats", "duration": "3 sets x 8 reps each leg", "description": "Single leg squats" },
+                    { "name": "One-arm Push-ups", "duration": "3 sets x 6 reps each arm", "description": "Push-ups with one arm" },
+                    { "name": "L-sit", "duration": "3 sets x 15 seconds", "description": "Hold legs parallel to ground" },
+                    { "name": "Muscle-ups", "duration": "3 sets x 5 reps", "description": "Pull-up transitioning to dip" }
+                ],
+                "image": "./assets/homepics/Advanced Bodyweight.webp"
+            }
+        },
+        "minimal-equipment": {
+            "Dumbbell Routine": {
+                "difficulty": "Intermediate",
+                "duration": "20 min",
+                "trainer": "Adrian Williams",
+                "description": "A full-body workout using dumbbells.",
+                "exercises": [
+                    { "name": "Dumbbell Press", "duration": "3 sets x 12 reps", "description": "Press dumbbells overhead" },
+                    { "name": "Goblet Squats", "duration": "3 sets x 15 reps", "description": "Hold dumbbell at chest" },
+                    { "name": "Bent Over Rows", "duration": "3 sets x 12 reps", "description": "Row dumbbells to waist" },
+                    { "name": "Dumbbell Lunges", "duration": "3 sets x 10 reps each leg", "description": "Hold dumbbells while lunging" }
+                ],
+                "image": "./assets/homepics/Dumbbell Routine.jpg"
+            },
+            "Resistance Band Workout": {
+                "difficulty": "Beginner",
+                "duration": "15 min",
+                "trainer": "John Smith",
+                "description": "Exercises using resistance bands.",
+                "exercises": [
+                    { "name": "Band Rows", "duration": "3 sets x 12 reps", "description": "Pull band towards body" },
+                    { "name": "Band Squats", "duration": "3 sets x 15 reps", "description": "Squat with band around thighs" },
+                    { "name": "Band Press", "duration": "2 sets x 12 reps", "description": "Press band overhead" },
+                    { "name": "Band Pull-aparts", "duration": "2 sets x 15 reps", "description": "Pull band apart at chest level" }
+                ],
+                "image": "./assets/homepics/Resistance Band Workout.jpg"
+            },
+            "Kettlebell Flow": {
+                "difficulty": "Intermediate",
+                "duration": "20 min",
+                "trainer": "Mike Johnson",
+                "description": "Dynamic exercises using a kettlebell.",
+                "exercises": [
+                    { "name": "Kettlebell Swings", "duration": "3 sets x 15 reps", "description": "Swing kettlebell between legs" },
+                    { "name": "Turkish Get-ups", "duration": "3 sets x 5 reps each side", "description": "Complex movement from ground to standing" },
+                    { "name": "Goblet Squats", "duration": "3 sets x 12 reps", "description": "Hold kettlebell at chest" },
+                    { "name": "Kettlebell Clean and Press", "duration": "3 sets x 8 reps each side", "description": "Clean kettlebell to shoulder then press overhead" }
+                ],
+                "image": "./assets/homepics/Kettlebell Flow.avif"
+            }
+        },
+        "hiit": {
+            "30 min HIIT Cardio": {
+                "difficulty": "Intermediate",
+                "duration": "30 min",
+                "trainer": "Adrian Williams",
+                "description": "High-intensity interval training for cardio.",
+                "exercises": [
+                    { "name": "Jump Squats", "duration": "45s work, 15s rest", "description": "Squat and jump" },
+                    { "name": "Mountain Climbers", "duration": "45s work, 15s rest", "description": "Run in plank position" },
+                    { "name": "Burpees", "duration": "45s work, 15s rest", "description": "Full body exercise" },
+                    { "name": "High Knees", "duration": "45s work, 15s rest", "description": "Run in place with high knees" }
+                ],
+                "image": "./assets/homepics/30 min HIIT Cardio.jpg"
+            },
+            "Beginner HIIT": {
+                "difficulty": "Beginner",
+                "duration": "20 min",
+                "trainer": "John Smith",
+                "description": "Gentle high-intensity intervals for beginners.",
+                "exercises": [
+                    { "name": "March in Place", "duration": "30s work, 30s rest", "description": "March with high knees" },
+                    { "name": "Step-ups", "duration": "30s work, 30s rest", "description": "Step up and down" },
+                    { "name": "Modified Burpees", "duration": "30s work, 30s rest", "description": "Easier version of burpees" },
+                    { "name": "Standing Side Crunches", "duration": "30s work, 30s rest", "description": "Alternate knee to elbow" }
+                ],
+                "image": "./assets/homepics/Beginner HIIT.webp"
+            },
+            "Advanced HIIT": {
+                "difficulty": "Advanced",
+                "duration": "25 min",
+                "trainer": "Mike Johnson",
+                "description": "Challenging high-intensity intervals.",
+                "exercises": [
+                    { "name": "Box Jumps", "duration": "45s work, 15s rest", "description": "Jump onto box" },
+                    { "name": "Sprint Intervals", "duration": "30s work, 30s rest", "description": "Maximum effort sprints" },
+                    { "name": "Plyometric Push-ups", "duration": "45s work, 15s rest", "description": "Explosive push-ups" },
+                    { "name": "Tuck Jumps", "duration": "45s work, 15s rest", "description": "Jump bringing knees to chest" }
+                ],
+                "image": "./assets/homepics/Advanced HIIT.jpg"
+            }
+        },
+        "cardio": {
+            "Cardio Blast": {
+                "difficulty": "Intermediate",
+                "duration": "25 min",
+                "trainer": "Adrian Williams",
+                "description": "Intense cardio workout to burn calories.",
+                "exercises": [
+                    { "name": "Jump Rope", "duration": "3 sets x 2 min", "description": "Continuous jumping" },
+                    { "name": "High Knees", "duration": "3 sets x 1 min", "description": "Run in place with high knees" },
+                    { "name": "Jumping Jacks", "duration": "3 sets x 1 min", "description": "Jump while spreading arms and legs" },
+                    { "name": "Butt Kicks", "duration": "3 sets x 1 min", "description": "Run in place kicking heels to glutes" }
+                ],
+                "image": "./assets/homepics/Cardio Blast.webp"
+            },
+            "Beginner Cardio": {
+                "difficulty": "Beginner",
+                "duration": "20 min",
+                "trainer": "John Smith",
+                "description": "Gentle cardio exercises for beginners.",
+                "exercises": [
+                    { "name": "Walking in Place", "duration": "3 sets x 3 min", "description": "Walk with good posture" },
+                    { "name": "Step Touch", "duration": "3 sets x 2 min", "description": "Step side to side" },
+                    { "name": "Arm Circles", "duration": "2 sets x 1 min", "description": "Circle arms forward and back" },
+                    { "name": "Seated Marching", "duration": "2 sets x 2 min", "description": "March while seated" }
+                ],
+                "image": "./assets/homepics/Beginner Cardio.avif"
+            },
+            "Advanced Cardio": {
+                "difficulty": "Advanced",
+                "duration": "30 min",
+                "trainer": "Mike Johnson",
+                "description": "Challenging cardio workout for advanced fitness.",
+                "exercises": [
+                    { "name": "Sprint Intervals", "duration": "8 sets x 30s", "description": "Maximum effort sprints" },
+                    { "name": "Plyometric Jumps", "duration": "4 sets x 15 reps", "description": "Explosive jumping" },
+                    { "name": "Mountain Climbers", "duration": "4 sets x 1 min", "description": "Fast running in plank" },
+                    { "name": "Burpee Box Jumps", "duration": "4 sets x 10 reps", "description": "Burpee followed by box jump" }
+                ],
+                "image": "./assets/homepics/Advanced Cardio.webp"
+            }
+        },
+        "strength": {
+            "Full Body Strength": {
+                "difficulty": "Intermediate",
+                "duration": "25 min",
+                "trainer": "Adrian Williams",
+                "description": "Comprehensive strength training workout.",
+                "exercises": [
+                    { "name": "Push-ups", "duration": "4 sets x 12 reps", "description": "Full body push exercise" },
+                    { "name": "Squats", "duration": "4 sets x 15 reps", "description": "Lower body strength" },
+                    { "name": "Plank", "duration": "3 sets x 45s", "description": "Core strength" },
+                    { "name": "Pull-ups", "duration": "3 sets x 8 reps", "description": "Upper body pulling strength" }
+                ],
+                "image": "./assets/homepics/Full Body Strength.jpg"
+            },
+            "Beginner Strength": {
+                "difficulty": "Beginner",
+                "duration": "20 min",
+                "trainer": "John Smith",
+                "description": "Basic strength exercises for beginners.",
+                "exercises": [
+                    { "name": "Wall Push-ups", "duration": "3 sets x 10 reps", "description": "Easier push-up variation" },
+                    { "name": "Chair Squats", "duration": "3 sets x 12 reps", "description": "Sit and stand from chair" },
+                    { "name": "Knee Plank", "duration": "2 sets x 30s", "description": "Easier plank variation" },
+                    { "name": "Assisted Pull-ups", "duration": "2 sets x 6 reps", "description": "Use band or assistance machine" }
+                ],
+                "image": "./assets/homepics/Beginner Strength.avif"
+            },
+            "Advanced Strength": {
+                "difficulty": "Advanced",
+                "duration": "30 min",
+                "trainer": "Mike Johnson",
+                "description": "Challenging strength exercises for advanced fitness.",
+                "exercises": [
+                    { "name": "One-arm Push-ups", "duration": "3 sets x 8 reps each arm", "description": "Advanced push-up variation" },
+                    { "name": "Pistol Squats", "duration": "3 sets x 10 reps each leg", "description": "Single leg squats" },
+                    { "name": "Dragon Flags", "duration": "3 sets x 8 reps", "description": "Advanced core exercise" },
+                    { "name": "Muscle-ups", "duration": "3 sets x 5 reps", "description": "Pull-up transitioning to dip" }
+                ],
+                "image": "./assets/homepics/Advanced Strength.webp"
+            }
+        }
+    }
+}

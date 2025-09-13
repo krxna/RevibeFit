@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Live Classes - RevibeFit</title>
+    <link rel="stylesheet" href="/CSS/footer.css" />
+    <link rel="stylesheet" href="/CSS/classes.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      /* ======= Dynamic Classes Grid Styles ======= */
+      .classes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .class-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .class-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.5rem;
+      }
+      .class-type {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #2c3e50;
+      }
+      .class-trainer {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+      }
+      .class-body {
+        flex-grow: 1;
+      }
+      .class-meta {
+        font-size: 0.9rem;
+        color: #34495e;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+      }
+      .class-meta span {
+        display: block;
+      }
+      .class-description {
+        font-size: 0.95rem;
+        color: #555;
+        margin-bottom: 0.75rem;
+      }
+      .class-actions {
+        text-align: right;
+      }
+      .join-btn {
+        background-color: #27ae60;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: background 0.2s;
+      }
+      .join-btn:hover:not([disabled]) {
+        background-color: #219150;
+      }
+      .join-btn[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('nav_bar') %>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+      <h1>Transform Your Fitness Journey</h1>
+      <p>
+        Join live classes with expert trainers and experience the power of group
+        fitness from anywhere in the world
+      </p>
+      <a href="#classes" class="cta-button">Explore Classes</a>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+      <h2>Why Choose RevibeFit Classes?</h2>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Expert Trainers</h3>
+          <p>Learn from certified professionals with years of experience</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3>Flexible Schedule</h3>
+          <p>Choose from multiple time slots that fit your schedule</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-dumbbell"></i>
+          </div>
+          <h3>Varied Workouts</h3>
+          <p>Access diverse workout styles for complete fitness</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-heart"></i>
+          </div>
+          <h3>Community Support</h3>
+          <p>Join a motivated community of fitness enthusiasts</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+      <h2>How It Works</h2>
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Choose Your Class</h3>
+          <p>Browse our schedule and pick classes that match your goals</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Book Your Spot</h3>
+          <p>Reserve your place in upcoming live sessions</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Join Live</h3>
+          <p>Connect with your trainer and classmates in real-time</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Notification</h3>
+          <p>Don't Miss the classes and stay motivated</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Classes Section -->
+    <section id="classes" class="classes-section">
+      <h2>Upcoming Live Classes</h2>
+
+      <div class="filters">
+        <button class="filter-btn active">All Classes</button>
+        <button class="filter-btn">Cycling</button>
+        <button class="filter-btn">Strength</button>
+        <button class="filter-btn">Running</button>
+        <button class="filter-btn">Yoga</button>
+        <button class="filter-btn">Meditation</button>
+        <button class="filter-btn">Rowing</button>
+        <button class="filter-btn">Stretching</button>
+        <button class="filter-btn">Outdoor</button>
+        <button class="filter-btn">Cardio</button>
+        <button class="filter-btn">HIIT</button>
+      </div>
+
+      <div class="classes-grid">
+        <!-- dynamic cards injected here -->
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3 class="faq-question">What equipment do I need?</h3>
+          <p class="faq-answer">
+            Equipment requirements vary by class. Basic classes need minimal
+            equipment, while specific classes might require dumbbells, yoga
+            mats, or other gear. Check class descriptions for details.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-question">How do I join a live class?</h3>
+          <p class="faq-answer">
+            Simply book your spot, and we'll send you a link 15 minutes before
+            class starts. Click the link to join the live session through our
+            platform.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-question">What if I miss a class?</h3>
+          <p class="faq-answer">
+            Don't worry! All live classes are recorded and available for 24
+            hours after the session ends.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-question">Can I interact with the trainer?</h3>
+          <p class="faq-answer">
+            Yes! Our platform allows real-time interaction with trainers during
+            live sessions for form corrections and motivation.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <h2>Ready to Transform Your Fitness Journey?</h2>
+      <p>
+        Join thousands of members who are already crushing their fitness goals
+        with RevibeFit
+      </p>
+      <a href="#" class="cta-button">Start Your Free Trial</a>
+    </section>
+
+    <footer>
+      <div id="footer"></div>
+    </footer>
+
+    <script>
+      // load nav & footer
+      $(function () {
+        $("#nav-placeholder").load("Nav_bar.html");
+      });
+      fetch("footer.html")
+        .then((r) => r.text())
+        .then((html) => (document.getElementById("footer").innerHTML = html));
+
+      // filter buttons
+      document.querySelectorAll(".filter-btn").forEach((btn) =>
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".filter-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+        })
+      );
+
+      // ====== dynamic load & enroll logic ======
+      // current user id from server session
+      const currentUserId = '<%= user?._id || "" %>';
+
+      document.addEventListener("DOMContentLoaded", loadClasses);
+
+      async function loadClasses() {
+        try {
+          const res = await fetch("http://localhost:3001/api/classes", {
+            credentials: "include",
+          });
+          if (!res.ok) throw new Error("Fetch failed");
+          const classes = await res.json();
+          const grid = document.querySelector(".classes-grid");
+          grid.innerHTML = "";
+          classes.forEach(renderCard);
+        } catch (e) {
+          console.error(e);
+          alert("Could not load classes");
+        }
+      }
+
+      function renderCard(cls) {
+        const grid = document.querySelector(".classes-grid");
+        const card = document.createElement("div");
+        card.className = "class-card";
+
+        const dt = new Date(cls.scheduledAt);
+        const dStr = dt.toLocaleDateString("en-US", {
+          weekday: "short",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+        const tStr = dt.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        // check if current user is already enrolled
+        const already = cls.enrolledUsers.some((u) => u._id === currentUserId);
+
+        card.innerHTML = `
+          <div class="class-header">
+            <span class="class-type">${cls.classType}</span>
+            <span class="class-trainer">by ${cls.createdBy.name}</span>
+          </div>
+          <div class="class-body">
+            <div class="class-meta">
+              <span>📅 ${dStr} @ ${tStr}</span>
+              <span>⏰ ${cls.duration}</span>
+              <span>📊 ${cls.difficultyLevel}</span>
+            </div>
+            <p class="class-description">${cls.description}</p>
+          </div>
+          <div class="class-actions">
+            <button class="join-btn" data-id="${cls._id}"
+                    ${already ? "disabled" : ""}>
+              ${
+                already
+                  ? "Enrolled"
+                  : cls.enrolledUsers.length
+                  ? `Join (${cls.enrolledUsers.length})`
+                  : "Join"
+              }
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+
+        const btn = card.querySelector(".join-btn");
+        btn.addEventListener("click", () => {
+          if (already) {
+            alert("You have already enrolled in this class");
+            return;
+          }
+          enrollInClass(cls._id, btn);
+        });
+      }
+
+      async function enrollInClass(id, btn) {
+        btn.disabled = true;
+        try {
+          const res = await fetch(
+            `http://localhost:3001/api/classes/${id}/enroll`,
+            { method: "POST", credentials: "include" }
+          );
+          if (!res.ok) throw new Error("Enroll failed");
+          const updated = await res.json();
+          btn.textContent = `Join (${updated.enrolledUsers.length})`;
+        } catch (e) {
+          console.error(e);
+          alert("Could not enroll");
+        } finally {
+          btn.disabled = false;
+        }
+      }
+    </script>
+  </body>
+</html>

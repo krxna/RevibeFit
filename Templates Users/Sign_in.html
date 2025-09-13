@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="/CSS/sign_in.css">
+    <style>
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="container">
+            <!-- Left Side (Image) -->
+            <div class="image-container"></div>
+
+            <!-- Right Side (Sign-in Form) -->
+            <div class="login-container">
+                <div class="login-box">
+                    <h2>Welcome Back</h2>
+                    <p>Don't have an account? <a href="trainer_singup.html">Sign up</a></p>
+
+                    <form id="loginForm">
+                        <div class="input-group">
+                            <label for="email">Email address</label>
+                            <input type="email" id="email" placeholder="Enter your email">
+                            <div class="error" id="emailError">Please enter a valid email address.</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password">
+                            <div class="error" id="passwordError">Password must be at least 6 characters long.</div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <div>
+                                <input type="checkbox" id="remember">
+                                <label for="remember">Remember me</label>
+                            </div>
+                            <a href="#">Forgot your password?</a>
+                        </div>
+
+                        <button type="submit" class="login-btn">Sign in →</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/JS/sign_in.js">
+       
+    </script>
+
+</body>
+</html>

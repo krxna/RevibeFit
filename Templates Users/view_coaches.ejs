@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>View Coaches - RevibeFit</title>
+    <link rel="stylesheet" href="/CSS/footer.css" />
+    <link rel="stylesheet" href="/CSS/view_coaches.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <!-- <nav>
+      <div id="nav-placeholder"></div>
+    </nav> -->
+    <%- include('nav_bar') %>
+
+
+    <div class="coaches-container">
+      <div class="section-header">
+        <h1>Expert Coaches</h1>
+        <p>Choose your perfect coach to start your fitness journey</p>
+      </div>
+
+      <div class="coaches-grid">
+        <!-- Coach Card 1 -->
+        <div class="coach-card">
+          <div class="coach-info">
+            <img
+              src="/trainer1.jpg"
+              alt="Alex Wilson"
+              class="coach-avatar"
+            />
+            <div class="coach-details">
+              <h3>Alex Wilson</h3>
+              <p class="coach-specialty">Strength & HIIT Specialist</p>
+              <div class="coach-rating">
+                <span class="stars">★★★★★</span>
+                <span class="rating-count">(128 reviews)</span>
+              </div>
+              <p class="coach-experience">8+ years experience</p>
+            </div>
+          </div>
+          <div class="coach-stats">
+            <div class="stat">
+              <span class="stat-number">500+</span>
+              <span class="stat-label">Clients</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">4.9</span>
+              <span class="stat-label">Rating</span>
+            </div>
+          </div>
+          <button class="get-coach-btn">Get Coach</button>
+        </div>
+
+        <!-- Coach Card 2 -->
+        <div class="coach-card">
+          <div class="coach-info">
+            <img
+              src="/trainer2.jpg"
+              alt="Sarah Johnson"
+              class="coach-avatar"
+            />
+            <div class="coach-details">
+              <h3>Sarah Johnson</h3>
+              <p class="coach-specialty">Nutrition & Weight Loss Expert</p>
+              <div class="coach-rating">
+                <span class="stars">★★★★★</span>
+                <span class="rating-count">(95 reviews)</span>
+              </div>
+              <p class="coach-experience">6+ years experience</p>
+            </div>
+          </div>
+          <div class="coach-stats">
+            <div class="stat">
+              <span class="stat-number">300+</span>
+              <span class="stat-label">Clients</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">4.8</span>
+              <span class="stat-label">Rating</span>
+            </div>
+          </div>
+          <button class="get-coach-btn">Get Coach</button>
+        </div>
+
+        <!-- Coach Card 3 -->
+        <div class="coach-card">
+          <div class="coach-info">
+            <img
+              src="/trainer3.jpg"
+              alt="Mike Chen"
+              class="coach-avatar"
+            />
+            <div class="coach-details">
+              <h3>Mike Chen</h3>
+              <p class="coach-specialty">Functional Training Specialist</p>
+              <div class="coach-rating">
+                <span class="stars">★★★★★</span>
+                <span class="rating-count">(82 reviews)</span>
+              </div>
+              <p class="coach-experience">5+ years experience</p>
+            </div>
+          </div>
+          <div class="coach-stats">
+            <div class="stat">
+              <span class="stat-number">250+</span>
+              <span class="stat-label">Clients</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">4.7</span>
+              <span class="stat-label">Rating</span>
+            </div>
+          </div>
+          <button class="get-coach-btn">Get Coach</button>
+        </div>
+
+        <!-- Coach Card 4 -->
+        <div class="coach-card">
+          <div class="coach-info">
+            <img
+              src="/trainer4.jpg"
+              alt="Emily Parker"
+              class="coach-avatar"
+            />
+            <div class="coach-details">
+              <h3>Emily Parker</h3>
+              <p class="coach-specialty">Yoga & Wellness Coach</p>
+              <div class="coach-rating">
+                <span class="stars">★★★★★</span>
+                <span class="rating-count">(76 reviews)</span>
+              </div>
+              <p class="coach-experience">4+ years experience</p>
+            </div>
+          </div>
+          <div class="coach-stats">
+            <div class="stat">
+              <span class="stat-number">200+</span>
+              <span class="stat-label">Clients</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">4.8</span>
+              <span class="stat-label">Rating</span>
+            </div>
+          </div>
+          <button class="get-coach-btn">Get Coach</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div id="footer"></div>
+    </footer>
+
+    <script src="/JS/view_coaches.js"></script>
+  </body>
+</html>

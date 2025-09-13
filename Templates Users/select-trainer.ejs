@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Trainer - RevibeFit</title>
+    <link rel="stylesheet" href="/CSS/footer.css">
+    <link rel="stylesheet" href="/CSS/trainer-selection.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- <nav>
+        <div id="nav-placeholder"></div>
+    </nav> -->
+    <%- include('nav_bar') %>
+
+    <div class="trainer-selection-container">
+        <div class="class-info-header">
+            <h1>Full Body Strength</h1>
+            <div class="class-details">
+                <span class="class-type">Strength Training</span>
+                <span class="class-level">Intermediate</span>
+                <span class="class-duration">45 minutes</span>
+            </div>
+        </div>
+
+        <div class="trainers-grid">
+            <!-- Trainer Card -->
+            <div class="trainer-card">
+                <div class="trainer-info">
+                    <img src="/trainer1.jpg" alt="Alex Wilson" class="trainer-avatar">
+                    <div class="trainer-details">
+                        <h3>Alex Wilson</h3>
+                        <p class="trainer-speciality">Strength & HIIT Specialist</p>
+                        <div class="trainer-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-count">(128 reviews)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="schedule-dropdown">
+                    <select class="time-slot-select">
+                        <option value="">Select a time slot</option>
+                        <optgroup label="Monday">
+                            <option value="mon-0600">6:00 AM</option>
+                            <option value="mon-0900">9:00 AM</option>
+                            <option value="mon-1700">5:00 PM</option>
+                        </optgroup>
+                        <optgroup label="Tuesday">
+                            <option value="tue-0700">7:00 AM</option>
+                            <option value="tue-1800">6:00 PM</option>
+                        </optgroup>
+                        <!-- Add more days -->
+                    </select>
+                    <button class="book-class-btn">Book Class</button>
+                </div>
+            </div>
+            <!-- Add more trainer cards -->
+        </div>
+    </div>
+
+    <footer>
+        <div id="footer"></div>
+    </footer>
+
+    <script src="/JS/select-trainer.js"></script>
+    <script > document.addEventListener('DOMContentLoaded', function() {
+        // Get all book class buttons
+        const bookButtons = document.querySelectorAll('.book-class-btn');
+    
+        // Add click event listener to each button
+        bookButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Redirect to signup page
+                window.location.href = 'signup.html';
+            });
+        });
+    
+       
+    });</script>
+</body>
+</html>

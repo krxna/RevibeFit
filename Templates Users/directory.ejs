@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Directory - RevibeFit</title>
+    <link rel="stylesheet" href="/CSS/footer.css">
+    <link rel="stylesheet" href="/CSS/directory.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- <nav>
+        <div id="nav-placeholder"></div>
+    </nav> -->
+    <%- include('nav_bar') %>
+
+    <section class="hero-section">
+        <h1>Discover Your Fitness Journey</h1>
+        <p>Connect with certified trainers, explore exclusive workout videos, and take the next step toward your health goals with RevibeFit.</p>
+    </section>
+
+    <!-- Trainers Section (moved above videos) -->
+    <section class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Meet Our Expert Trainers</h2>
+            <a href="#" class="view-all">View All Trainers →</a>
+        </div>
+        <div class="trainers-grid" id="trainers-container">
+            <!-- Trainers will be loaded dynamically -->
+            <div class="loading-spinner">Loading trainers...</div>
+        </div>
+    </section>
+
+    <!-- Videos Section (now below trainers, with new heading and animation) -->
+    <section class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Explore Content by Our Trainers</h2>
+            <a href="#" class="view-all">View All Videos →</a>
+        </div>
+        <div class="classes-grid animated-center-out" id="workout-videos-container">
+            <!-- Videos will be loaded dynamically -->
+            <div class="loading-spinner">Loading videos...</div>
+        </div>
+    </section>
+
+    <footer>
+        <div id="footer"></div>
+    </footer>
+
+    <!-- Add Video Player Modal -->
+    <div id="video-player-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-video-title">Video Title</h2>
+            <div class="video-container">
+                <video id="modal-video-player" controls>
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-info">
+                <div class="video-meta">
+                    <span id="modal-video-category">Category</span> • 
+                    <span id="modal-video-duration">Duration</span>
+                </div>
+                <div class="video-author">
+                    <img id="modal-author-img" src="/trainer1.jpg" alt="Trainer" class="trainer-avatar">
+                    <span id="modal-author-name">Trainer Name</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/JS/directory.js"></script>
+    <script>
+        $(function(){
+            $("#nav-placeholder").load("Nav_bar.html");
+        });
+        
+        fetch("footer.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("footer").innerHTML = data);
+            
+        // Fetch workout videos
+        const videosContainer = document.getElementById('workout-videos-container');
+        videosContainer.innerHTML = '<p class="loading-message">Loading workout videos...</p>';
+        
+        // Initialize videos array to store the full video data
+        let workoutVideos = [];
+        
+        // Initialize trainers array to store the trainer data
+        let trainers = [];
+        
+        // Wait a moment for the page to initialize before loading videos
+        setTimeout(function() {
+            console.log("Fetching workout videos from API...");
+            
+            // Fetch trainers data
+            fetch('/api/trainers')
+                .then(response => {
+                    console.log("Trainers API response status:", response.status);
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            try {
+                                const data = JSON.parse(text);
+                                throw new Error('Failed to fetch trainers: ' + (data.message || response.statusText));
+                            } catch (e) {
+                                throw new Error('Failed to fetch trainers: ' + (text || response.statusText));
+                            }
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Trainers received:", data);
+                    
+                    const trainersContainer = document.getElementById('trainers-container');
+                    
+                    if (!data || data.length === 0) {
+                        trainersContainer.innerHTML = '<p class="no-content">No trainers available yet. Check back soon!</p>';
+                        return;
+                    }
+                    
+                    // Store the trainer data
+                    trainers = data;
+                    
+                    trainersContainer.innerHTML = data.map((trainer, index) => `
+                        <div class="trainer-card" data-trainer-id="${trainer._id}">
+                            <div class="trainer-details">
+                                <h3 class="trainer-name">${trainer.name}</h3>
+                                <p class="trainer-specialty">${trainer.trainerProfile?.specialization || 'Fitness Specialist'}</p>
+                                <div class="trainer-stats">
+                                    <div class="stat">
+                                        <div class="stat-number">${trainer.classesTaken || 0}</div>
+                                        <div class="stat-label">Classes Taken</div>
+                                    </div>
+                                </div>
+                                <button class="view-profile-btn" onclick="window.location.href='/trainer-profile/${trainer._id}'">View Profile</button>
+                            </div>
+                        </div>
+                    `).join('');
+                })
+                .catch(error => {
+                    console.error('Error loading trainers:', error);
+                    document.getElementById('trainers-container').innerHTML = `
+                        <p class="error-message">Failed to load trainers: ${error.message}</p>
+                    `;
+                });
+                
+            fetch('/api/workouts')
+                .then(response => {
+                    console.log("Workout API response status:", response.status);
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            try {
+                                // Try to parse as JSON
+                                const data = JSON.parse(text);
+                                throw new Error('Failed to fetch workout videos: ' + (data.message || response.statusText));
+                            } catch (e) {
+                                // If not valid JSON, use the text directly
+                                throw new Error('Failed to fetch workout videos: ' + (text || response.statusText));
+                            }
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Workout videos received:", data);
+                    
+                    if (!data.videos || data.videos.length === 0) {
+                        videosContainer.innerHTML = '<p class="no-content">No workout videos available yet. Check back soon!</p>';
+                        return;
+                    }
+                    
+                    // Store the full video data including videoUrl
+                    workoutVideos = data.videos;
+                    
+                    videosContainer.innerHTML = data.videos.slice(0, 3).map((video, index) => `
+                        <div class="class-card" data-video-index="${index}">
+                            <div class="class-thumbnail">
+                                <img src="${video.featuredImage}" alt="${video.title}" onerror="this.src='/corestr.jpg'; this.onerror=null;">
+                                <span class="class-duration">${video.duration} min</span>
+                                <div class="play-button">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="class-content">
+                                <div class="class-category">${video.category}</div>
+                                <h3 class="class-title">${video.title}</h3>
+                                <div class="class-meta">
+                                    <div class="trainer-info">
+                                        <img src="/trainer1.jpg" alt="${video.authorName}" class="trainer-avatar">
+                                        <span>${video.authorName}</span>
+                                    </div>
+                                    <span>${video.rating > 0 ? video.rating.toFixed(1) + ' ★' : 'New'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    // Add click event listeners for all video cards
+                    const videoCards = document.querySelectorAll('.class-card');
+                    videoCards.forEach(card => {
+                        card.addEventListener('click', function() {
+                            const videoIndex = this.getAttribute('data-video-index');
+                            openVideoModal(videoIndex);
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading workout videos:', error);
+                    videosContainer.innerHTML = `
+                        <p class="error-message">Failed to load workout videos: ${error.message}</p>
+                        <div class="placeholder-content">
+                            <div class="class-card">
+                                <div class="class-thumbnail">
+                                    <img src="/hiit.jpg" alt="Quick HIIT">
+                                    <span class="class-duration">15 min</span>
+                                </div>
+                                <div class="class-content">
+                                    <div class="class-category">Quick Workout</div>
+                                    <h3 class="class-title">15-Minute HIIT Blast</h3>
+                                    <div class="class-meta">
+                                        <div class="trainer-info">
+                                            <img src="/trainer5.jpg" alt="Sarah Johnson" class="trainer-avatar">
+                                            <span>Sarah Johnson</span>
+                                        </div>
+                                        <span>4.8 ★</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+        }, 500);
+
+        // Video modal functionality
+        const modal = document.getElementById('video-player-modal');
+        const closeBtn = document.querySelector('.close-modal');
+        const videoPlayer = document.getElementById('modal-video-player');
+        
+        // Open video modal function
+        function openVideoModal(index) {
+            const video = workoutVideos[index];
+            if (!video) return;
+            
+            // Set modal content
+            document.getElementById('modal-video-title').textContent = video.title;
+            document.getElementById('modal-video-category').textContent = video.category;
+            document.getElementById('modal-video-duration').textContent = video.duration + ' min';
+            document.getElementById('modal-author-name').textContent = video.authorName;
+            
+            // Check if the video URL is a base64 string or external URL
+            if (video.videoUrl.startsWith('data:video')) {
+                // Base64 encoded video
+                videoPlayer.src = video.videoUrl;
+                videoPlayer.style.display = 'block';
+                
+                // If there's a YouTube embed, hide it
+                const youtubeEmbed = document.querySelector('.youtube-embed');
+                if (youtubeEmbed) {
+                    youtubeEmbed.style.display = 'none';
+                }
+            } else if (video.videoUrl.includes('youtube.com') || video.videoUrl.includes('youtu.be')) {
+                // YouTube URL - create an embed if not already created
+                videoPlayer.style.display = 'none';
+                
+                let youtubeEmbed = document.querySelector('.youtube-embed');
+                if (!youtubeEmbed) {
+                    youtubeEmbed = document.createElement('div');
+                    youtubeEmbed.className = 'youtube-embed';
+                    document.querySelector('.video-container').appendChild(youtubeEmbed);
+                } else {
+                    youtubeEmbed.style.display = 'block';
+                }
+                
+                // Extract video ID and create embed
+                const videoId = extractYoutubeId(video.videoUrl);
+                youtubeEmbed.innerHTML = `
+                    <iframe 
+                        width="100%" 
+                        height="500" 
+                        src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+                        title="${video.title}" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                `;
+            } else {
+                // Regular URL
+                videoPlayer.src = video.videoUrl;
+                videoPlayer.style.display = 'block';
+                
+                // If there's a YouTube embed, hide it
+                const youtubeEmbed = document.querySelector('.youtube-embed');
+                if (youtubeEmbed) {
+                    youtubeEmbed.style.display = 'none';
+                }
+            }
+            
+            // Show modal
+            modal.style.display = 'flex';
+            
+            // Auto play video if not YouTube (YouTube handles autoplay in the iframe)
+            if (!video.videoUrl.includes('youtube.com') && !video.videoUrl.includes('youtu.be')) {
+                videoPlayer.load();
+                videoPlayer.play().catch(e => console.log('Auto-play prevented:', e));
+            }
+        }
+        
+        // Helper function to extract YouTube video ID from URL
+        function extractYoutubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+        
+        // Close modal when clicking X
+        closeBtn.addEventListener('click', function() {
+            closeVideoModal();
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeVideoModal();
+            }
+        });
+        
+        // Close video modal function
+        function closeVideoModal() {
+            // Pause and reset video
+            videoPlayer.pause();
+            videoPlayer.currentTime = 0;
+            videoPlayer.src = '';
+            
+            // If there's a YouTube embed, clear it
+            const youtubeEmbed = document.querySelector('.youtube-embed');
+            if (youtubeEmbed) {
+                youtubeEmbed.innerHTML = '';
+            }
+            
+            // Hide modal
+            modal.style.display = 'none';
+        }
+
+        // Animation for video cards (center-out)
+        function animateCardsCenterOut() {
+            const grid = document.querySelector('.animated-center-out');
+            if (!grid) return;
+            const cards = Array.from(grid.querySelectorAll('.class-card'));
+            if (cards.length === 0) return;
+            // Remove any previous animation classes
+            cards.forEach(card => card.classList.remove('center-out-animate'));
+            // Calculate center index
+            const center = Math.floor((cards.length - 1) / 2);
+            // Staggered animation: center, then outwards
+            cards.forEach((card, i) => {
+                const distance = Math.abs(i - center);
+                setTimeout(() => {
+                    card.classList.add('center-out-animate');
+                }, distance * 120 + 100); // Staggered delay
+            });
+        }
+        // Call animation after cards are loaded
+        const origVideosInnerHTML = videosContainer.innerHTML;
+        const origMap = Array.prototype.map;
+        // Monkey-patch the code that loads videos to call animation after rendering
+        const observer = new MutationObserver(() => {
+            animateCardsCenterOut();
+        });
+        observer.observe(document.getElementById('workout-videos-container'), { childList: true });
+    </script>
+    <style>
+    /* Animation for center-out video cards */
+    .animated-center-out .class-card {
+        opacity: 0;
+        transform: scale(0.95) translateY(30px);
+        transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1), transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    .animated-center-out .class-card.center-out-animate {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    /* Ultra-centered search container styles */
+    .ultra-centered-search-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+        background: none;
+    }
+    .ultra-centered-search-box {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(63,133,84,0.10), 0 1.5px 6px rgba(0,0,0,0.04);
+        border: 1.5px solid #f0f0f0;
+        padding: 28px 28px 22px 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 420px;
+        margin: 32px auto 36px auto;
+        box-sizing: border-box;
+    }
+    .search-label {
+        font-weight: 600;
+        color: #2d633e;
+        font-size: 1.15rem;
+        margin-bottom: 14px;
+        letter-spacing: 0.01em;
+        text-align: center;
+    }
+    .ultra-centered-search-input {
+        width: 100%;
+        padding: 14px 18px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1rem;
+        color: #333;
+        background: #f7f7f7;
+        transition: border-color 0.2s, background 0.2s;
+        box-shadow: 0 1px 2px rgba(63,133,84,0.03);
+    }
+    .ultra-centered-search-input:focus {
+        outline: none;
+        border-color: #3f8554;
+        background: #fff;
+    }
+    @media (max-width: 600px) {
+        .ultra-centered-search-box {
+            padding: 14px 4vw 10px 4vw;
+            max-width: 98vw;
+            margin: 20px auto 24px auto;
+        }
+        .ultra-centered-search-input {
+            font-size: 0.98rem;
+            padding: 12px 8px;
+        }
+        .search-label {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+    }
+    </style>
+</body>
+</html>

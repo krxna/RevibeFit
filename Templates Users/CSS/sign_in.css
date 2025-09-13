@@ -1,0 +1,172 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #e8e8da;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  max-width: 900px;
+  height: 80vh;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Left Side - Image */
+.image-container {
+  width: 50%;
+  background: url("/escape_your_limits.jpg") no-repeat center center/cover;
+}
+
+/* Right Side - Login Form */
+.login-container {
+  width: 50%;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.login-box {
+  width: 320px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.login-box p {
+  font-size: 14px;
+  color: gray;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.login-box p a {
+  color: #3f8554;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 5px;
+}
+
+.input-group {
+  text-align: left;
+  margin-top: 12px;
+}
+
+.input-group label {
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: none;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.checkbox-group a {
+  text-decoration: none;
+  color: #3f8554;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.login-btn {
+  width: 100%;
+  background: #3f8554;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.login-btn:hover {
+  background: #3f8554;
+}
+
+/* Responsive for Smaller Screens */
+@media screen and (max-width: 768px) {
+  .wrapper {
+    height: auto;
+    width: 90%;
+    flex-direction: column;
+  }
+  .container {
+    flex-direction: column;
+    width: 100%;
+  }
+  .image-container {
+    width: 100%;
+    height: 200px;
+  }
+  .login-container {
+    width: 100%;
+    padding: 2rem;
+  }
+}
+.role-select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.role-select:focus {
+  border-color: #3f8554;
+}
+
+.role-select option {
+  padding: 10px;
+}

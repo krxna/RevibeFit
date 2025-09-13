@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="/CSS/contact_us.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    
+</head>
+
+<body>
+    <nav>
+      <div id="nav-placeholder"></div>
+      </nav>
+    <div class="container">
+        <div class="contact-form-section">
+            <h1>We care about you</h1>
+            <p class="subtitle">Feel free to contact us. We'll be glad to hear from you, buddy.</p>
+            
+            <form class="contact-form">
+                <div class="form-group">
+                    <input type="text" id="fullName" placeholder="Full Name*" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email Address*" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group country-code">
+                        <select id="countryCode">
+                            <option value="+91">IN +91</option>
+                        </select>
+                    </div>
+                    <div class="form-group phone-number">
+                        <input type="tel" id="phone" placeholder="Mobile Number*" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <textarea id="message" placeholder="Your Message" rows="5"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Send Enquiry</button>
+            </form>
+        </div>
+        
+        <div class="map-section">
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3878.674551177044!2d80.02407347508672!3d13.555545286816155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a4d773f1e0f8721%3A0xadb0842ffc2719e4!2sIndian%20Institute%20of%20Information%20Technology%2C%20Sri%20City%2C%20Chittoor!5e0!3m2!1sen!2sin!4v1738318783603!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-section">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h2>Where to find us</h2>
+                <div class="footer-content">
+                    <div class="address-section">
+                        <h3>Address</h3>
+                        <p>Indian Institute of Information Technology SriCity, Near Gnan Marg Circle, Office , 402 BH-1 <br>SriCity, Andhra Pradesh - 517646</p>
+                    </div>
+                    
+                    <div class="support-section">
+                        <h3>Email & Chat Support</h3>
+                        <p>support@revibefit.com<br>(10 AM to 6 PM, Sunday to Saturday)</p>
+                    </div>
+                    
+                    <div class="helpline-section">
+                        <h3>Helpline</h3>
+                        <p>08888003430<br>(10 AM to 8 PM, Sunday to Saturday)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/JS/contact_us.js"></script>
+    
+</body>
+</html>

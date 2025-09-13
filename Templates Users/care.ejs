@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proactive Health Monitoring</title>
+    <link rel="stylesheet" href="/CSS/footer.css" />
+    <link rel="stylesheet" href="/CSS/care.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/JS/care.js"></script>
+  </head>
+  <body>
+    <!-- <nav>
+      <div id="nav-placeholder"></div>
+    </nav> -->
+    <%- include('nav_bar') %>
+    <header class="hero-section">
+      <div class="hero-content">
+        <h1>Proactive Health Monitoring</h1>
+        <p>
+          Get personalized lab test recommendations based on your fitness goals,
+          health history, and performance needs.
+        </p>
+        <div class="buttons">
+          <a href="#lab-tests" class="btn btn-primary"
+            >Lab Tests <span class="arrow">→</span></a
+          >
+          <a href="#lab-tests" class="btn btn-secondary"
+            >Lab Centers <span class="play-icon">▶</span></a
+          >
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="features">
+        <div class="feature">
+          <div class="icon-wrapper">
+            <span class="feature-icon">⏱️</span>
+          </div>
+          <h3>Quick Results</h3>
+          <p>Get your test results within 24-48 hours of sample collection.</p>
+        </div>
+        <div class="feature">
+          <div class="icon-wrapper">
+            <span class="feature-icon">🛡️</span>
+          </div>
+          <h3>Expert Analysis</h3>
+          <p>Detailed interpretation by certified health professionals.</p>
+        </div>
+        <div class="feature">
+          <div class="icon-wrapper">
+            <span class="feature-icon">🏅</span>
+          </div>
+          <h3>Accredited Labs</h3>
+          <p>All partner labs meet the highest quality standards.</p>
+        </div>
+      </section>
+      <section class="search-section" id="lab-tests">
+        <div class="tabs">
+          <button class="active">Recommended Tests</button>
+          <button>Lab Centers</button>
+        </div>
+        <div class="search-container">
+          <input type="text" placeholder="Search for health tests..." />
+        </div>
+
+        <!-- Lab Centers container -->
+        <div
+          id="lab-centers-container"
+          style="display: none; margin: 16px 0; gap: 16px; flex-wrap: wrap"
+        ></div>
+
+        <!-- Recommend button -->
+        <div class="recommend-btn-container">
+          <button id="recommendBtn" class="btn btn-primary">
+            Recommend Me
+          </button>
+        </div>
+
+        <!-- Health inputs section (initially hidden) -->
+        <div id="healthInputs" class="health-inputs">
+          <h3>Tell us about your health</h3>
+          <!-- ... existing inputs ... -->
+        </div>
+
+        <!-- Recommendations section (initially hidden) -->
+        <div id="recommendations" class="recommendations">
+          <h1>Recommended Health Tests</h1>
+          <!-- ... existing test cards ... -->
+        </div>
+      </section>
+    </main>
+
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-container">
+        <div class="faq-item">
+          <div class="faq-question">
+            <h3>How do I book a lab test?</h3>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Booking a lab test is simple! Just browse our recommended tests, select your preferred test, choose a lab center near you, and schedule an appointment. You can also call our support team for assistance.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h3>How long does it take to get test results?</h3>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Most test results are available within 24-48 hours after sample collection. Complex tests might take 3-5 business days. You'll receive a notification when your results are ready.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h3>Are the lab partners certified?</h3>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes, all our lab partners are certified and accredited by relevant health authorities. We regularly audit their facilities to ensure they maintain high quality standards.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <h3>What payment methods do you accept?</h3>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>We accept all major credit/debit cards, net banking, and popular digital payment methods. Some lab tests may also be covered by your health insurance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div id="footer"></div>
+    </footer>
+
+    <script>
+      // load nav if needed
+      $(function () {
+        $("#nav-placeholder").load("Nav_bar.html");
+      });
+
+      // tab switching
+      const tabs = document.querySelectorAll(".tabs button");
+      const searchContainer = document.querySelector(".search-container");
+      const recommendations = document.getElementById("recommendations");
+      const labCenters = document.getElementById("lab-centers-container");
+
+      tabs.forEach((btn, idx) => {
+        btn.addEventListener("click", () => {
+          tabs.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          if (idx === 0) {
+            searchContainer.style.display = "";
+            recommendations.style.display = "";
+            labCenters.style.display = "none";
+          } else {
+            searchContainer.style.display = "none";
+            recommendations.style.display = "none";
+            labCenters.style.display = "flex";
+          }
+        });
+      });
+
+      // fetch & render lab partners with Apply button
+      (async () => {
+        try {
+          const res = await fetch("http://localhost:3001/lab-partners", {
+            credentials: "include",
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const labs = await res.json();
+          labs.forEach((u) => {
+            const card = document.createElement("div");
+            card.style.background = "#fff";
+            card.style.border = "1px solid #ddd";
+            card.style.borderRadius = "4px";
+            card.style.padding = "12px";
+            card.style.flex = "1 1 calc(33% - 16px)";
+            card.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+            card.style.display = "flex";
+            card.style.flexDirection = "column";
+            card.style.justifyContent = "space-between";
+
+            const labName = u.labProfile?.lab_name || "Unnamed Lab";
+            const partnerName = u.name || "Unknown";
+            const address = u.labProfile?.lab_address || "No address";
+            const license = u.labProfile?.license_number || "N/A";
+
+            card.innerHTML = `
+              <div>
+                <h4 style="margin:0 0 8px;">${labName}</h4>
+                <p style="margin:4px 0;"><strong>Partner:</strong> ${partnerName}</p>
+                <p style="margin:4px 0;"><strong>Address:</strong> ${address}</p>
+                <p style="margin:4px 0;"><strong>License #:</strong> ${license}</p>
+              </div>
+              <button
+                class="apply-btn btn btn-primary"
+                data-lab-id="${u._id}"
+                style="margin-top:12px;"
+              >
+                Apply
+              </button>
+            `;
+            labCenters.appendChild(card);
+          });
+        } catch (err) {
+          console.error("Failed to load lab partners:", err);
+        }
+      })();
+
+      // handle Apply button clicks
+      labCenters.addEventListener("click", async (e) => {
+        if (!e.target.matches(".apply-btn")) return;
+        const btn = e.target;
+        const labPartnerId = btn.dataset.labId;
+        btn.disabled = true;
+        btn.textContent = "Applying...";
+        try {
+          const res = await fetch("http://localhost:3001/apply", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ labPartnerId }),
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          await res.json();
+          btn.textContent = "Pending";
+          btn.classList.remove("btn-primary");
+          btn.classList.add("btn-secondary");
+        } catch (err) {
+          console.error("Apply failed:", err);
+          btn.disabled = false;
+          btn.textContent = "Apply";
+          alert("Failed to apply, please try again.");
+        }
+      });
+
+      // FAQ Toggle functionality
+      document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+          const faqItem = question.parentElement;
+          const isActive = faqItem.classList.contains('active');
+          
+          // Close all FAQ items
+          document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          // Open clicked item if it wasn't active
+          if (!isActive) {
+            faqItem.classList.add('active');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Upload Test Results - Lab Partner Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/CSS/lab.css" />
+    <style>
+      .upload-container {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .date-group {
+        margin-bottom: 30px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+      }
+
+      .date-header {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .test-upload-form {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 500;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 0.95rem;
+      }
+
+      .file-upload {
+        border: 2px dashed #ddd;
+        padding: 20px;
+        text-align: center;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .file-upload:hover {
+        border-color: #3f8554;
+        background-color: #f0f7f2;
+      }
+
+      .file-upload input[type="file"] {
+        display: none;
+      }
+
+      .upload-icon {
+        font-size: 24px;
+        color: #3f8554;
+        margin-bottom: 10px;
+      }
+
+      .upload-btn {
+        background-color: #3f8554;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .upload-btn:hover {
+        background-color: #2d633e;
+      }
+
+      .daily-summary {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 6px;
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .summary-item {
+        text-align: center;
+      }
+
+      .summary-number {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #3f8554;
+        margin-bottom: 5px;
+      }
+
+      .summary-label {
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      .uploaded-test {
+        background: white;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .test-info span {
+        margin-right: 15px;
+        color: #666;
+      }
+
+      .test-actions button {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+
+      .edit-btn {
+        background-color: #f0f7f2;
+        color: #3f8554;
+      }
+
+      .delete-btn {
+        background-color: #fee2e2;
+        color: #dc2626;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+         
+          <h2>Lab Dashboard</h2>
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="lab_part.html" class="nav-link">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
+                />
+              </svg>
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="upload.html" class="nav-link active">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"
+                />
+              </svg>
+              Upload Tests
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="records.html" class="nav-link">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                />
+              </svg>
+              Records
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="settings2.html" class="nav-link">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zm-7.43 2.52c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/>
+            </svg>
+              Settings
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="dashboard-header">
+          <h1>Upload Test Results</h1>
+        </div>
+
+        <div class="upload-container">
+          <div class="test-upload-form" id="upload-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Patient ID</label>
+                <input
+                  type="text"
+                  id="patientEmail"
+                  placeholder="Enter patient email"
+                />
+              </div>
+              <div class="form-group">
+                <label>Test Type</label>
+                <select id="testType">
+                  <option value="">Select Test Type</option>
+                  <option>Health Checkup</option>
+                  <option>Fitness Assessment</option>
+                  <option>Nutrition Panel</option>
+                  <option>Hormone Tests</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Test Date</label>
+                <input type="date" id="testDate" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Upload Test Report</label>
+              <div class="file-upload" id="file-upload">
+                <div class="upload-icon">📄</div>
+                <p id="file-upload-text">
+                  Drag and drop files here or click to browse
+                </p>
+                <input type="file" id="reportFile" accept="application/pdf" />
+              </div>
+            </div>
+
+            <button class="upload-btn" id="uploadBtn">Upload Results</button>
+          </div>
+
+          <!-- Today's Uploads -->
+          <div class="date-group">
+            <div class="date-header">
+              <h3>Today's Uploads</h3>
+              <span id="today-date"></span>
+            </div>
+            <div id="uploads-today-container"></div>
+          </div>
+
+          <!-- Yesterday's Uploads -->
+          <div class="date-group">
+            <div class="date-header">
+              <h3>Yesterday</h3>
+              <span id="yesterday-date"></span>
+            </div>
+            <div id="uploads-yesterday-container"></div>
+          </div>
+
+          <!-- Daily Summary -->
+          <div class="daily-summary">
+            <div class="summary-item">
+              <div class="summary-number" id="count-today">0</div>
+              <div class="summary-label">Total Uploads Today</div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-number" id="count-yesterday">0</div>
+              <div class="summary-label">Uploads Yesterday</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // date labels
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      document.getElementById("today-date").textContent =
+        today.toLocaleDateString();
+      document.getElementById("yesterday-date").textContent =
+        yesterday.toLocaleDateString();
+
+      // file upload UI
+      const fileUpload = document.getElementById("file-upload");
+      const fileInput = document.getElementById("reportFile");
+      const fileText = document.getElementById("file-upload-text");
+      fileUpload.addEventListener("click", () => fileInput.click());
+      fileInput.addEventListener("change", () => {
+        if (fileInput.files[0])
+          fileText.textContent = `Selected: ${fileInput.files[0].name}`;
+      });
+      ["dragover", "dragleave", "drop"].forEach((evt) => {
+        fileUpload.addEventListener(evt, (e) => {
+          e.preventDefault();
+          if (evt === "dragover") {
+            fileUpload.style.borderColor = "#3f8554";
+            fileUpload.style.backgroundColor = "#f0f7f2";
+          } else {
+            fileUpload.style.borderColor = "#ddd";
+            fileUpload.style.backgroundColor = "white";
+            if (evt === "drop" && e.dataTransfer.files[0]) {
+              fileInput.files = e.dataTransfer.files;
+              fileText.textContent = `Selected: ${e.dataTransfer.files[0].name}`;
+            }
+          }
+        });
+      });
+
+      // upload handler
+      document
+        .getElementById("uploadBtn")
+        .addEventListener("click", async () => {
+          const email = document.getElementById("patientEmail").value.trim();
+          const type = document.getElementById("testType").value;
+          const date = document.getElementById("testDate").value;
+          if (!email || !type || !date || !fileInput.files[0]) {
+            return alert("All fields and a PDF report are required.");
+          }
+          const formData = new FormData();
+          formData.append("patientEmail", email);
+          formData.append("testType", type);
+          formData.append("testDate", date);
+          formData.append("report", fileInput.files[0]);
+          try {
+            const res = await fetch("http://localhost:3001/upload", {
+              method: "POST",
+              credentials: "include",
+              body: formData,
+            });
+            if (!res.ok) throw new Error(await res.text());
+            alert("Upload successful!");
+            fileText.textContent =
+              "Drag and drop files here or click to browse";
+            document.getElementById("patientEmail").value = "";
+            document.getElementById("testType").value = "";
+            document.getElementById("testDate").value = "";
+            fileInput.value = "";
+            loadUploads();
+          } catch (err) {
+            console.error(err);
+            alert("Upload failed: " + err.message);
+          }
+        });
+
+      // load and render uploads for this lab partner
+      async function loadUploads() {
+        try {
+          const res = await fetch("http://localhost:3001/lab", {
+            credentials: "include",
+          });
+          if (!res.ok) throw new Error(res.statusText);
+          const reports = await res.json();
+          const todayContainer = document.getElementById(
+            "uploads-today-container"
+          );
+          const yestContainer = document.getElementById(
+            "uploads-yesterday-container"
+          );
+          todayContainer.innerHTML = "";
+          yestContainer.innerHTML = "";
+          let countToday = 0,
+            countYest = 0;
+          reports.forEach((r) => {
+            const created = new Date(r.createdAt);
+            const card = document.createElement("div");
+            card.className = "uploaded-test";
+            const time = created.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            card.innerHTML = `
+            <div class="test-info">
+              <span><strong>ID:</strong> ${r._id.slice(-6)}</span>
+              <span><strong>Patient:</strong> ${r.patientEmail}</span>
+              <span><strong>Test:</strong> ${r.testType}</span>
+              <span><strong>Time:</strong> ${time}</span>
+            </div>`;
+            const d = created.setHours(0, 0, 0, 0);
+            if (d === today.setHours(0, 0, 0, 0)) {
+              todayContainer.appendChild(card);
+              countToday++;
+            } else if (d === yesterday.setHours(0, 0, 0, 0)) {
+              yestContainer.appendChild(card);
+              countYest++;
+            }
+          });
+          document.getElementById("count-today").textContent = countToday;
+          document.getElementById("count-yesterday").textContent = countYest;
+        } catch (err) {
+          console.error("Failed to load uploads:", err);
+        }
+      }
+      (async () => {
+        try {
+          const res = await fetch("http://localhost:3001/me", {
+            credentials: "include",
+          });
+          if (!res.ok) throw new Error(res.status);
+          const user = await res.json();
+          const labName = user.labProfile?.lab_name || "Lab Dashboard";
+          document.querySelector(".sidebar-header h2").textContent = labName;
+        } catch (err) {
+          console.error("Failed to load lab name:", err);
+        }
+      })();
+      // initial load
+      loadUploads();
+    </script>
+  </body>
+</html>

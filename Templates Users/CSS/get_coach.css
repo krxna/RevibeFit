@@ -1,0 +1,253 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+body {
+    color: #2d3748;
+    line-height: 1.6;
+    background-color: #f7f7f7;
+    padding-top: 75px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.hero-section {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #ffffff;
+    margin-bottom: -60px; /* Creates overlap effect */
+    position: relative;
+    z-index: 1;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #3b845c;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #2d3748;
+    margin-bottom: 30px;
+    line-height: 1.2;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    color: #4a5568;
+    margin-bottom: 50px;
+}
+
+.coaching-options-section {
+    background-color: #f7f7f7;
+    padding: 120px 0 60px;
+    position: relative;
+    z-index: 0;
+}
+
+.coaching-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin: 0 auto;
+}
+
+.coaching-card {
+    flex: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    padding-bottom: 30px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.coaching-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.coaching-card h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #2d3748;
+    padding: 0 20px;
+}
+
+.coaching-card p {
+    font-size: 1rem;
+    color: #4a5568;
+    padding: 0 20px;
+    margin-bottom: 25px;
+}
+
+.view-coaches-btn {
+    display: inline-block;
+    background-color: #3b845c;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+.view-coaches-btn:hover {
+    background-color: #2d633e;
+    transform: translateY(-2px);
+}
+
+.help-section {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #f8f9fa;
+}
+
+.help-title {
+    font-size: 1.8rem;
+    color: #2d3748;
+    margin-bottom: 20px;
+}
+
+.help-cta {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #3b845c;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+    transition: color 0.3s ease;
+}
+
+.help-cta:hover {
+    color: #2d633e;
+}
+
+@media (max-width: 768px) {
+    .coaching-options {
+        flex-direction: column;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .coaching-card {
+        max-width: 100%;
+    }
+
+    .hero-section {
+        margin-bottom: -40px;
+    }
+
+    .coaching-options-section {
+        padding: 80px 0 40px;
+    }
+}
+
+.benefits-section {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.benefits-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.benefit-item {
+    flex: 1;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.benefit-icon {
+    margin-bottom: 20px;
+}
+
+.benefit-icon img {
+    width: 60px;
+    height: 60px;
+}
+
+.benefit-item h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a202c;
+    margin-bottom: 15px;
+}
+
+.benefit-item p {
+    font-size: 1rem;
+    color: #718096;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .benefits-grid {
+        flex-direction: column;
+    }
+}
+.coaching-options {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 30px;
+margin: 0 auto;
+}
+@media (max-width: 768px) {
+.coaching-options {
+    grid-template-columns: 1fr;
+}
+}
+.coaching-card:nth-child(4),
+.coaching-card:nth-child(5) {
+grid-column: span 1;
+}
+
+.coaching-card:nth-child(4) {
+margin-left: auto;
+}
+
+.coaching-card:nth-child(5) {
+margin-right: auto;
+}
+
+@media (max-width: 768px) {
+.coaching-options {
+grid-template-columns: 1fr;
+}
+
+.coaching-card:nth-child(4),
+.coaching-card:nth-child(5) {
+grid-column: auto;
+margin: 0;
+}
+}

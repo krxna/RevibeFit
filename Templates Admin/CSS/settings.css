@@ -1,0 +1,243 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Main Container Styles */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    padding: 30px;
+    background-color: #f5f5f5;
+}
+
+.dashboard-header {
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+    color: #333;
+    font-size: 1.8rem;
+}
+
+/* Settings Container Styles */
+.settings-container {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.settings-section {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.settings-section h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+}
+
+/* Form Styles */
+.settings-form {
+    max-width: 600px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative;
+    top:-8px;
+}
+
+.form-group label {
+    flex: 0 0 200px;
+    color: #555;
+    font-weight: 500;
+}
+
+.form-group .input-wrapper {
+    flex: 1;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #3f8554;
+    box-shadow: 0 0 0 2px rgba(63, 133, 84, 0.1);
+}
+
+/* Toggle Switch Styles - Updated */
+/* Toggle Switch Styles - Fixed Alignment */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-switch label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e0e0e0;
+    transition: all 0.3s ease;
+    border-radius: 24px;
+}
+
+.toggle-switch label:before {
+    position: absolute;
+    content: "";
+    height: 18px; /* Reduced from 20px */
+    width: 18px;  /* Reduced from 20px */
+    left: 3px;    /* Changed from 2px */
+    top: 3px;  
+     /* Changed from bottom: 2px to top: 3px */
+    background-color: white;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.toggle-switch input:checked + label {
+    background-color: #3f8554;
+}
+
+.toggle-switch input:checked + label:before {
+    transform: translateX(26px);
+}
+
+.toggle-switch input:focus + label {
+    box-shadow: 0 0 0 2px rgba(63, 133, 84, 0.2);
+}
+
+/* Checkbox Group Styles */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+    cursor: pointer;
+    color: #555;
+}
+
+/* Save Button Styles */
+.save-settings {
+    background-color: #3f8554;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 30px;
+}
+
+.save-settings:hover {
+    background-color: #2d633e;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.save-settings:active {
+    transform: translateY(0);
+}
+
+/* Password Fields Spacing */
+.form-group input[type="password"] {
+    margin-bottom: 10px;
+}
+
+.form-group input[type="password"]:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .settings-container {
+        padding: 20px;
+    }
+
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-group label {
+        flex: none;
+        margin-bottom: 8px;
+    }
+
+    .form-group .input-wrapper {
+        width: 100%;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group select {
+        font-size: 16px;
+    }
+
+    .save-settings {
+        width: 100%;
+    }
+
+    .toggle-switch {
+        margin-top: 8px;
+    }
+}

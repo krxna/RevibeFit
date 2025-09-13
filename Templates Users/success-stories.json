@@ -1,0 +1,25 @@
+{
+    "successStories": [
+      {
+        "id": 1,
+        "name": "Sarah Mitchell",
+        "achievement": "Lost 25 KG",
+        "quote": "RevibeFit completely transformed my life! With their personalized training plans tailored to my fitness level and goals, I was able to stay motivated and consistent. The energy and fun of the Zumba classes made workouts something I actually looked forward to. Over just six months, I lost 25 kilograms and gained so much confidence and strength. I feel healthier, happier, and more energized than ever. Thank you, RevibeFit, for helping me achieve my dream body!",
+        "image": "/male-body-transformation-london-1-1.webp"
+      },
+      {
+        "id": 2,
+        "name": "John Davis",
+        "achievement": "Gained Muscle Mass",
+        "quote": "The trainers at RevibeFit are truly exceptional! Their dedication, expertise, and constant support kept me motivated every step of the way. They crafted a personalized workout plan that suited my lifestyle and pushed me to give my best every session. Thanks to their guidance, I achieved all my fitness goals in just 4 months. I feel stronger, healthier, and more confident than ever before. RevibeFit is the best decision I’ve made for my fitness journey!",
+        "image": "/journey.png"
+      },
+      {
+        "id": 3,
+        "name": "Mike Wilson",
+        "achievement": "Health Transformation",
+        "quote": "RevibeFit provides the perfect workout guidance that truly changed my life. With their expert support and personalized fitness plans, I was able to stay consistent and focused on my health journey. The structured workouts and motivating trainers helped me build a routine that suited my lifestyle. As a result, my diabetes is now under control, and I feel more energetic and healthier than ever. I’m truly grateful for the positive impact RevibeFit has had on me.",
+        "image": "/shutterstock_1240081561.webp"
+      }
+    ]
+  }

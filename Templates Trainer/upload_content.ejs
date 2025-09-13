@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Content - RevibeFit</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/CSS/trainer.css">
+    <link rel="stylesheet" href="/CSS/upload_content.css">
+    <!-- Add a rich text editor library -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+    <style>
+      .trainer-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 5%;
+        background-color: #fffff0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+      .trainer-logo {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      .trainer-logo img {
+        width: 34px;
+        height: 34px;
+        margin-right: 8px;
+      }
+      .logout-btn {
+        background-color: #e74c3c;
+        color: #fff;
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        border: none;
+        font-size: 1rem;
+        transition: background 0.2s;
+        cursor: pointer;
+      }
+      .logout-btn:hover {
+        background-color: #c0392b;
+      }
+      body { padding-top: 75px; }
+    </style>
+</head>
+<body>
+    <div class="trainer-topbar">
+      <a href="/trainer" class="trainer-logo">
+        <img src="/exercise_8407005.png" alt="RevibeFit Logo" />
+        RevibeFit
+      </a>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <svg class="trainer-avatar" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                </svg>
+                <h2><%= user ? user.name : 'Trainer' %></h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/trainer" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                        </svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/upload-content" class="nav-link active">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        </svg>
+                        Upload Content
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/take-classes" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                        </svg>
+                        Take Classes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/trainer-settings" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zm-7.43 2.52c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/>
+                        </svg>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h1>Content Management</h1>
+            </div>
+
+            <div class="content-tabs">
+                <button class="tab-btn active" data-tab="videos">Videos</button>
+                <button class="tab-btn" data-tab="blogs">Blogs</button>
+                
+            </div>
+
+            <!-- Videos Upload Section -->
+            <div class="tab-content active" id="videos">
+                <div class="upload-section">
+                    <h2>Upload New Video</h2>
+                    <div class="upload-tabs">
+                        <button class="upload-tab-btn active" data-tab="file-upload">File Upload</button>
+                        <button class="upload-tab-btn" data-tab="youtube-upload">YouTube URL</button>
+                    </div>
+                    <div class="upload-form">
+                        <div class="form-group">
+                            <label>Video Title</label>
+                            <input type="text" placeholder="Enter video title">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select>
+                                <option>Select Category</option>
+                                <option value="HIIT">HIIT</option>
+                                <option value="Strength Training">Strength Training</option>
+                                <option value="Yoga">Yoga</option>
+                                <option value="Cardio">Cardio</option>
+                                <option value="Core">Core</option>
+                                <option value="Flexibility">Flexibility</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Duration (minutes)</label>
+                            <input type="number" min="1" max="120" placeholder="Enter video duration">
+                        </div>
+                        <div class="form-group">
+                            <label>Featured Image</label>
+                            <label for="video-image" class="file-input-label">
+                                <i class="upload-icon">📁</i>
+                                Choose Image
+                            </label>
+                            <input type="file" id="video-image" accept="image/*">
+                            <div class="file-name-display"></div>
+                            <small class="input-hint">Recommended: JPG/PNG under 5MB</small>
+                        </div>
+                        
+                        <!-- File Upload Option (Default) -->
+                        <div class="upload-tab-content active" id="file-upload">
+                            <div class="form-group">
+                                <label>Video File</label>
+                                <label for="video-file" class="file-input-label">
+                                    <i class="upload-icon">📽️</i>
+                                    Choose Video
+                                </label>
+                                <input type="file" id="video-file" accept="video/*">
+                                <div class="file-name-display"></div>
+                                <small class="input-hint">Important: Video files must be under 45MB. For larger videos, please use compression or YouTube URL option.</small>
+                            </div>
+                            <div class="upload-preview">
+                                <video id="video-preview" controls style="display: none;"></video>
+                            </div>
+                        </div>
+                        
+                        <!-- YouTube URL Option -->
+                        <div class="upload-tab-content" id="youtube-upload">
+                            <div class="form-group">
+                                <label>YouTube Video URL</label>
+                                <input type="text" id="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                                <small class="input-hint">Paste any YouTube video URL. Make sure it's a valid and public video.</small>
+                            </div>
+                            <div class="youtube-preview" style="display: none;">
+                                <div id="youtube-embed-container"></div>
+                            </div>
+                        </div>
+                        
+                        <button class="upload-btn">Upload Video</button>
+                        <div id="upload-status" style="margin-top: 15px; color: #777;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blogs Upload Section -->
+            <div class="tab-content" id="blogs">
+                <div class="upload-section">
+                    <h2>Write New Blog</h2>
+                    <div class="blog-form">
+                        <div class="form-group">
+                            <label>Blog Title</label>
+                            <input type="text" placeholder="Enter blog title">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select>
+                                <option>Select Category</option>
+                                <option>Training</option>
+                                <option>Nutrition</option>
+                                <option>Wellness</option>
+                                <option>Fitness Tips</option>
+                                <option>Tips</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Featured Image</label>
+                            <label for="blog-image" class="file-input-label">
+                                <i class="upload-icon">📁</i>
+                                Choose Image
+                            </label>
+                            <input type="file" id="blog-image" accept="image/*">
+                            <div class="file-name-display"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Content</label>
+                            <div id="editor"></div>
+                        </div>
+                        <button class="publish-btn">Publish Blog</button>
+                    </div>
+                </div>
+            </div>
+
+          
+            </div>
+        </div>
+    </div>
+
+    <script>
+    $(document).ready(function() {
+        // Tab functionality
+        $('.tab-btn').click(function() {
+            var tabId = $(this).data('tab');
+            
+            // Remove active class from all buttons and content
+            $('.tab-btn').removeClass('active');
+            $('.tab-content').removeClass('active');
+            
+            // Add active class to clicked button and corresponding content
+            $(this).addClass('active');
+            $('#' + tabId).addClass('active');
+        });
+        
+        // File input handling
+        $('input[type="file"]').change(function() {
+            var fileName = $(this).val().split('\\').pop();
+            if (fileName) {
+                $(this).siblings('.file-name-display').text(fileName);
+            } else {
+                $(this).siblings('.file-name-display').text('');
+            }
+            
+            // Show video preview if it's a video file
+            if (this.id === 'video-file' && this.files && this.files[0]) {
+                var videoPreview = document.getElementById('video-preview');
+                videoPreview.src = URL.createObjectURL(this.files[0]);
+                videoPreview.style.display = 'block';
+            }
+        });
+        
+        // Initialize rich text editor for blog content
+        if (document.getElementById('editor')) {
+            ClassicEditor
+                .create(document.getElementById('editor'))
+                .then(editor => {
+                    // Store editor instance globally
+                    window.editor = editor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+        
+        // Direct publish button click handler
+        $('.publish-btn').on('click', function() {
+            console.log("Publish button clicked via jQuery!");
+            
+            // Get values
+            var titleInput = $('#blogs .form-group:nth-child(1) input');
+            var categorySelect = $('#blogs .form-group:nth-child(2) select');
+            var blogImageInput = $('#blog-image')[0];
+            var editorContent = '';
+            
+            if (window.editor) {
+                editorContent = window.editor.getData();
+            }
+            
+            console.log("Form values:", {
+                title: titleInput.val(),
+                category: categorySelect.val(),
+                hasImage: blogImageInput.files.length > 0,
+                contentLength: editorContent.length
+            });
+            
+            // Add validation logic here
+            if (!titleInput.val()) {
+                alert('Please enter a blog title');
+                return;
+            }
+            
+            const validCategories = ["Training", "Nutrition", "Wellness", "Fitness Tips", "Tips"];
+            const selectedCategory = categorySelect.val();
+            
+            if (categorySelect[0].selectedIndex === 0 || !validCategories.includes(selectedCategory)) {
+                alert('Please select a valid category');
+                return;
+            }
+            
+            if (!blogImageInput.files || blogImageInput.files.length === 0) {
+                alert('Please select a featured image');
+                return;
+            }
+            
+            if (!editorContent || editorContent.trim() === '') {
+                alert('Please enter some content for your blog');
+                return;
+            }
+            
+            // Upload image and create blog
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(blogImageInput.files[0]);
+            fileReader.onload = function() {
+                var base64Image = fileReader.result;
+                
+                // Compress the image before sending
+                compressImage(base64Image, function(compressedImage) {
+                    // Show loading state
+                    var publishBtn = $('.publish-btn');
+                    publishBtn.prop('disabled', true);
+                    publishBtn.text('Publishing...');
+                    
+                    // Send to server
+                    $.ajax({
+                        url: '/api/blogs',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            title: titleInput.val(),
+                            category: categorySelect.val(),
+                            content: editorContent,
+                            featuredImage: compressedImage
+                        }),
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        success: function(data) {
+                            alert('Blog published successfully!');
+                            // Reset form
+                            titleInput.val('');
+                            categorySelect[0].selectedIndex = 0;
+                            blogImageInput.value = '';
+                            window.editor.setData('');
+                            $('#blog-image').siblings('.file-name-display').text('');
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error publishing blog:', xhr.responseText);
+                            try {
+                                const errorData = JSON.parse(xhr.responseText);
+                                alert('Failed to publish blog: ' + (errorData.message || error));
+                            } catch (e) {
+                                // If the response isn't valid JSON
+                                if (xhr.status === 413) {
+                                    alert('Image is too large. Please use a smaller image or try again with the compression.');
+                                } else {
+                                    alert('Failed to publish blog. Please try again. Error: ' + xhr.status);
+                                }
+                            }
+                        },
+                        complete: function() {
+                            // Reset button state
+                            publishBtn.prop('disabled', false);
+                            publishBtn.text('Publish Blog');
+                        }
+                    });
+                });
+            };
+        });
+        
+        // Function to compress images
+        function compressImage(base64Str, callback) {
+            var img = new Image();
+            img.src = base64Str;
+            img.onload = function() {
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext('2d');
+                
+                // Calculate new dimensions while maintaining aspect ratio
+                var maxWidth = 1200;
+                var maxHeight = 800;
+                var width = img.width;
+                var height = img.height;
+                
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+                
+                // Set canvas dimensions
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Draw resized image to canvas
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convert to compressed JPEG
+                var compressedImage = canvas.toDataURL('image/jpeg', 0.7); // 0.7 = 70% quality
+                
+                callback(compressedImage);
+            };
+        }
+    });
+    </script>
+    <script src="/JS/upload_content.js"></script>
+</body>
+</html>

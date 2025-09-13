@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Take Classes - RevibeFit</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link rel="stylesheet" href="/CSS/trainer.css" />
+    <link rel="stylesheet" href="/CSS/take_classes.css" />
+    <style>
+      .trainer-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 5%;
+        background-color: #fffff0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+      .trainer-logo {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      .trainer-logo img {
+        width: 34px;
+        height: 34px;
+        margin-right: 8px;
+      }
+      .logout-btn {
+        background-color: #e74c3c;
+        color: #fff;
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        border: none;
+        font-size: 1rem;
+        transition: background 0.2s;
+        cursor: pointer;
+      }
+      .logout-btn:hover {
+        background-color: #c0392b;
+      }
+      body { padding-top: 75px; }
+    </style>
+  </head>
+  <body>
+    <div class="trainer-topbar">
+      <a href="/trainer" class="trainer-logo">
+        <img src="/exercise_8407005.png" alt="RevibeFit Logo" />
+        RevibeFit
+      </a>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+    <div class="dashboard-container">
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <svg class="trainer-avatar" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+        </svg>
+          <h2><%= user ? user.name : 'Trainer' %></h2>
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="/trainer" class="nav-link">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
+                />
+              </svg>
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/upload-content" class="nav-link">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+              </svg>
+              Upload Content
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/take-classes" class="nav-link active">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"
+                />
+              </svg>
+              Take Classes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/trainer-settings" class="nav-link">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zm-7.43 2.52c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"
+                />
+              </svg>
+              Settings
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="main-content">
+        <div class="dashboard-header">
+          <h1>Schedule Classes</h1>
+        </div>
+
+        <div class="schedule-container">
+          <div class="calendar-section">
+            <div class="calendar-header">
+              <h2>Select Date & Time</h2>
+            </div>
+            <div id="calendar"></div>
+          </div>
+
+          <div class="class-setup">
+            <h2>Class Details</h2>
+            <div class="setup-form">
+              <div class="form-group">
+                <label>Class Type</label>
+                <select id="classType">
+                  <option value="">Select Class Type</option>
+                  <option value="hiit">HIIT</option>
+                  <option value="strength">Strength Training</option>
+                  <option value="yoga">Yoga</option>
+                  <option value="cardio">Cardio</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Duration</label>
+                <select id="classDuration">
+                  <option value="30">30 minutes</option>
+                  <option value="45">45 minutes</option>
+                  <option value="60">60 minutes</option>
+                  <option value="90">90 minutes</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Difficulty Level</label>
+                <select id="classLevel">
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Maximum Participants</label>
+                <input
+                  type="number"
+                  id="maxParticipants"
+                  min="1"
+                  max="50"
+                  value="20"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <textarea
+                  id="classDescription"
+                  placeholder="Enter class description..."
+                ></textarea>
+              </div>
+
+              <button class="schedule-btn">Schedule Class</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="upcoming-classes">
+          <h2>Upcoming Classes</h2>
+          <div class="classes-grid">
+            <!-- Classes will be dynamically loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="/JS/take_classes.js"></script>
+    <script src="/JS/upcoming_classes.js"></script>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Profile - RevibeFit</title>
+    <link rel="stylesheet" href="/CSS/footer.css">
+    <link rel="stylesheet" href="/CSS/trainer_profile.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- <nav>
+        <div id="nav-placeholder"></div>
+    </nav> -->
+    <%- include('nav_bar') %>
+
+    <div class="profile-container" id="trainer-profile-container">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <footer>
+        <div id="footer"></div>
+    </footer>
+
+    <script>
+        $(function(){
+            $("#nav-placeholder").load("Nav_bar.html");
+        });
+        
+        fetch("footer.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("footer").innerHTML = data);
+
+        // Get trainer ID from URL
+        const trainerId = '<%= typeof trainerId !== "undefined" ? trainerId : "" %>';
+        
+        // Fetch trainer data
+        if (trainerId) {
+            fetch(`/api/trainers/${trainerId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch trainer data');
+                    }
+                    return response.json();
+                })
+                .then(trainer => {
+                    // Update the UI with trainer data
+                    const profileContainer = document.getElementById('trainer-profile-container');
+                    
+                    profileContainer.innerHTML = `
+                        <!-- Trainer Header Section -->
+                        <div class="trainer-header">
+                            <div class="trainer-info">
+                                <div class="trainer-details">
+                                    <h1>${trainer.name}</h1>
+                                    <p class="specialty">${trainer.trainerProfile?.specialization || 'Fitness Specialist'}</p>
+                                    <div class="trainer-stats">
+                                        <div class="stat">
+                                            <span class="stat-number">${trainer.classesTaken}</span>
+                                            <span class="stat-label">Classes Taken</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Certifications Section -->
+                        <section class="about-section">
+                            <div class="certifications">
+                                <h3>Certifications</h3>
+                                <ul>
+                                    ${trainer.trainerProfile?.certifications ? 
+                                        Array.isArray(trainer.trainerProfile.certifications) ?
+                                            trainer.trainerProfile.certifications.map(cert => `<li>${cert}</li>`).join('') :
+                                            `<li>${trainer.trainerProfile.certifications}</li>`
+                                        : '<li>No certifications listed</li>'
+                                    }
+                                </ul>
+                            </div>
+                        </section>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('trainer-profile-container').innerHTML = `
+                        <div class="error-message">
+                            <p>Failed to load trainer profile: ${error.message}</p>
+                            <a href="/direct">Return to trainer directory</a>
+                        </div>
+                    `;
+                });
+        } else {
+            document.getElementById('trainer-profile-container').innerHTML = `
+                <div class="error-message">
+                    <p>No trainer ID provided</p>
+                    <a href="/direct">Return to trainer directory</a>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

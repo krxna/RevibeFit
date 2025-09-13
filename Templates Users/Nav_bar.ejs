@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RevibeFit</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Arial, sans-serif;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 5%;
+        background-color: #fffff0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-right: 0;
+        flex: 0 0 auto;
+      }
+      .logo img {
+        width: 34px;
+        height: 34px;
+        margin-right: 8px;
+      }
+      .navbar-center {
+        flex: 1 1 0;
+        display: flex;
+        justify-content: center;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        list-style: none;
+      }
+      .navbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 0 0 auto;
+      }
+      .dropdown {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        list-style: none;
+        position: relative;
+        bottom: 3.4px;
+      }
+      .dropdown > a {
+        display: inline-block;
+        padding: 0.5rem 0;
+      }
+      .dropdown-content {
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        background-color: #fffff0;
+        min-width: 200px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        padding: 0.5rem 0;
+        z-index: 1001;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 0.5rem;
+        transition: all 0.3s ease;
+      }
+      .dropdown-content::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background: transparent;
+      }
+      .dropdown:hover .dropdown-content {
+        visibility: visible;
+        opacity: 1;
+      }
+      .dropdown-content a {
+        color: #666;
+        padding: 0.75rem 1.5rem;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      .dropdown-content a:hover {
+        background-color: #f5f5f5;
+        color: #4fb16d;
+      }
+      .dropdown > a::after {
+        content: "▼";
+        font-size: 0.7em;
+        margin-left: 0.5em;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: #666;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+        position: relative;
+        padding-bottom: 5px;
+      }
+      .nav-links a:hover {
+        color: #4fb16d;
+      }
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #4fb16d;
+        transition: width 0.3s ease;
+      }
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+      .login-btn {
+        background-color: #e6e6e6;
+        color: #3f8554;
+        padding: 0.5rem 1.2rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        margin-right: 0.3rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border: none;
+        outline: none;
+        display: inline-block;
+      }
+      .login-btn:hover {
+        background-color: #d0e6d6;
+        color: #12642b;
+      }
+      .sign-in {
+        background-color: #3f8554;
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+        margin-right: 0;
+        margin-left: 0;
+        position: relative;
+        display: inline-block;
+      }
+      .sign-in:hover {
+        background-color: #12642b;
+      }
+      body {
+        padding-top: 75px;
+      }
+      .nav-links li {
+        display: flex;
+        align-items: center;
+      }
+      /* Profile button styles */
+      .profile-btn {
+        background-color: #3f8554;
+        color: white;
+        padding: 0.5rem 1.2rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        margin-right: 0.3rem;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+      }
+      .profile-btn:hover {
+        background-color: #2d633e;
+      }
+      /* User profile styles */
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+      }
+      .profile-dropdown {
+        position: relative;
+      }
+      .profile-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #3f8554;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .profile-icon:hover {
+        background-color: #12642b;
+      }
+      .profile-menu {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background-color: #fffff0;
+        border-radius: 8px;
+        width: 170px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: none;
+        padding: 5px 0;
+      }
+      /* Gap for mouse movement */
+      .profile-menu::before {
+        content: '';
+        position: absolute;
+        height: 20px;
+        width: 100%;
+        top: -20px;
+        left: 0;
+      }
+      .profile-menu-item {
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        color: #333;
+        text-decoration: none;
+        border-bottom: 1px solid #eaeaea;
+      }
+      .profile-menu-item:last-child {
+        border-bottom: none;
+      }
+      .profile-menu-item:hover {
+        background-color: #f5f5f5;
+      }
+      .profile-menu-item i {
+        margin-right: 10px;
+        font-size: 18px;
+      }
+      .logout-item {
+        color: #e74c3c;
+      }
+      .show-menu {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="http://localhost:3001/userhome" class="logo">
+        <img src="/exercise_8407005.png" alt="RevibeFit Logo" />
+        RevibeFit
+      </a>
+      <div class="navbar-center">
+        <ul class="nav-links">
+          <li><a href="http://localhost:3001/class">Classes</a></li>
+          <li><a href="http://localhost:3001/work">Workouts</a></li>
+          <li class="dropdown">
+            <a href="http://localhost:3001/direct">Trainers</a>
+          </li>
+          <li><a href="http://localhost:3001/cares">Care</a></li>
+          <li><a href="http://localhost:3001/blogs_client">Blog</a></li>
+        </ul>
+      </div>
+      <div class="navbar-right">
+        <% if (user) { %>
+        <a href="http://localhost:3001/userprofile" class="profile-btn"><%= user.name %>'s Profile</a>
+        <a href="/logout" class="login-btn logout-item" style="background-color: #e74c3c; color: white;">Logout</a>
+        <% } else { %>
+        <a href="http://localhost:3001/Sign_in.html" class="login-btn">Login</a>
+        <a href="trainer_singup.html" class="sign-in">Sign Up</a>
+        <% } %>
+      </div>
+    </nav>
+
+    <script>
+      // Toggle profile menu on click
+      document.addEventListener('DOMContentLoaded', function() {
+        const profileToggle = document.getElementById('profileDropdownToggle');
+        const profileMenu = document.getElementById('profileMenu');
+        
+        if (profileToggle && profileMenu) {
+          profileToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            profileMenu.classList.toggle('show-menu');
+          });
+          
+          // Close the menu when clicking outside
+          document.addEventListener('click', function(e) {
+            if (profileMenu.classList.contains('show-menu') && 
+                !profileMenu.contains(e.target) && 
+                !profileToggle.contains(e.target)) {
+              profileMenu.classList.remove('show-menu');
+            }
+          });
+          
+          // Prevent menu from closing when clicking inside it
+          profileMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

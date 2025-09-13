@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Dashboard - RevibeFit</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/CSS/trainer.css">
+    <style>
+        .trainer-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 5%;
+            background-color: #fffff0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .trainer-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .trainer-logo img {
+            width: 34px;
+            height: 34px;
+            margin-right: 8px;
+        }
+
+        .logout-btn {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            font-size: 1rem;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(63, 133, 84, 0.3);
+            border-radius: 50%;
+            border-top-color: #3f8554;
+            animation: spin 1s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .alert-message {
+            padding: 10px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .stat-card-blogs .stat-icon svg,
+        .stat-card-videos .stat-icon svg {
+            fill: #3f8554;
+        }
+
+        body {
+            padding-top: 75px;
+        }
+
+        .chart-container {
+            margin: 2rem 5%;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            color: #333;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="trainer-topbar">
+        <a href="/trainer" class="trainer-logo">
+            <img src="/exercise_8407005.png" alt="RevibeFit Logo" />
+            RevibeFit
+        </a>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <svg class="trainer-avatar" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                </svg>
+                <h2>
+                    <%= user ? user.name : 'Trainer' %>
+                </h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/trainer" class="nav-link active">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/upload-content" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                        </svg>
+                        <span>Upload Content</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/take-classes" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z" />
+                        </svg>
+                        <span>Take Classes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/trainer-settings" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zm-7.43 2.52c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
+                        </svg>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h1>Dashboard Overview</h1>
+                <div class="profile-card">
+                    <svg class="profile-avatar" viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M12 14c-4 0-6 2-6 4v2h12v-2c0-2-2-4-6-4z" />
+                    </svg>
+                    <div>
+                        <div class="profile-name">
+                            <%= user ? user.name : 'Trainer' %>
+                        </div>
+                        <div class="profile-role">Professional Trainer</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card stat-card-classes">
+                    <span class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19Z" fill="#3f8554" />
+                            <path d="M7 12H9V17H7V12Z" fill="#3f8554" />
+                            <path d="M11 7H13V17H11V7Z" fill="#3f8554" />
+                            <path d="M15 9H17V17H15V9Z" fill="#3f8554" />
+                        </svg>
+                    </span>
+                    <h3>Total Classes</h3>
+                    <div class="loader"></div>
+                    <div class="number" style="display: none;">Loading...</div>
+                </div>
+
+                <div class="stat-card stat-card-students">
+                    <span class="stat-icon"><svg width="24" height="24" fill="currentColor">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="#3f8554" />
+                        </svg></span>
+                    <h3>Total Students</h3>
+                    <div class="loader"></div>
+                    <div class="number" style="display: none;">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Add this new section -->
+            <div class="chart-container">
+                <h2>Monthly Classes</h2>
+                <canvas id="monthlyClassesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="/JS/trainer_dashboard.js"></script>
+    <script src="/JS/trainer_stats.js"></script>
+</body>
+
+</html>
