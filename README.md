@@ -1,28 +1,28 @@
 # RevibeFit - Fitness & Wellness Platform
 
 RevibeFit is a full-stack web application that provides personalized
-fitness solutions, workout tracking, and health monitoring services.\
+fitness solutions, workout tracking, and health monitoring services.
 It connects fitness enthusiasts with certified trainers, classes, and
 lab partners to create a complete wellness ecosystem.
 
 ## Features
 
--   User Authentication & Profiles (users, trainers, labs, admins)\
--   Live Interactive Workout Classes (real-time streaming & chat)\
--   Personalized Workout Plans & Scheduling\
--   Diet & Nutrition Planner\
--   Health Monitoring & Lab Test Recommendations\
+-   User Authentication & Profiles (users, trainers, labs, admins)
+-   Live Interactive Workout Classes (real-time streaming & chat)
+-   Personalized Workout Plans & Scheduling
+-   Diet & Nutrition Planner
+-   Health Monitoring & Lab Test Recommendations
 -   Blogs & Community Features
 
 ## Tech Stack
 
--   **Frontend:** HTML5, CSS3, JavaScript, EJS, jQuery, Bootstrap\
--   **Backend:** Node.js, Express.js, MongoDB, REST APIs\
+-   **Frontend:** HTML5, CSS3, JavaScript, EJS, jQuery, Bootstrap
+-   **Backend:** Node.js, Express.js, MongoDB, REST APIs
 -   **Other:** Geolocation API, jQuery UI, Font Awesome
 
 ## Deployment
 
--   App runs on `localhost:3001`\
+-   App runs on `localhost:3001`
 -   Database hosted locally
 
 ## Setup Instructions (Run Locally)
@@ -42,7 +42,7 @@ lab partners to create a complete wellness ecosystem.
 
 3.  **Configure environment variables**
 
-    -   Create a `.env` file in the project root\
+    -   Create a `.env` file in the project root
 
     -   Add the following keys:
 
@@ -66,6 +66,6 @@ lab partners to create a complete wellness ecosystem.
 
 ## Upcoming Features
 
--   Smart lab center recommendations\
--   Enhanced health analytics and insights\
+-   Smart lab center recommendations
+-   Enhanced health analytics and insights
 -   E-commerce store (supplements, equipment, merchandise)
